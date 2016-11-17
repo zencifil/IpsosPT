@@ -30,7 +30,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.ipsos.savascilve.ipsospt.Helper.Constants;
+
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -192,13 +200,12 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
 
-                login();
+                //TODO don't forget to open
+                //login();
             }
             catch (InterruptedException e) {
                 return false;
@@ -229,8 +236,47 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         private boolean login() {
-            //HttpsURLConnection urlConnection = null;
-            return true;
+            HttpsURLConnection urlConnection;
+            BufferedReader reader;
+            String resultJsonStr = null;
+
+            try {
+                URL url = new URL(Constants.BASE_URL);
+                urlConnection = (HttpsURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                // Read the input stream into a String
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return false;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                    // But it does make debugging a *lot* easier if you print out the completed
+                    // buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return false;
+                }
+                resultJsonStr = buffer.toString();
+
+                JSONObject resultJson = new JSONObject(resultJsonStr);
+                
+
+                return true;
+            }
+            catch (Exception e) {
+                return false;
+            }
         }
 
 //        private void navigateToHomeActivity() {
