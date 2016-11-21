@@ -10,8 +10,20 @@
     <string name="error_incorrect_password">Kullanıcı adı veya şifre hatalı.</string>
     <string name="error_field_required">Zorunlu alan!</string>
 
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main">MainActivity</string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_show_all">Butun haneler</string>
+    <string name="navigation_show_today">Bugunku haneler</string>
+    <string name="navigation_send_mail">E-Posta Gonder</string>
+    <string name="navigation_call">Ara</string>
+
+    <string name="action_settings">Ayarlar</string>
 
 
 </resources>
