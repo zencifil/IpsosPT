@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.ipsos.savascilve.ipsospt.Data.PTContract;
+
 import java.util.ArrayList;
 
 public class FamListFragment extends Fragment {
@@ -31,6 +33,8 @@ public class FamListFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        //ArrayList<String> demoList = new ArrayList<>();
+
         _famListAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.list_item_fam,
                 new ArrayList<String>());
@@ -38,12 +42,10 @@ public class FamListFragment extends Fragment {
         ListView listView = (ListView) rootView.findViewById(R.id.famListListView);
         listView.setAdapter(_famListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String forecast = _famListAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), DetailActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, forecast);
+                String item = _famListAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, "");
                 startActivity(intent);
             }
         });

@@ -138,13 +138,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        return email.contains("@tro.ipsos-kmg.com") || email.contains("@ipsos.com");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 5;
     }
 
     /**
@@ -221,7 +219,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if (success) {
                 finish();
-                //navigateToHomeActivity();
+                navigateToHomeActivity();
             }
             else {
                 _passwordTextBox.setError(getString(R.string.error_incorrect_password));
@@ -279,11 +277,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
 
-//        private void navigateToHomeActivity() {
-//            Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
-//            homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            startActivity(homeIntent);
-//        }
+        private void navigateToHomeActivity() {
+            Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+            homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(homeIntent);
+        }
     }
 }
 
