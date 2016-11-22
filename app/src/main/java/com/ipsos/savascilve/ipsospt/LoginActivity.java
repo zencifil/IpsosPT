@@ -188,8 +188,9 @@ public class LoginActivity extends AppCompatActivity {
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String _email;
+        private String _email;
         private final String _password;
+        private String _fldName;
 
         UserLoginTask(String email, String password) {
             _email = email;
@@ -204,6 +205,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 //TODO don't forget to open
                 //login();
+                _email = "savas.cilve@ipsos.com";
+                _fldName = "SAVAS CILVE";
             }
             catch (InterruptedException e) {
                 return false;
@@ -268,7 +271,7 @@ public class LoginActivity extends AppCompatActivity {
                 resultJsonStr = buffer.toString();
 
                 JSONObject resultJson = new JSONObject(resultJsonStr);
-                
+                //TODO result icinde adi felan gelmeli...
 
                 return true;
             }
@@ -280,6 +283,8 @@ public class LoginActivity extends AppCompatActivity {
         private void navigateToHomeActivity() {
             Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
             homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            homeIntent.putExtra(Constants.EXTRA_FLDNAME, _fldName);
+            homeIntent.putExtra(Constants.EXTRA_EMAIL, _email);
             startActivity(homeIntent);
         }
     }

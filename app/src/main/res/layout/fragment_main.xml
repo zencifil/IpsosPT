@@ -7,7 +7,7 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/famListListView">
+        android:id="@+id/fam_list_fragment_main">
 
     </ListView>
 

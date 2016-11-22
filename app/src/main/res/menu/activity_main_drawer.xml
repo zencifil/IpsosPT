@@ -12,7 +12,7 @@
             android:title="@string/navigation_show_all" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/navigation_communication">
         <menu>
             <item
                 android:id="@+id/nav_call"

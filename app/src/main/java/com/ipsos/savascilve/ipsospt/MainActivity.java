@@ -1,8 +1,6 @@
 package com.ipsos.savascilve.ipsospt;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import static com.ipsos.savascilve.ipsospt.Helper.Constants.EXTRA_EMAIL;
+import static com.ipsos.savascilve.ipsospt.Helper.Constants.EXTRA_FLDNAME;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,6 +33,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //TextView fldNameTextView = (TextView) findViewById(R.id.fld_name_nav_header);
+        TextView fldNameTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.fld_name_nav_header);
+        fldNameTextView.setText(getIntent().getStringExtra(EXTRA_FLDNAME));
+        TextView emailTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.fld_email_nav_header);
+        emailTextView.setText(getIntent().getStringExtra(EXTRA_EMAIL));
     }
 
     @Override

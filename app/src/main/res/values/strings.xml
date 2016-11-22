@@ -18,8 +18,9 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="navigation_show_all">Butun haneler</string>
-    <string name="navigation_show_today">Bugunku haneler</string>
+    <string name="navigation_show_all">Bütün Haneler</string>
+    <string name="navigation_show_today">Bugünkü Ziyaretler</string>
+    <string name="navigation_communication">İletişim</string>
     <string name="navigation_send_mail">E-Posta Gonder</string>
     <string name="navigation_call">Ara</string>
 

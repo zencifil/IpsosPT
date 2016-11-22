@@ -39,7 +39,7 @@ public class FamListFragment extends Fragment {
                 R.layout.list_item_fam,
                 new ArrayList<String>());
 
-        ListView listView = (ListView) rootView.findViewById(R.id.famListListView);
+        ListView listView = (ListView) rootView.findViewById(R.id.fam_list_fragment_main);
         listView.setAdapter(_famListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
