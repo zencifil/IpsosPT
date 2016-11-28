@@ -50,7 +50,7 @@ public class PTContract {
         public static final String COLUMN_PHONE = "phone";
         public static final String COLUMN_PHONE2 = "phone2";
         public static final String COLUMN_FLD_CODE = "fld_code";
-        public static final String COLUMN_VISIT_DATE = "visit_date";
+        public static final String COLUMN_VISIT_DAY = "visit_day";
         public static final String COLUMN_AVP = "avp";
         public static final String COLUMN_SP = "sp";
         public static final String COLUMN_ALK = "alk";
@@ -59,7 +59,7 @@ public class PTContract {
         public static final String COLUMN_EK_ALK = "ek_alk";
         public static final String COLUMN_ACTIVE = "active";
 
-        public static Uri buildLocationUri(long id) {
+        public static Uri buildFamilyUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
@@ -84,7 +84,7 @@ public class PTContract {
         public static final String COLUMN_EMAIL = "email";
         public static final String COLUMN_EMAIL2 = "email2";
 
-        public static Uri buildLocationUri(long id) {
+        public static Uri buildFldUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
@@ -108,8 +108,11 @@ public class PTContract {
         public static final String COLUMN_PHONE2 = "phone2";
         public static final String COLUMN_EMAIL = "email";
         public static final String COLUMN_EMAIL2 = "email2";
+        public static final String COLUMN_SP = "sp"; //sigara
+        public static final String COLUMN_ALK = "alk"; //alkol gunluk
+        public static final String COLUMN_FP = "fp"; //ucus paneli
 
-        public static Uri buildLocationUri(long id) {
+        public static Uri buildIndUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
