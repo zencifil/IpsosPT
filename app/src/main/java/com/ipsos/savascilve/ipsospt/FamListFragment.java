@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.ipsos.savascilve.ipsospt.Data.PTContract;
+import com.ipsos.savascilve.ipsospt.Model.Family;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public class FamListFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        //ArrayList<String> demoList = new ArrayList<>();
+        //ArrayList<Family> demoList = new ArrayList<>();
 
         _famListAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.list_item_fam,

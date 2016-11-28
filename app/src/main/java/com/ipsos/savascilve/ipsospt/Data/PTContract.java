@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.text.format.Time;
 
 /**
  * Created by zencifil on 17/11/2016.
@@ -14,11 +15,18 @@ public class PTContract {
     public static final String CONTENT_AUTHORITY = "com.ipsos.savascilve.ipsospt.app";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final String PATH_FAMILY = "family";
+    public static final String PATH_FAMILY = "fam";
     public static final String PATH_FLD = "fld";
     public static final String PATH_IND = "ind";
 
-    public static final class Family implements BaseColumns {
+    public static long normalizeDate(long date) {
+        Time time = new Time();
+        time.set(date);
+        int julianDay = Time.getJulianDay(date, time.gmtoff);
+        return time.setJulianDay(julianDay);
+    }
+
+    public static final class Fam implements BaseColumns {
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAMILY).build();
@@ -28,7 +36,7 @@ public class PTContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FAMILY;
 
-        public static final String TABLE_NAME = "family";
+        public static final String TABLE_NAME = "fam";
 
         public static final String COLUMN_FAM_CODE = "fam_code";
         public static final String COLUMN_FAM_NAME = "fam_name";
