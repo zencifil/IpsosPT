@@ -8,7 +8,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 
 /**
  * Created by zencifil on 17/11/2016.
@@ -22,7 +21,8 @@ public class PTProvider extends ContentProvider {
     static final int FAMILY_BY_VISIT_DAY = 101;
     static final int FAMILY_BY_FAM_CODE = 102;
     static final int INDIVIDUAL = 200;
-    //static final int
+    static final int INDIVIDUAL_BY_FAMILY = 201;
+    static final int INDIVIDUAL_BY_FAM_AND_IND_CODE = 202;
 
     private static final SQLiteQueryBuilder _famQueryBuilder;
     private static final SQLiteQueryBuilder _indQueryBuilder;
@@ -39,6 +39,9 @@ public class PTProvider extends ContentProvider {
 
     private static final String _familyByVisitDaySelection = PTContract.Fam.TABLE_NAME + "." + PTContract.Fam.COLUMN_VISIT_DAY + " = ? ";
     private static final String _familyByFamCodeSelection = PTContract.Fam.TABLE_NAME + "." + PTContract.Fam.COLUMN_FAM_CODE + " = ? ";
+    private static final String _individualsByFamCodeSelection = PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_FAM_CODE + " = ? ";
+    private static final String _individualByFamAndIndCodeSelection = PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_FAM_CODE + " = ? AND " +
+            PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_IND_CODE + " = ? ";
 
     private Cursor getFamilyListByVisitDay(String[] projection, String[] selectionArgs, String sortOrder) {
         String selection = _familyByVisitDaySelection;
@@ -50,6 +53,16 @@ public class PTProvider extends ContentProvider {
         return _famQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
     }
 
+    private Cursor getIndividualsByFamCode(String[] projection, String[] selectionArgs, String sortOrder) {
+        String selection = _individualsByFamCodeSelection;
+        return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
+    }
+
+    private Cursor getIndividualByFamAndIndCode(String[] projection, String[] selectionArgs, String sortOrder) {
+        String selection = _individualByFamAndIndCodeSelection;
+        return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
+    }
+
     static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = PTContract.CONTENT_AUTHORITY;
@@ -57,6 +70,8 @@ public class PTProvider extends ContentProvider {
         matcher.addURI(authority, PTContract.PATH_FAMILY, FAMILY);
         matcher.addURI(authority, PTContract.PATH_FAMILY + "/#", FAMILY_BY_VISIT_DAY);
         matcher.addURI(authority, PTContract.PATH_FAMILY + "/*", FAMILY_BY_FAM_CODE);
+        matcher.addURI(authority, PTContract.PATH_IND + "/*", INDIVIDUAL_BY_FAMILY);
+        matcher.addURI(authority, PTContract.PATH_IND + "/*/#", INDIVIDUAL_BY_FAM_AND_IND_CODE);
 
         return matcher;
     }
@@ -77,6 +92,10 @@ public class PTProvider extends ContentProvider {
                 return PTContract.Fam.CONTENT_TYPE;
             case FAMILY_BY_FAM_CODE:
                 return PTContract.Fam.CONTENT_ITEM_TYPE;
+            case INDIVIDUAL_BY_FAMILY:
+                return PTContract.Ind.CONTENT_TYPE;
+            case INDIVIDUAL_BY_FAM_AND_IND_CODE:
+                return PTContract.Ind.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -95,6 +114,12 @@ public class PTProvider extends ContentProvider {
             case FAMILY_BY_FAM_CODE:
                 retCursor = getFamilyByFamCode(projection, selectionArgs, sortOrder);
                 break;
+            case INDIVIDUAL_BY_FAMILY:
+                retCursor = getIndividualsByFamCode(projection, selectionArgs, sortOrder);
+                break;
+            case INDIVIDUAL_BY_FAM_AND_IND_CODE:
+                retCursor = getIndividualByFamAndIndCode(projection, selectionArgs, sortOrder);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
         }
@@ -103,7 +128,6 @@ public class PTProvider extends ContentProvider {
         return retCursor;
     }
 
-    @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
         final SQLiteDatabase db = _dbHelper.getWritableDatabase();
@@ -134,6 +158,47 @@ public class PTProvider extends ContentProvider {
     }
 
     @Override
+    public int bulkInsert(Uri uri, ContentValues[] values) {
+        final SQLiteDatabase db = _dbHelper.getWritableDatabase();
+        final int match = _uriMatcher.match(uri);
+        long id;
+        int returnCount = 0;
+
+        switch (match) {
+            case FAMILY:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        id = db.insert(PTContract.Fam.TABLE_NAME, null, value);
+                        if (id != -1)
+                            returnCount++;
+                    }
+                }
+                finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            case INDIVIDUAL:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        id = db.insert(PTContract.Ind.TABLE_NAME, null, value);
+                        if (id != -1)
+                            returnCount++;
+                    }
+                }
+                finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            default:
+                return super.bulkInsert(uri, values);
+        }
+    }
+
+    @Override
     public int delete(Uri uri, String s, String[] strings) {
         return 0;
     }
@@ -141,5 +206,11 @@ public class PTProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
         return 0;
+    }
+
+    @Override
+    public void shutdown() {
+        _dbHelper.close();
+        super.shutdown();
     }
 }
