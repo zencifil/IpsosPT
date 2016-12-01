@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/fam_name_list_item"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/fam_code_list_item"
+        android:layout_toEndOf="@id/fam_code_list_item"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_marginBottom="3dp"
         android:maxLines="1"
