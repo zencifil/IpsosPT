@@ -2,6 +2,7 @@ package com.ipsos.savascilve.ipsospt;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.StringDef;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,5 +47,46 @@ public class FamListAdapter extends CursorAdapter {
 
         String famCode = cursor.getString(FamListFragment.COL_FAM_CODE);
         viewHolder.famCodeView.setText(famCode);
+        String famName = cursor.getString(FamListFragment.COL_FAM_NAME);
+        viewHolder.famNameView.setText(famName);
+        String address = joinAddressColumns(cursor);
+        viewHolder.addressView.setText(address);
+    }
+
+    private String joinAddressColumns(Cursor cursor) {
+        String city = cursor.getString(FamListFragment.COL_CITY);
+        String town = cursor.getString(FamListFragment.COL_TOWN);
+        String district = cursor.getString(FamListFragment.COL_DISTRICT);
+        String street = cursor.getString(FamListFragment.COL_STREET);
+        String road = cursor.getString(FamListFragment.COL_ROAD);
+        String houseNo = cursor.getString(FamListFragment.COL_HOUSE_NO);
+        String doorNo = cursor.getString(FamListFragment.COL_DOOR_NO);
+
+        String address = district + " ";
+        if (street != null && !street.isEmpty()) {
+            if (!street.contains("Cad.") && !street.contains("CAD.") && !street.contains("Caddesi") && !street.contains("CADDESI"))
+                street += " Cad.";
+            address += street + " ";
+        }
+        if (road != null && !road.isEmpty()) {
+            if (!road.contains("Sok.") && !road.contains("SOK.") && !road.contains("Sokak") && !road.contains("SOKAK") && !road.contains("Sokağı") && !road.contains("SOKAĞI"))
+                road += " Sok.";
+            address += road + " ";
+        }
+        if (houseNo != null && !houseNo.isEmpty()) {
+            if (houseNo.matches("^\\d+$"))
+                houseNo = "No: " + houseNo;
+            address += houseNo + " ";
+        }
+        if (doorNo != null && !doorNo.isEmpty()) {
+            if (doorNo.matches("^\\d+$"))
+                doorNo = "D: " + doorNo;
+            address += doorNo + " ";
+        }
+
+        address += town + " ";
+        address += city;
+
+        return address;
     }
 }

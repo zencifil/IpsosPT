@@ -40,7 +40,8 @@ public class PTDbHelper extends SQLiteOpenHelper {
                 PTContract.Fam.COLUMN_EK_ALK + " INTEGER, " + //ek alkol
                 PTContract.Fam.COLUMN_BABY + " INTEGER, " + //bebek
                 PTContract.Fam.COLUMN_HP + " INTEGER, " + //harcama
-                PTContract.Fam.COLUMN_VISIT_DAY + " INTEGER);";
+                PTContract.Fam.COLUMN_VISIT_DAY + " INTEGER, " +
+                PTContract.Fam.COLUMN_POINT + " INTEGER);";
 
         final String SQL_CREATE_FLD_TABLE = "CREATE TABLE " + PTContract.Fld.TABLE_NAME + " (" +
                 PTContract.Fld._ID + " INTEGER PRIMARY KEY, " +

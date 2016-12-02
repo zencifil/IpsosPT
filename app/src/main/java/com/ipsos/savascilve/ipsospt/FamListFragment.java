@@ -1,28 +1,20 @@
 package com.ipsos.savascilve.ipsospt;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.ipsos.savascilve.ipsospt.Data.PTContract;
-import com.ipsos.savascilve.ipsospt.Model.Family;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FamListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private FamListAdapter _famListAdapter;
@@ -110,9 +102,9 @@ public class FamListFragment extends Fragment implements LoaderManager.LoaderCal
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                if (cursor != null) {
+                if (cursor != null)
+                    ((Callback) getActivity()).onItemSelected(PTContract.Fam.buildFamilyUriWithFamCode(cursor.getString(COL_FAM_CODE)));
 
-                }
                 _position = position;
             }
         });
@@ -140,16 +132,20 @@ public class FamListFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+        String sortOrder = PTContract.Fam.COLUMN_FAM_NAME + " ASC";
+        Uri famListForTodayUri = PTContract.Fam.buildFamilyUriForDay(0);
+        return new CursorLoader(getActivity(), famListForTodayUri, FAM_LIST_COLUMNS, null, null, sortOrder);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        _famListAdapter.swapCursor(data);
+        if (_position != ListView.INVALID_POSITION)
+            _listView.smoothScrollToPosition(_position);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        _famListAdapter.swapCursor(null);
     }
 }

@@ -58,9 +58,18 @@ public class PTContract {
         public static final String COLUMN_HP = "hp";
         public static final String COLUMN_EK_ALK = "ek_alk";
         public static final String COLUMN_ACTIVE = "active";
+        public static final String COLUMN_POINT = "point";
 
         public static Uri buildFamilyUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildFamilyUriWithFamCode(String famCode) {
+            return CONTENT_URI.buildUpon().appendPath(famCode).build();
+        }
+
+        public static Uri buildFamilyUriForDay(int day) {
+            return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_VISIT_DAY, Integer.toString(day)).build();
         }
     }
 
