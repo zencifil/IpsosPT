@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //TextView fldNameTextView = (TextView) findViewById(R.id.fld_name_nav_header);
         TextView fldNameTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.fld_name_nav_header);
         fldNameTextView.setText(getIntent().getStringExtra(EXTRA_FLDNAME));
         TextView emailTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.fld_email_nav_header);

@@ -12,7 +12,7 @@ import android.text.format.Time;
 
 public class PTContract {
 
-    public static final String CONTENT_AUTHORITY = "com.ipsos.savascilve.ipsospt.app";
+    public static final String CONTENT_AUTHORITY = "com.ipsos.savascilve.ipsospt";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_FAMILY = "fam";

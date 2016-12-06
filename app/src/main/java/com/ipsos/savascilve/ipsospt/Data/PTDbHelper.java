@@ -3,6 +3,7 @@ package com.ipsos.savascilve.ipsospt.Data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by zencifil on 17/11/2016.
@@ -10,7 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class PTDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final String LOG_TAG = PTDbHelper.class.getSimpleName();
+    private static final int DATABASE_VERSION = 2;
     static final String DATABASE_NAME = "pt.db";
 
     public PTDbHelper(Context context) {
@@ -67,15 +69,21 @@ public class PTDbHelper extends SQLiteOpenHelper {
                 PTContract.Ind.COLUMN_FP + " TEXT);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_FAM_TABLE);
+        Log.d(LOG_TAG, "Family table created");
         sqLiteDatabase.execSQL(SQL_CREATE_IND_TABLE);
+        Log.d(LOG_TAG, "Individual table created");
         sqLiteDatabase.execSQL(SQL_CREATE_FLD_TABLE);
+        Log.d(LOG_TAG, "PT table created");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PTContract.Fam.TABLE_NAME);
+        Log.d(LOG_TAG, "Family table dropped");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PTContract.Fld.TABLE_NAME);
+        Log.d(LOG_TAG, "Individual table dropped");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PTContract.Ind.TABLE_NAME);
+        Log.d(LOG_TAG, "PT table dropped");
         onCreate(sqLiteDatabase);
     }
 }

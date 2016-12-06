@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import com.ipsos.savascilve.ipsospt.Data.PTContract;
 
 public class FamListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    public static final String LOG_TAG = FamListFragment.class.getSimpleName();
     private FamListAdapter _famListAdapter;
     private ListView _listView;
     private int _position = ListView.INVALID_POSITION;
@@ -113,6 +115,7 @@ public class FamListFragment extends Fragment implements LoaderManager.LoaderCal
             _position = savedInstanceState.getInt(SELECTED_KEY);
         }
 
+        Log.d(LOG_TAG, "view created");
         return rootView;
     }
 
