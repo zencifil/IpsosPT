@@ -1,13 +1,167 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.ipsos.savascilve.ipsospt.DetailFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fam_detail_container"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        tools:context="com.ipsos.savascilve.ipsospt.DetailFragment">
 
-</FrameLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_fam_code"
+                style="@style/FamDetailTextLabel"/>
+            <TextView
+                android:id="@+id/famDetailFamCode"
+                style="@style/FamDetailText" />
+        </LinearLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_city"
+                style="@style/FamDetailTextLabel"/>
+            <TextView
+                android:id="@+id/famDetailCity"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_town"
+                style="@style/FamDetailTextLabel"/>
+            <TextView
+                android:id="@+id/famDetailTown"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_district"
+                style="@style/FamDetailTextLabel"/>
+            <TextView
+                android:id="@+id/famDetailDistrict"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_street"
+                style="@style/FamDetailTextLabel"/>
+            <TextView
+                android:id="@+id/famDetailStreet"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_road"
+                style="@style/FamDetailTextLabel"/>
+            <TextView
+                android:id="@+id/famDetailRoad"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_house_no"
+                style="@style/FamDetailTextLabel"/>
+            <TextView
+                android:id="@+id/famDetailHouseNo"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_door_no"
+                style="@style/FamDetailTextLabel"/>
+            <TextView
+                android:id="@+id/famDetailDoorNo"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_phone"
+                style="@style/FamDetailTextLabel"/>
+            <TextView
+                android:id="@+id/famDetailPhone"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_phone2"
+                style="@style/FamDetailTextLabel"/>
+            <TextView
+                android:id="@+id/famDetailPhone2"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_active"
+                style="@style/FamDetailTextLabel"/>
+            <CheckBox
+                android:id="@+id/famDetailActive"
+                android:enabled="false"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_visit_day"
+                style="@style/FamDetailTextLabel"/>
+            <TextView
+                android:id="@+id/famDetailVisitDay"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_point"
+                style="@style/FamDetailTextLabel"/>
+            <TextView
+                android:id="@+id/famDetailPoint"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_avp"
+                style="@style/FamDetailTextLabel"/>
+            <CheckBox
+                android:id="@+id/famDetailAVP"
+                android:enabled="false"
+                style="@style/FamDetailText"/>
+            <TextView
+                android:text="@string/form_alk"
+                style="@style/FamDetailTextLabel"/>
+            <CheckBox
+                android:id="@+id/famDetailAlkol"
+                android:enabled="false"
+                style="@style/FamDetailText"/>
+            <TextView
+                android:text="@string/form_sp"
+                style="@style/FamDetailTextLabel"/>
+            <CheckBox
+                android:id="@+id/famDetailSP"
+                android:enabled="false"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_ek_alkol"
+                style="@style/FamDetailTextLabel"/>
+            <CheckBox
+                android:id="@+id/famDetailEkAlkol"
+                android:enabled="false"
+                style="@style/FamDetailText"/>
+            <TextView
+                android:text="@string/form_baby"
+                style="@style/FamDetailTextLabel"/>
+            <CheckBox
+                android:id="@+id/famDetailBaby"
+                android:enabled="false"
+                style="@style/FamDetailText"/>
+            <TextView
+                android:text="@string/form_hp"
+                style="@style/FamDetailTextLabel"/>
+            <CheckBox
+                android:id="@+id/famDetailHP"
+                android:enabled="false"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

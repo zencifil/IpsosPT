@@ -58,7 +58,7 @@ public class FamListFragment extends Fragment implements LoaderManager.LoaderCal
      */
     public interface Callback {
         //DetailFragmentCallback for when an item has been selected.
-        public void onItemSelected(Uri dateUri);
+        public void onItemSelected(Uri famUri);
     }
 
     public FamListFragment() {

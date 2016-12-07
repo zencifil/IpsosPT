@@ -65,7 +65,8 @@ public class PTContract {
         }
 
         public static Uri buildFamilyUriWithFamCode(String famCode) {
-            return CONTENT_URI.buildUpon().appendPath(famCode).build();
+            //return CONTENT_URI.buildUpon().appendPath(famCode).build();
+            return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_FAM_CODE, famCode).build();
         }
 
         public static Uri buildFamilyUriForDay(int day) {

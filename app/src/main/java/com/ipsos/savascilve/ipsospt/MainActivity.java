@@ -1,5 +1,7 @@
 package com.ipsos.savascilve.ipsospt;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,7 +18,10 @@ import static com.ipsos.savascilve.ipsospt.Helper.Constants.EXTRA_EMAIL;
 import static com.ipsos.savascilve.ipsospt.Helper.Constants.EXTRA_FLDNAME;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, FamListFragment.Callback {
+
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,5 +100,11 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onItemSelected(Uri contentUri) {
+        Intent intent = new Intent(this, DetailActivity.class).setData(contentUri);
+        startActivity(intent);
     }
 }

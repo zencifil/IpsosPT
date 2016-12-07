@@ -74,6 +74,12 @@ public class PTDbHelper extends SQLiteOpenHelper {
         Log.d(LOG_TAG, "Individual table created");
         sqLiteDatabase.execSQL(SQL_CREATE_FLD_TABLE);
         Log.d(LOG_TAG, "PT table created");
+
+        //for test purpose
+        final String testFamInsert = "INSERT INTO " + PTContract.Fam.TABLE_NAME +
+                " VALUES (1, '01W1049', 'TEST HANESI', 'ISTANBUL', 'KADIKOY', '19 MAYIS MAH.', 'INONU', NULL, '50', NULL, " +
+                " '5647813', '7528394152', 'X0', 1, 1, 1, 1, 0, 0, 0, 2, 570);";
+        sqLiteDatabase.execSQL(testFamInsert);
     }
 
     @Override
