@@ -1,4 +1,4 @@
-package com.ipsos.savascilve.ipsospt;
+package com.ipsos.cpm.ipsospt;
 
 import org.junit.Test;
 

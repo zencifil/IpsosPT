@@ -8,7 +8,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context="com.ipsos.savascilve.ipsospt.DetailFragment">
+        tools:context="com.ipsos.cpm.ipsospt.DetailFragment">
 
         <LinearLayout style="@style/FamDetailHorizontalLayout">
             <TextView

@@ -1,4 +1,4 @@
-package com.ipsos.savascilve.ipsospt;
+package com.ipsos.cpm.ipsospt;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

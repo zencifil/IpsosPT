@@ -1,4 +1,4 @@
-package com.ipsos.savascilve.ipsospt;
+package com.ipsos.cpm.ipsospt;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ipsos.savascilve.ipsospt">
+    package="com.ipsos.cpm.ipsospt">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -13,21 +13,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name="com.ipsos.cpm.ipsospt.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailActivity" />
+        <activity android:name="com.ipsos.cpm.ipsospt.DetailActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.ipsos.cpm.ipsospt.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <provider
-            android:authorities="com.ipsos.savascilve.ipsospt"
-            android:name=".Data.PTProvider" />
+            android:authorities="com.ipsos.cpm.ipsospt"
+            android:name="com.ipsos.cpm.ipsospt.Data.PTProvider" />
         <meta-data android:name="net.hockeyapp.android.appIdentifier" android:value="${HOCKEYAPP_APP_ID}" />
     </application>
 

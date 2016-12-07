@@ -1,4 +1,4 @@
-package com.ipsos.savascilve.ipsospt.Helper;
+package com.ipsos.cpm.ipsospt.Helper;
 
 /**
  * Created by zencifil on 17/11/2016.

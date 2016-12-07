@@ -1,4 +1,4 @@
-package com.ipsos.savascilve.ipsospt;
+package com.ipsos.cpm.ipsospt;
 
 
 import android.database.Cursor;
@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.ipsos.savascilve.ipsospt.Data.PTContract;
+import com.ipsos.cpm.ipsospt.Data.PTContract;
 
 
 /**

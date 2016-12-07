@@ -1,4 +1,4 @@
-package com.ipsos.savascilve.ipsospt;
+package com.ipsos.cpm.ipsospt;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.ipsos.savascilve.ipsospt.Data.PTContract;
+import com.ipsos.cpm.ipsospt.Data.PTContract;
 
 public class FamListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String LOG_TAG = FamListFragment.class.getSimpleName();

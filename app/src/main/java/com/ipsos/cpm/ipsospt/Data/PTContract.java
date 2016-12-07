@@ -1,4 +1,4 @@
-package com.ipsos.savascilve.ipsospt.Data;
+package com.ipsos.cpm.ipsospt.Data;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;

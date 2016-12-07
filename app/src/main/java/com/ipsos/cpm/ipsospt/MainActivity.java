@@ -1,9 +1,8 @@
-package com.ipsos.savascilve.ipsospt;
+package com.ipsos.cpm.ipsospt;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,8 +16,8 @@ import android.widget.TextView;
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
 
-import static com.ipsos.savascilve.ipsospt.Helper.Constants.EXTRA_EMAIL;
-import static com.ipsos.savascilve.ipsospt.Helper.Constants.EXTRA_FLDNAME;
+import static com.ipsos.cpm.ipsospt.Helper.Constants.EXTRA_EMAIL;
+import static com.ipsos.cpm.ipsospt.Helper.Constants.EXTRA_FLDNAME;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FamListFragment.Callback {
