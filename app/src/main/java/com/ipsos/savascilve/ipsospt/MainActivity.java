@@ -14,6 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
+
 import static com.ipsos.savascilve.ipsospt.Helper.Constants.EXTRA_EMAIL;
 import static com.ipsos.savascilve.ipsospt.Helper.Constants.EXTRA_FLDNAME;
 
@@ -22,6 +25,27 @@ public class MainActivity extends AppCompatActivity
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        checkForCrashes();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unregisterManagers();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        unregisterManagers();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +67,8 @@ public class MainActivity extends AppCompatActivity
         fldNameTextView.setText(getIntent().getStringExtra(EXTRA_FLDNAME));
         TextView emailTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.fld_email_nav_header);
         emailTextView.setText(getIntent().getStringExtra(EXTRA_EMAIL));
+
+        checkForUpdates();
     }
 
     @Override
@@ -106,5 +132,18 @@ public class MainActivity extends AppCompatActivity
     public void onItemSelected(Uri contentUri) {
         Intent intent = new Intent(this, DetailActivity.class).setData(contentUri);
         startActivity(intent);
+    }
+
+    private void checkForCrashes() {
+        CrashManager.register(this);
+    }
+
+    private void checkForUpdates() {
+        // Remove this for store builds!
+        UpdateManager.register(this);
+    }
+
+    private void unregisterManagers() {
+        UpdateManager.unregister();
     }
 }
