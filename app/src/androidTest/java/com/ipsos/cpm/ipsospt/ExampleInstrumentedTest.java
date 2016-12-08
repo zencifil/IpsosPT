@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.ipsos.savascilve.ipsospt", appContext.getPackageName());
+        assertEquals("com.ipsos.cpm.ipsospt", appContext.getPackageName());
     }
 }

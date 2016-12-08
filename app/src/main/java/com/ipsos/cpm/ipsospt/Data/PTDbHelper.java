@@ -12,7 +12,7 @@ import android.util.Log;
 public class PTDbHelper extends SQLiteOpenHelper {
 
     private static final String LOG_TAG = PTDbHelper.class.getSimpleName();
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
     static final String DATABASE_NAME = "pt.db";
 
     public PTDbHelper(Context context) {

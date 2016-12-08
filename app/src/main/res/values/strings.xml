@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Ipsos PT</string>
     <string name="title_activity_main">Ipsos PT</string>
+    <string name="title_activity_detail">Hane Detayı</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -42,5 +43,6 @@
     <string name="form_hp">HP: </string>
     <string name="form_visit_day">Ziyaret Günü: </string>
     <string name="form_point">Puan: </string>
+    <string name="form_ind_list">Bireyler</string>
 
 </resources>
