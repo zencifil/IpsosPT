@@ -18,20 +18,21 @@ public class PTContract {
     public static final String PATH_FAMILY = "fam";
     public static final String PATH_FLD = "fld";
     public static final String PATH_IND = "ind";
+    public static final String PATH_PANEL = "panel";
 
-    public static long normalizeDate(long date) {
-        Time time = new Time();
-        time.set(date);
-        int julianDay = Time.getJulianDay(date, time.gmtoff);
-        return time.setJulianDay(julianDay);
-    }
+//    public static long normalizeDate(long date) {
+//        Time time = new Time();
+//        time.set(date);
+//        int julianDay = Time.getJulianDay(date, time.gmtoff);
+//        return time.setJulianDay(julianDay);
+//    }
 
     public static final class Fam implements BaseColumns {
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAMILY).build();
 
-        public static final String CONTENT_TYPE =
+        public static final String CONTENT_DIR_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FAMILY;
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FAMILY;
@@ -65,12 +66,23 @@ public class PTContract {
         }
 
         public static Uri buildFamilyUriWithFamCode(String famCode) {
-            //return CONTENT_URI.buildUpon().appendPath(famCode).build();
-            return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_FAM_CODE, famCode).build();
+            return CONTENT_URI.buildUpon().appendPath(famCode).build();
+            //return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_FAM_CODE, famCode).build();
         }
 
         public static Uri buildFamilyUriForDay(int day) {
-            return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_VISIT_DAY, Integer.toString(day)).build();
+            if (day == -1)
+                return CONTENT_URI.buildUpon().build();
+            else
+                return CONTENT_URI.buildUpon().appendPath(Integer.toString(day)).build();
+        }
+
+        public static String getFamCodeFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
+        public static int getVisitDayFromUri(Uri uri) {
+            return Integer.parseInt(uri.getPathSegments().get(1));
         }
     }
 
@@ -104,7 +116,7 @@ public class PTContract {
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_IND).build();
 
-        public static final String CONTENT_TYPE =
+        public static final String CONTENT_DIR_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_IND;
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_IND;
@@ -125,5 +137,31 @@ public class PTContract {
         public static Uri buildIndUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
+
+        public static Uri buildIndUriWithFamCode(String famCode) {
+            return CONTENT_URI.buildUpon().appendPath(famCode).build();
+        }
+
+        public static int getIndCodeFromUri(Uri uri) {
+            return Integer.parseInt(uri.getPathSegments().get(2));
+        }
+    }
+
+    public static final class Panel implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PANEL).build();
+
+        public static final String CONTENT_DIR_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANEL;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANEL;
+
+        public static final String TABLE_NAME = "panel";
+
+        public static final String COLUMN_FAM_CODE = "fam_code";
+        public static final String COLUMN_IND_CODE = "ind_code";
+        public static final String COLUMN_IND_NAME = "ind_name";
+        public static final String COLUMN_PANEL_NAME = "panel_name";
     }
 }

@@ -18,14 +18,14 @@
                 android:id="@+id/famDetailFamCode"
                 style="@style/FamDetailText" />
         </LinearLayout>
-        <LinearLayout style="@style/FamDetailHorizontalLayout">
-            <TextView
-                android:text="@string/form_city"
-                style="@style/FamDetailTextLabel"/>
-            <TextView
-                android:id="@+id/famDetailCity"
-                style="@style/FamDetailText"/>
-        </LinearLayout>
+        <!--<LinearLayout style="@style/FamDetailHorizontalLayout">-->
+            <!--<TextView-->
+                <!--android:text="@string/form_city"-->
+                <!--style="@style/FamDetailTextLabel"/>-->
+            <!--<TextView-->
+                <!--android:id="@+id/famDetailCity"-->
+                <!--style="@style/FamDetailText"/>-->
+        <!--</LinearLayout>-->
         <LinearLayout style="@style/FamDetailHorizontalLayout">
             <TextView
                 android:text="@string/form_town"
@@ -80,6 +80,7 @@
                 style="@style/FamDetailTextLabel"/>
             <TextView
                 android:id="@+id/famDetailPhone"
+                android:autoLink="phone"
                 style="@style/FamDetailText"/>
         </LinearLayout>
         <LinearLayout style="@style/FamDetailHorizontalLayout">
@@ -88,25 +89,26 @@
                 style="@style/FamDetailTextLabel"/>
             <TextView
                 android:id="@+id/famDetailPhone2"
+                android:autoLink="phone"
                 style="@style/FamDetailText"/>
         </LinearLayout>
-        <LinearLayout style="@style/FamDetailHorizontalLayout">
-            <TextView
-                android:text="@string/form_active"
-                style="@style/FamDetailTextLabel"/>
-            <CheckBox
-                android:id="@+id/famDetailActive"
-                android:enabled="false"
-                style="@style/FamDetailText"/>
-        </LinearLayout>
-        <LinearLayout style="@style/FamDetailHorizontalLayout">
-            <TextView
-                android:text="@string/form_visit_day"
-                style="@style/FamDetailTextLabel"/>
-            <TextView
-                android:id="@+id/famDetailVisitDay"
-                style="@style/FamDetailText"/>
-        </LinearLayout>
+        <!--<LinearLayout style="@style/FamDetailHorizontalLayout">-->
+            <!--<TextView-->
+                <!--android:text="@string/form_active"-->
+                <!--style="@style/FamDetailTextLabel"/>-->
+            <!--<CheckBox-->
+                <!--android:id="@+id/famDetailActive"-->
+                <!--android:enabled="false"-->
+                <!--style="@style/FamDetailText"/>-->
+        <!--</LinearLayout>-->
+        <!--<LinearLayout style="@style/FamDetailHorizontalLayout">-->
+            <!--<TextView-->
+                <!--android:text="@string/form_visit_day"-->
+                <!--style="@style/FamDetailTextLabel"/>-->
+            <!--<TextView-->
+                <!--android:id="@+id/famDetailVisitDay"-->
+                <!--style="@style/FamDetailText"/>-->
+        <!--</LinearLayout>-->
         <LinearLayout style="@style/FamDetailHorizontalLayout">
             <TextView
                 android:text="@string/form_point"
@@ -162,10 +164,33 @@
                 android:enabled="false"
                 style="@style/FamDetailText"/>
         </LinearLayout>
-        <Button
-            android:layout_width="wrap_content"
+        <ExpandableListView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/form_ind_list"
-            android:layout_gravity="center"/>
+            android:id="@+id/famDetailIndList"
+            android:childDivider="#FF0000"
+            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft">
+
+        </ExpandableListView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:gravity="center">
+
+            <!--<Button-->
+                <!--android:id="@+id/famDetailIndListButton"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/form_ind_list"-->
+                <!--android:layout_margin="5dp" />-->
+            <Button
+                android:id="@+id/famDetailPanelsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/form_panels"
+                android:layout_margin="5dp" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -43,24 +43,29 @@ public class PTProvider extends ContentProvider {
     private static final String _individualByFamAndIndCodeSelection = PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_FAM_CODE + " = ? AND " +
             PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_IND_CODE + " = ? ";
 
-    private Cursor getFamilyListByVisitDay(String[] projection, String[] selectionArgs, String sortOrder) {
+    private Cursor getFamilyListByVisitDay(Uri uri, String[] projection, String sortOrder) {
         String selection = _familyByVisitDaySelection;
-        return _famQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
+        int visitDay = PTContract.Fam.getVisitDayFromUri(uri);
+        return _famQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[]{Integer.toString(visitDay)}, null, null, sortOrder);
     }
 
-    private Cursor getFamilyByFamCode(String[] projection, String[] selectionArgs, String sortOrder) {
+    private Cursor getFamilyByFamCode(Uri uri, String[] projection, String sortOrder) {
         String selection = _familyByFamCodeSelection;
-        return _famQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
+        String famCode = PTContract.Fam.getFamCodeFromUri(uri);
+        return _famQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[]{famCode}, null, null, sortOrder);
     }
 
-    private Cursor getIndividualsByFamCode(String[] projection, String[] selectionArgs, String sortOrder) {
+    private Cursor getIndividualsByFamCode(Uri uri, String[] projection, String sortOrder) {
         String selection = _individualsByFamCodeSelection;
-        return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
+        String famCode = PTContract.Fam.getFamCodeFromUri(uri);
+        return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[]{famCode}, null, null, sortOrder);
     }
 
-    private Cursor getIndividualByFamAndIndCode(String[] projection, String[] selectionArgs, String sortOrder) {
+    private Cursor getIndividualByFamAndIndCode(Uri uri, String[] projection, String sortOrder) {
         String selection = _individualByFamAndIndCodeSelection;
-        return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
+        String famCode = PTContract.Fam.getFamCodeFromUri(uri);
+        int indCode = PTContract.Ind.getIndCodeFromUri(uri);
+        return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[]{famCode, Integer.toString(indCode)}, null, null, sortOrder);
     }
 
     static UriMatcher buildUriMatcher() {
@@ -87,13 +92,13 @@ public class PTProvider extends ContentProvider {
         final int match = _uriMatcher.match(uri);
         switch (match) {
             case FAMILY_BY_VISIT_DAY:
-                return PTContract.Fam.CONTENT_TYPE;
+                return PTContract.Fam.CONTENT_DIR_TYPE;
             case FAMILY:
-                return PTContract.Fam.CONTENT_TYPE;
+                return PTContract.Fam.CONTENT_DIR_TYPE;
             case FAMILY_BY_FAM_CODE:
                 return PTContract.Fam.CONTENT_ITEM_TYPE;
             case INDIVIDUAL_BY_FAMILY:
-                return PTContract.Ind.CONTENT_TYPE;
+                return PTContract.Ind.CONTENT_DIR_TYPE;
             case INDIVIDUAL_BY_FAM_AND_IND_CODE:
                 return PTContract.Ind.CONTENT_ITEM_TYPE;
             default:
@@ -109,16 +114,16 @@ public class PTProvider extends ContentProvider {
                 retCursor = _dbHelper.getReadableDatabase().query(PTContract.Fam.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             case FAMILY_BY_VISIT_DAY:
-                retCursor = getFamilyListByVisitDay(projection, selectionArgs, sortOrder);
+                retCursor = getFamilyListByVisitDay(uri, projection, sortOrder);
                 break;
             case FAMILY_BY_FAM_CODE:
-                retCursor = getFamilyByFamCode(projection, selectionArgs, sortOrder);
+                retCursor = getFamilyByFamCode(uri, projection, sortOrder);
                 break;
             case INDIVIDUAL_BY_FAMILY:
-                retCursor = getIndividualsByFamCode(projection, selectionArgs, sortOrder);
+                retCursor = getIndividualsByFamCode(uri, projection, sortOrder);
                 break;
             case INDIVIDUAL_BY_FAM_AND_IND_CODE:
-                retCursor = getIndividualByFamAndIndCode(projection, selectionArgs, sortOrder);
+                retCursor = getIndividualByFamAndIndCode(uri, projection, sortOrder);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);

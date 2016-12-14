@@ -1,5 +1,7 @@
 package com.ipsos.cpm.ipsospt;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -25,4 +27,23 @@ public class DetailActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
+//    @Override
+//    public void onItemSelected(Uri contentUri) {
+//        Intent intent;
+//        String path = contentUri.getPathSegments().get(0);
+//        switch (path) {
+//            case "ind":
+//                intent = new Intent(this, IndDetailActivity.class).setData(contentUri);
+//                break;
+//            case "panel":
+//                intent = new Intent(this, DetailActivity.class).setData(contentUri);
+//                break;
+//            default:
+//                intent = new Intent(this, DetailActivity.class).setData(contentUri);
+//                break;
+//        }
+//
+//        startActivity(intent);
+//    }
 }

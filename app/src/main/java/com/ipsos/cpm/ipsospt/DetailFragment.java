@@ -12,15 +12,12 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.ipsos.cpm.ipsospt.Data.PTContract;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
@@ -94,6 +91,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private CheckBox _hpCheckBox;
     private TextView _visitDayTextView;
     private TextView _pointTextView;
+    //private Button _indList;
+    private Button _panels;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -108,7 +107,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         _famCodeTextView = (TextView) rootView.findViewById(R.id.famDetailFamCode);
-        _cityTextView = (TextView) rootView.findViewById(R.id.famDetailCity);
+        //_cityTextView = (TextView) rootView.findViewById(R.id.famDetailCity);
         _townTextView = (TextView) rootView.findViewById(R.id.famDetailTown);
         _districtTextView = (TextView) rootView.findViewById(R.id.famDetailDistrict);
         _streetTextView = (TextView) rootView.findViewById(R.id.famDetailStreet);
@@ -117,15 +116,32 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         _doorNoTextView = (TextView) rootView.findViewById(R.id.famDetailDoorNo);
         _phoneTextView = (TextView) rootView.findViewById(R.id.famDetailPhone);
         _phone2TextView = (TextView) rootView.findViewById(R.id.famDetailPhone2);
-        _activeCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailActive);
+        //_activeCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailActive);
         _avpCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailAVP);
         _alkCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailAlkol);
         _spCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailSP);
         _ekAlkCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailEkAlkol);
         _babyCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailBaby);
         _hpCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailHP);
-        _visitDayTextView = (TextView) rootView.findViewById(R.id.famDetailVisitDay);
+        //_visitDayTextView = (TextView) rootView.findViewById(R.id.famDetailVisitDay);
         _pointTextView = (TextView) rootView.findViewById(R.id.famDetailPoint);
+        //_indList = (Button) rootView.findViewById(R.id.famDetailIndListButton);
+        _panels = (Button) rootView.findViewById(R.id.famDetailPanelsButton);
+
+//        _indList.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //((IndListFragment.Callback) getActivity()).onItemSelected(PTContract.Ind.buildIndUriWithFamCode(_famCodeTextView.getText().subSequence(0, 7).toString()));
+//            }
+//        });
+
+        _panels.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO panel listesini ac
+
+            }
+        });
 
         return rootView;
     }
@@ -150,8 +166,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             String famCodeName = data.getString(COL_FAM_CODE) + " - " + data.getString(COL_FAM_NAME);
             _famCodeTextView.setText(famCodeName);
 
-            String city = data.getString(COL_CITY);
-            _cityTextView.setText(city);
+            //String city = data.getString(COL_CITY);
+            //_cityTextView.setText(city);
 
             String town = data.getString(COL_TOWN);
             _townTextView.setText(town);
@@ -177,8 +193,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             String phone2 = data.getString(COL_PHONE2);
             _phone2TextView.setText(phone2);
 
-            boolean active = data.getInt(COL_ACTIVE) == 1;
-            _activeCheckBox.setChecked(active);
+            //boolean active = data.getInt(COL_ACTIVE) == 1;
+            //_activeCheckBox.setChecked(active);
 
             int point = data.getInt(COL_POINT);
             _pointTextView.setText(Integer.toString(point));

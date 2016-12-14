@@ -2,6 +2,8 @@
     <string name="app_name">Ipsos PT</string>
     <string name="title_activity_main">Ipsos PT</string>
     <string name="title_activity_detail">Hane Detayı</string>
+    <string name="title_activity_ind_detail">Birey Detayı</string>
+    <string name="title_activity_panel">Hane Panelleri</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -44,5 +46,17 @@
     <string name="form_visit_day">Ziyaret Günü: </string>
     <string name="form_point">Puan: </string>
     <string name="form_ind_list">Bireyler</string>
+    <string name="form_panels">Paneller</string>
+
+    <!-- Ind detail form -->
+    <string name="form_ind_name">Ad Soyad:</string>
+    <string name="form_ind_dob">Dogum Tarihi:</string>
+    <string name="form_ind_rel">Akrabalik:</string>
+    <string name="form_ind_edu">Egitim:</string>
+    <string name="form_ind_job">Meslek:</string>
+    <string name="form_ind_email">E-Posta:</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

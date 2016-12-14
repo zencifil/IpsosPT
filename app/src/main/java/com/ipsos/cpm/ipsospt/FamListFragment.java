@@ -17,6 +17,9 @@ import android.widget.ListView;
 
 import com.ipsos.cpm.ipsospt.Data.PTContract;
 
+import java.util.Calendar;
+import java.util.Locale;
+
 public class FamListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String LOG_TAG = FamListFragment.class.getSimpleName();
     private FamListAdapter _famListAdapter;
@@ -91,9 +94,7 @@ public class FamListFragment extends Fragment implements LoaderManager.LoaderCal
 //    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         _famListAdapter = new FamListAdapter(getActivity(), null, 0);
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
@@ -136,7 +137,38 @@ public class FamListFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String sortOrder = PTContract.Fam.COLUMN_FAM_NAME + " ASC";
-        Uri famListForTodayUri = PTContract.Fam.buildFamilyUriForDay(0);
+
+        Calendar c = Calendar.getInstance();
+        String day = c.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
+        int visitDay;
+        switch (day) {
+            case "Monday":
+                visitDay = 1;
+                break;
+            case "Tuesday":
+                visitDay = 2;
+                break;
+            case "Wednesday":
+                visitDay = 3;
+                break;
+            case "Thursday":
+                visitDay = 4;
+                break;
+            case "Friday":
+                visitDay = 5;
+                break;
+            case "Saturday":
+                visitDay = 6;
+                break;
+            case "Sunday":
+                visitDay = 7;
+                break;
+            default:
+                visitDay = -1;
+                break;
+        }
+
+        Uri famListForTodayUri = PTContract.Fam.buildFamilyUriForDay(visitDay);
         return new CursorLoader(getActivity(), famListForTodayUri, FAM_LIST_COLUMNS, null, null, sortOrder);
     }
 

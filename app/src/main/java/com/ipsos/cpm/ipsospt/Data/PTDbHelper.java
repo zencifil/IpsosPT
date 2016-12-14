@@ -22,7 +22,7 @@ public class PTDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_FAM_TABLE = "CREATE TABLE " + PTContract.Fam.TABLE_NAME + " (" +
-                PTContract.Fam._ID + " INTEGER PRIMARY KEY, " +
+                PTContract.Fam._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 PTContract.Fam.COLUMN_FAM_CODE + " TEXT UNIQUE NOT NULL, " +
                 PTContract.Fam.COLUMN_FAM_NAME + " TEXT NOT NULL, " +
                 PTContract.Fam.COLUMN_CITY + " TEXT NOT NULL, " +
@@ -46,7 +46,7 @@ public class PTDbHelper extends SQLiteOpenHelper {
                 PTContract.Fam.COLUMN_POINT + " INTEGER);";
 
         final String SQL_CREATE_FLD_TABLE = "CREATE TABLE " + PTContract.Fld.TABLE_NAME + " (" +
-                PTContract.Fld._ID + " INTEGER PRIMARY KEY, " +
+                PTContract.Fld._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 PTContract.Fld.COLUMN_FLD_CODE + " TEXT UNIQUE NOT NULL, " +
                 PTContract.Fld.COLUMN_FLD_NAME + " TEXT NOT NULL, " +
                 PTContract.Fld.COLUMN_CITY + " TEXT, " +
@@ -56,7 +56,7 @@ public class PTDbHelper extends SQLiteOpenHelper {
                 PTContract.Fld.COLUMN_EMAIL2 + " TEXT);";
 
         final String SQL_CREATE_IND_TABLE = "CREATE TABLE " + PTContract.Ind.TABLE_NAME + " (" +
-                PTContract.Ind._ID + " INTEGER PRIMARY KEY, " +
+                PTContract.Ind._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 PTContract.Ind.COLUMN_FAM_CODE + " TEXT NOT NULL, " +
                 PTContract.Ind.COLUMN_IND_CODE + " INTEGER NOT NULL, " +
                 PTContract.Ind.COLUMN_IND_NAME + " TEXT NOT NULL, " +
@@ -68,18 +68,71 @@ public class PTDbHelper extends SQLiteOpenHelper {
                 PTContract.Ind.COLUMN_ALK + " TEXT, " +
                 PTContract.Ind.COLUMN_FP + " TEXT);";
 
+        final String SQL_CREATE_PANEL_TABLE = "CREATE TABLE " + PTContract.Panel.TABLE_NAME + " (" +
+                PTContract.Panel._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                PTContract.Panel.COLUMN_FAM_CODE + " TEXT NOT NULL, " +
+                PTContract.Panel.COLUMN_IND_CODE + " INTEGER NOT NULL, " +
+                PTContract.Panel.COLUMN_IND_NAME + " TEXT NOT NULL" +
+                ");";
+
         sqLiteDatabase.execSQL(SQL_CREATE_FAM_TABLE);
         Log.d(LOG_TAG, "Family table created");
         sqLiteDatabase.execSQL(SQL_CREATE_IND_TABLE);
         Log.d(LOG_TAG, "Individual table created");
         sqLiteDatabase.execSQL(SQL_CREATE_FLD_TABLE);
         Log.d(LOG_TAG, "PT table created");
+        sqLiteDatabase.execSQL(SQL_CREATE_PANEL_TABLE);
+        Log.d(LOG_TAG, "Panel table created");
 
+        //TODO dont forget to close!!!
         //for test purpose
-        final String testFamInsert = "INSERT INTO " + PTContract.Fam.TABLE_NAME +
-                " VALUES (1, '01W1049', 'TEST HANESI', 'ISTANBUL', 'KADIKOY', '19 MAYIS MAH.', 'INONU', NULL, '50', NULL, " +
+        String testFamInsert = "INSERT INTO " + PTContract.Fam.TABLE_NAME +
+                " (" + PTContract.Fam.COLUMN_FAM_CODE + ", " + PTContract.Fam.COLUMN_FAM_NAME +
+                ", " + PTContract.Fam.COLUMN_CITY + ", " + PTContract.Fam.COLUMN_TOWN +
+                ", " + PTContract.Fam.COLUMN_DISTRICT + ", " + PTContract.Fam.COLUMN_STREET +
+                ", " + PTContract.Fam.COLUMN_ROAD + ", " + PTContract.Fam.COLUMN_HOUSE_NO +
+                ", " + PTContract.Fam.COLUMN_DOOR_NO + ", " + PTContract.Fam.COLUMN_PHONE +
+                ", " + PTContract.Fam.COLUMN_PHONE2 + ", " + PTContract.Fam.COLUMN_FLD_CODE +
+                ", " + PTContract.Fam.COLUMN_ACTIVE + ", " + PTContract.Fam.COLUMN_AVP +
+                ", " + PTContract.Fam.COLUMN_ALK + ", " + PTContract.Fam.COLUMN_SP +
+                ", " + PTContract.Fam.COLUMN_EK_ALK + ", " + PTContract.Fam.COLUMN_BABY +
+                ", " + PTContract.Fam.COLUMN_HP + ", " + PTContract.Fam.COLUMN_VISIT_DAY +
+                ", " + PTContract.Fam.COLUMN_POINT + ") " +
+                " VALUES ('01W1049', 'TEST HANESI', 'ISTANBUL', 'KADIKOY', '19 MAYIS MAH.', 'INONU', NULL, '50', NULL, " +
                 " '5647813', '7528394152', 'X0', 1, 1, 1, 1, 0, 0, 0, 2, 570);";
         sqLiteDatabase.execSQL(testFamInsert);
+        testFamInsert = "INSERT INTO " + PTContract.Fam.TABLE_NAME +
+                " (" + PTContract.Fam.COLUMN_FAM_CODE + ", " + PTContract.Fam.COLUMN_FAM_NAME +
+                ", " + PTContract.Fam.COLUMN_CITY + ", " + PTContract.Fam.COLUMN_TOWN +
+                ", " + PTContract.Fam.COLUMN_DISTRICT + ", " + PTContract.Fam.COLUMN_STREET +
+                ", " + PTContract.Fam.COLUMN_ROAD + ", " + PTContract.Fam.COLUMN_HOUSE_NO +
+                ", " + PTContract.Fam.COLUMN_DOOR_NO + ", " + PTContract.Fam.COLUMN_PHONE +
+                ", " + PTContract.Fam.COLUMN_PHONE2 + ", " + PTContract.Fam.COLUMN_FLD_CODE +
+                ", " + PTContract.Fam.COLUMN_ACTIVE + ", " + PTContract.Fam.COLUMN_AVP +
+                ", " + PTContract.Fam.COLUMN_ALK + ", " + PTContract.Fam.COLUMN_SP +
+                ", " + PTContract.Fam.COLUMN_EK_ALK + ", " + PTContract.Fam.COLUMN_BABY +
+                ", " + PTContract.Fam.COLUMN_HP + ", " + PTContract.Fam.COLUMN_VISIT_DAY +
+                ", " + PTContract.Fam.COLUMN_POINT + ") " +
+                " VALUES ('01W1050', 'TEST HANESI 2', 'ISTANBUL', 'ADALAR', 'HEYBELIADA MAH.', 'HEYBETLI', 'HEYBECI', '3', 2, " +
+                " '5359348602', '5555517654', 'X0', 1, 1, 1, 0, 1, 0, 0, 1, 1270);";
+        sqLiteDatabase.execSQL(testFamInsert);
+
+        String testIndInsert = "INSERT INTO " + PTContract.Ind.TABLE_NAME + " (" +
+                PTContract.Ind.COLUMN_FAM_CODE + ", " + PTContract.Ind.COLUMN_IND_CODE + ", " +
+                PTContract.Ind.COLUMN_IND_NAME + ", " + PTContract.Ind.COLUMN_PHONE + ", " +
+                PTContract.Ind.COLUMN_PHONE2 + ", " + PTContract.Ind.COLUMN_EMAIL + ", " +
+                PTContract.Ind.COLUMN_EMAIL2 + ", " + PTContract.Ind.COLUMN_SP + ", " +
+                PTContract.Ind.COLUMN_ALK + ", " + PTContract.Ind.COLUMN_FP + ") " +
+                "VALUES ('01W1050', 1, 'TEST BIREY', '5555517654', NULL, 'SAVAS.CILVE@IPSOS.COM', NULL, 1, 1, 1);";
+        sqLiteDatabase.execSQL(testIndInsert);
+        testIndInsert = "INSERT INTO " + PTContract.Ind.TABLE_NAME + " (" +
+                PTContract.Ind.COLUMN_FAM_CODE + ", " + PTContract.Ind.COLUMN_IND_CODE + ", " +
+                PTContract.Ind.COLUMN_IND_NAME + ", " + PTContract.Ind.COLUMN_PHONE + ", " +
+                PTContract.Ind.COLUMN_PHONE2 + ", " + PTContract.Ind.COLUMN_EMAIL + ", " +
+                PTContract.Ind.COLUMN_EMAIL2 + ", " + PTContract.Ind.COLUMN_SP + ", " +
+                PTContract.Ind.COLUMN_ALK + ", " + PTContract.Ind.COLUMN_FP + ") " +
+                "VALUES ('01W1050', 2, 'GIDAK BIREY', '5555517654', NULL, NULL, NULL, 1, 0, 0);";
+        sqLiteDatabase.execSQL(testIndInsert);
     }
 
     @Override
