@@ -1,62 +1,76 @@
 <resources>
-    <string name="app_name">Ipsos PT</string>
-    <string name="title_activity_main">Ipsos PT</string>
-    <string name="title_activity_detail">Hane Detayı</string>
-    <string name="title_activity_ind_detail">Birey Detayı</string>
-    <string name="title_activity_panel">Hane Panelleri</string>
+    <string name="app_name" translatable="false">Ipsos PT</string>
+    <string name="title_activity_main" translatable="false">Ipsos PT</string>
+    <string name="title_activity_detail" translatable="false">Hane Detayı</string>
+    <string name="title_activity_ind_detail" translatable="false">Birey Detayı</string>
+    <string name="title_activity_panel" translatable="false">Hane Panelleri</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Şifre</string>
-    <string name="action_sign_in">Giriş</string>
-    <string name="error_invalid_email">Şirket maili kullanmanız gerekmektedir.</string>
-    <string name="error_invalid_password">Şifre en az 6 haneli olmalıdır.</string>
-    <string name="error_incorrect_password">Kullanıcı adı veya şifre hatalı.</string>
-    <string name="error_field_required">Zorunlu alan!</string>
+    <string name="prompt_email" translatable="false">Email</string>
+    <string name="prompt_password" translatable="false">Şifre</string>
+    <string name="action_sign_in" translatable="false">Giriş</string>
+    <string name="error_invalid_email" translatable="false">Şirket maili kullanmanız gerekmektedir.</string>
+    <string name="error_invalid_password" translatable="false">Şifre en az 6 haneli olmalıdır.</string>
+    <string name="error_incorrect_password" translatable="false">Kullanıcı adı veya şifre hatalı.</string>
+    <string name="error_field_required" translatable="false">Zorunlu alan!</string>
 
     <!-- Navigation menu -->
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="navigation_show_all">Bütün Haneler</string>
-    <string name="navigation_show_today">Bugünkü Ziyaretler</string>
-    <string name="navigation_communication">İletişim</string>
-    <string name="navigation_send_mail">E-Posta Gonder</string>
-    <string name="navigation_call">Ara</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="navigation_show_all" translatable="false">Bütün Haneler</string>
+    <string name="navigation_show_today" translatable="false">Bugünkü Ziyaretler</string>
+    <string name="navigation_communication" translatable="false">İletişim</string>
+    <string name="navigation_send_mail" translatable="false">E-Posta Gonder</string>
+    <string name="navigation_call" translatable="false">Ara</string>
 
-    <string name="action_settings">Ayarlar</string>
+    <string name="action_logout" translatable="false">Çıkış</string>
+
+    <string name="day" translatable="false">Gün</string>
+    <string-array name="days_array">
+        <item>Hepsi</item>
+        <item>Pazartesi</item>
+        <item>Salı</item>
+        <item>Çarşamba</item>
+        <item>Perşembe</item>
+        <item>Cuma</item>
+        <item>Cumartesi</item>
+        <item>Pazar</item>
+    </string-array>
 
     <!-- Detail form -->
-    <string name="form_fam_code">Hane: </string>
-    <string name="form_city">Şehir: </string>
-    <string name="form_town">İlçe: </string>
-    <string name="form_district">Mahalle: </string>
-    <string name="form_street">Cadde: </string>
-    <string name="form_road">Sokak: </string>
-    <string name="form_house_no">Bina No: </string>
-    <string name="form_door_no">Kapı No: </string>
-    <string name="form_phone">Telefon: </string>
-    <string name="form_phone2">Telefon 2: </string>
-    <string name="form_active">Aktif: </string>
-    <string name="form_avp">AVP: </string>
-    <string name="form_alk">Alkol: </string>
-    <string name="form_sp">SP: </string>
-    <string name="form_ek_alkol">Ek Alkol: </string>
-    <string name="form_baby">Bebek: </string>
-    <string name="form_hp">HP: </string>
-    <string name="form_visit_day">Ziyaret Günü: </string>
-    <string name="form_point">Puan: </string>
-    <string name="form_ind_list">Bireyler</string>
-    <string name="form_panels">Paneller</string>
+    <string name="form_fam_code" translatable="false">Hane: </string>
+    <string name="form_city" translatable="false">Şehir: </string>
+    <string name="form_town" translatable="false">İlçe: </string>
+    <string name="form_district" translatable="false">Mahalle: </string>
+    <string name="form_street" translatable="false">Cadde: </string>
+    <string name="form_road" translatable="false">Sokak: </string>
+    <string name="form_house_no" translatable="false">Bina No: </string>
+    <string name="form_door_no" translatable="false">Kapı No: </string>
+    <string name="form_phone" translatable="false">Telefon: </string>
+    <string name="form_phone2" translatable="false">Telefon 2: </string>
+    <string name="form_active" translatable="false">Aktif: </string>
+    <string name="form_avp" translatable="false">AVP: </string>
+    <string name="form_alk" translatable="false">Alkol: </string>
+    <string name="form_sp" translatable="false">SP: </string>
+    <string name="form_ek_alkol" translatable="false">Ek Alkol: </string>
+    <string name="form_baby" translatable="false">Bebek: </string>
+    <string name="form_hp" translatable="false">HP: </string>
+    <string name="form_visit_day" translatable="false">Ziyaret Günü: </string>
+    <string name="form_point" translatable="false">Puan: </string>
+    <string name="form_ind_list" translatable="false">Bireyler</string>
+    <string name="form_panels" translatable="false">Paneller</string>
 
     <!-- Ind detail form -->
-    <string name="form_ind_name">Ad Soyad:</string>
-    <string name="form_ind_dob">Dogum Tarihi:</string>
-    <string name="form_ind_rel">Akrabalik:</string>
-    <string name="form_ind_edu">Egitim:</string>
-    <string name="form_ind_job">Meslek:</string>
-    <string name="form_ind_email">E-Posta:</string>
+    <string name="form_ind_name" translatable="false">Ad Soyad:</string>
+    <string name="form_ind_dob" translatable="false">Dogum Tarihi:</string>
+    <string name="form_ind_rel" translatable="false">Akrabalik:</string>
+    <string name="form_ind_edu" translatable="false">Egitim:</string>
+    <string name="form_ind_job" translatable="false">Meslek:</string>
+    <string name="form_ind_email" translatable="false">E-Posta:</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+
+
 
 </resources>

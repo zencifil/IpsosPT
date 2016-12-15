@@ -99,7 +99,7 @@ public class PTDbHelper extends SQLiteOpenHelper {
                 ", " + PTContract.Fam.COLUMN_HP + ", " + PTContract.Fam.COLUMN_VISIT_DAY +
                 ", " + PTContract.Fam.COLUMN_POINT + ") " +
                 " VALUES ('01W1049', 'TEST HANESI', 'ISTANBUL', 'KADIKOY', '19 MAYIS MAH.', 'INONU', NULL, '50', NULL, " +
-                " '5647813', '7528394152', 'X0', 1, 1, 1, 1, 0, 0, 0, 2, 570);";
+                " '5647813', '7528394152', 'X0', 1, 1, 1, 1, 0, 0, 0, 4, 570);";
         sqLiteDatabase.execSQL(testFamInsert);
         testFamInsert = "INSERT INTO " + PTContract.Fam.TABLE_NAME +
                 " (" + PTContract.Fam.COLUMN_FAM_CODE + ", " + PTContract.Fam.COLUMN_FAM_NAME +
@@ -114,7 +114,22 @@ public class PTDbHelper extends SQLiteOpenHelper {
                 ", " + PTContract.Fam.COLUMN_HP + ", " + PTContract.Fam.COLUMN_VISIT_DAY +
                 ", " + PTContract.Fam.COLUMN_POINT + ") " +
                 " VALUES ('01W1050', 'TEST HANESI 2', 'ISTANBUL', 'ADALAR', 'HEYBELIADA MAH.', 'HEYBETLI', 'HEYBECI', '3', 2, " +
-                " '5359348602', '5555517654', 'X0', 1, 1, 1, 0, 1, 0, 0, 1, 1270);";
+                " '5359348602', '5555517654', 'X0', 1, 1, 1, 0, 1, 0, 0, 4, 1270);";
+        sqLiteDatabase.execSQL(testFamInsert);
+        testFamInsert = "INSERT INTO " + PTContract.Fam.TABLE_NAME +
+                " (" + PTContract.Fam.COLUMN_FAM_CODE + ", " + PTContract.Fam.COLUMN_FAM_NAME +
+                ", " + PTContract.Fam.COLUMN_CITY + ", " + PTContract.Fam.COLUMN_TOWN +
+                ", " + PTContract.Fam.COLUMN_DISTRICT + ", " + PTContract.Fam.COLUMN_STREET +
+                ", " + PTContract.Fam.COLUMN_ROAD + ", " + PTContract.Fam.COLUMN_HOUSE_NO +
+                ", " + PTContract.Fam.COLUMN_DOOR_NO + ", " + PTContract.Fam.COLUMN_PHONE +
+                ", " + PTContract.Fam.COLUMN_PHONE2 + ", " + PTContract.Fam.COLUMN_FLD_CODE +
+                ", " + PTContract.Fam.COLUMN_ACTIVE + ", " + PTContract.Fam.COLUMN_AVP +
+                ", " + PTContract.Fam.COLUMN_ALK + ", " + PTContract.Fam.COLUMN_SP +
+                ", " + PTContract.Fam.COLUMN_EK_ALK + ", " + PTContract.Fam.COLUMN_BABY +
+                ", " + PTContract.Fam.COLUMN_HP + ", " + PTContract.Fam.COLUMN_VISIT_DAY +
+                ", " + PTContract.Fam.COLUMN_POINT + ") " +
+                " VALUES ('01W1051', 'TEST HANESI 3', 'ISTANBUL', 'ADALAR', 'HEYBELIADA MAH.', 'HEYBETLI', 'HEYBECI', '3', 2, " +
+                " '5359348602', '5555517654', 'X0', 1, 1, 1, 0, 1, 0, 0, 3, 5265);";
         sqLiteDatabase.execSQL(testFamInsert);
 
         String testIndInsert = "INSERT INTO " + PTContract.Ind.TABLE_NAME + " (" +
@@ -143,6 +158,8 @@ public class PTDbHelper extends SQLiteOpenHelper {
         Log.d(LOG_TAG, "Individual table dropped");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PTContract.Ind.TABLE_NAME);
         Log.d(LOG_TAG, "PT table dropped");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PTContract.Panel.TABLE_NAME);
+        Log.d(LOG_TAG, "Panel table dropped");
         onCreate(sqLiteDatabase);
     }
 }

@@ -71,7 +71,7 @@ public class PTContract {
         }
 
         public static Uri buildFamilyUriForDay(int day) {
-            if (day == -1)
+            if (day == 0)
                 return CONTENT_URI.buildUpon().build();
             else
                 return CONTENT_URI.buildUpon().appendPath(Integer.toString(day)).build();

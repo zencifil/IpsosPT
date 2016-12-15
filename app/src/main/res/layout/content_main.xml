@@ -10,6 +10,15 @@
     tools:context="com.ipsos.cpm.ipsospt.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/days_spinner"
+        android:entries="@array/days_array"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="15dp" />
+
     <fragment
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

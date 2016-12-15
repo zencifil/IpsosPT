@@ -11,21 +11,13 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.ipsos.cpm.ipsospt.Helper.Constants;
-
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
 
 /**
  * A login screen that offers login via email/password.
@@ -43,10 +35,15 @@ public class LoginActivity extends AppCompatActivity {
     private View _progressView;
     private View _loginFormView;
 
+    SessionManager _sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        _sessionManager = new SessionManager(getApplicationContext());
+
         // Set up the login form.
         _emailTextBox = (EditText) findViewById(R.id.email);
         _passwordTextBox = (EditText) findViewById(R.id.password);
@@ -183,9 +180,7 @@ public class LoginActivity extends AppCompatActivity {
                 Thread.sleep(2000);
 
                 //TODO don't forget to open
-                //login();
-                _email = "savas.cilve@ipsos.com";
-                _fldName = "SAVAS CILVE";
+                login();
             }
             catch (InterruptedException e) {
                 return false;
@@ -216,45 +211,50 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         private boolean login() {
-            HttpsURLConnection urlConnection;
-            BufferedReader reader;
-            String resultJsonStr = null;
+            //HttpsURLConnection urlConnection;
+            //BufferedReader reader;
+            //String resultJsonStr = null;
 
             try {
-                URL url = new URL(Constants.BASE_URL);
-                urlConnection = (HttpsURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                // Read the input stream into a String
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-                if (inputStream == null) {
-                    // Nothing to do.
-                    return false;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                    // But it does make debugging a *lot* easier if you print out the completed
-                    // buffer for debugging.
-                    buffer.append(line + "\n");
-                }
-
-                if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
-                    return false;
-                }
-                resultJsonStr = buffer.toString();
-
-                JSONObject resultJson = new JSONObject(resultJsonStr);
+//                URL url = new URL(Constants.BASE_URL);
+//                urlConnection = (HttpsURLConnection) url.openConnection();
+//                urlConnection.setRequestMethod("GET");
+//                urlConnection.connect();
+//
+//                // Read the input stream into a String
+//                InputStream inputStream = urlConnection.getInputStream();
+//                StringBuffer buffer = new StringBuffer();
+//                if (inputStream == null) {
+//                    // Nothing to do.
+//                    return false;
+//                }
+//                reader = new BufferedReader(new InputStreamReader(inputStream));
+//
+//                String line;
+//                while ((line = reader.readLine()) != null) {
+//                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+//                    // But it does make debugging a *lot* easier if you print out the completed
+//                    // buffer for debugging.
+//                    buffer.append(line + "\n");
+//                }
+//
+//                if (buffer.length() == 0) {
+//                    // Stream was empty.  No point in parsing.
+//                    return false;
+//                }
+//                resultJsonStr = buffer.toString();
+//
+//                JSONObject resultJson = new JSONObject(resultJsonStr);
                 //TODO result icinde adi felan gelmeli...
+
+                _email = "savas.cilve@ipsos.com";
+                _fldName = "SAVAS CILVE";
+                _sessionManager.createLoginSession(getString(R.string.app_name), _email);
 
                 return true;
             }
             catch (Exception e) {
+                Log.e("Login", e.getMessage());
                 return false;
             }
         }
