@@ -5,6 +5,9 @@
     <string name="title_activity_ind_detail" translatable="false">Birey Detayı</string>
     <string name="title_activity_panel" translatable="false">Hane Panelleri</string>
 
+    <string name="internet_no_connection" translatable="false">İnternete bağlı değilsiniz! Uygulama çevrim dışı çalışacak.</string>
+    <string name="internet_connection" translatable="false">İnternet bağlantısı aktif.</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email" translatable="false">Email</string>
     <string name="prompt_password" translatable="false">Şifre</string>

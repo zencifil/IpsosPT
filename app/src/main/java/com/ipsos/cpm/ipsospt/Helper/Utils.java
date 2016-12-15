@@ -1,5 +1,8 @@
 package com.ipsos.cpm.ipsospt.Helper;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -41,5 +44,15 @@ public class Utils {
         }
 
         return today;
+    }
+
+    public static boolean isConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getActiveNetworkInfo() != null &&
+                connectivityManager.getActiveNetworkInfo().isAvailable() &&
+                connectivityManager.getActiveNetworkInfo().isConnected())
+            return true;
+        else
+            return false;
     }
 }

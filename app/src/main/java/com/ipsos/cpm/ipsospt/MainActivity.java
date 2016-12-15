@@ -2,13 +2,16 @@ package com.ipsos.cpm.ipsospt;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ipsos.cpm.ipsospt.Data.PTContract;
+import com.ipsos.cpm.ipsospt.Helper.ConnectivityReceiver;
 import com.ipsos.cpm.ipsospt.Helper.Utils;
 
 import net.hockeyapp.android.CrashManager;
@@ -32,7 +36,8 @@ import static com.ipsos.cpm.ipsospt.Helper.Constants.EXTRA_EMAIL;
 import static com.ipsos.cpm.ipsospt.Helper.Constants.EXTRA_FLDNAME;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FamListFragment.Callback {
+        implements NavigationView.OnNavigationItemSelectedListener,
+            FamListFragment.Callback, ConnectivityReceiver.ConnectivityReceiverListener{
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
@@ -67,7 +72,14 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         _sessionManager = new SessionManager(getApplicationContext());
+//        if (!_sessionManager.isLoggedIn()) {
+//            if (!Utils.isConnected(getApplicationContext())) {
+//                Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_LONG);
+//
+//            }
+//        }
         _sessionManager.checkLogin();
+        checkConnection();
         HashMap<String, String> user = _sessionManager.getUserDetails();
         String name = user.get(SessionManager.KEY_NAME);
         String email = user.get(SessionManager.KEY_EMAIL);
@@ -87,6 +99,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //TODO get data from session not with intent
         TextView fldNameTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.fld_name_nav_header);
         fldNameTextView.setText(getIntent().getStringExtra(EXTRA_FLDNAME));
         TextView emailTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.fld_email_nav_header);
@@ -158,11 +171,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_today_list) {
-            //loadFamListForDay(Utils.getTodayIndex());
             _daysSpinner.setSelection(Utils.getTodayIndex());
         }
         else if (id == R.id.nav_all_list) {
-            //loadFamListForDay(0);
             _daysSpinner.setSelection(0);
         }
         else if (id == R.id.nav_call) {
@@ -197,11 +208,40 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void checkForUpdates() {
-        // Remove this for store builds!
+        //TODO Remove this for store builds!
         UpdateManager.register(this);
     }
 
     private void unregisterManagers() {
         UpdateManager.unregister();
+    }
+
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        showSnack(isConnected);
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message;
+        int color;
+        if (isConnected) {
+            message = getString(R.string.internet_connection);
+            color = Color.WHITE;
+        } else {
+            message = getString(R.string.internet_no_connection);
+            color = Color.RED;
+        }
+
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.content_main_fragment), message, Snackbar.LENGTH_LONG);
+
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(color);
+        snackbar.show();
     }
 }
