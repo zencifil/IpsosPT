@@ -67,7 +67,6 @@ public class PTContract {
 
         public static Uri buildFamilyUriWithFamCode(String famCode) {
             return CONTENT_URI.buildUpon().appendPath(famCode).build();
-            //return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_FAM_CODE, famCode).build();
         }
 
         public static Uri buildFamilyUriForDay(int day) {
@@ -140,6 +139,11 @@ public class PTContract {
 
         public static Uri buildIndUriWithFamCode(String famCode) {
             return CONTENT_URI.buildUpon().appendPath(famCode).build();
+        }
+
+        public static Uri buildIndUriFromFamUri(Uri famUri) {
+            String famCode = Fam.getFamCodeFromUri(famUri);
+            return buildIndUriWithFamCode(famCode);
         }
 
         public static int getIndCodeFromUri(Uri uri) {

@@ -249,7 +249,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 _email = "savas.cilve@ipsos.com";
                 _fldName = "SAVAS CILVE";
-                _sessionManager.createLoginSession(getString(R.string.app_name), _email);
+                _sessionManager.createLoginSession(_fldName, _email);
 
                 return true;
             }
@@ -262,8 +262,8 @@ public class LoginActivity extends AppCompatActivity {
         private void navigateToHomeActivity() {
             Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
             homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            homeIntent.putExtra(Constants.EXTRA_FLDNAME, _fldName);
-            homeIntent.putExtra(Constants.EXTRA_EMAIL, _email);
+            //homeIntent.putExtra(Constants.EXTRA_FLDNAME, _fldName);
+            //homeIntent.putExtra(Constants.EXTRA_EMAIL, _email);
             startActivity(homeIntent);
         }
     }

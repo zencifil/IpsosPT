@@ -1,20 +1,20 @@
 package com.ipsos.cpm.ipsospt;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class DetailActivity extends AppCompatActivity {
+public class FamDetailActivity extends AppCompatActivity implements FamDetailFragment.OnFamDetailButtonClickedListener {
 
     private SessionManager _sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_fam_detail);
 
         _sessionManager = new SessionManager(getApplicationContext());
         _sessionManager.checkLogin();
@@ -24,9 +24,9 @@ public class DetailActivity extends AppCompatActivity {
             // using a fragment transaction.
 
             Bundle arguments = new Bundle();
-            arguments.putParcelable(DetailFragment.DETAIL_URI, getIntent().getData());
+            arguments.putParcelable(FamDetailFragment.DETAIL_URI, getIntent().getData());
 
-            DetailFragment fragment = new DetailFragment();
+            FamDetailFragment fragment = new FamDetailFragment();
             fragment.setArguments(arguments);
 
             getSupportFragmentManager().beginTransaction()
@@ -65,7 +65,31 @@ public class DetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
+    @Override
+    public void onFamDetailButtonClicked(String buttonTag, String famCode) {
+        IndListFragment indListFragment = (IndListFragment) getSupportFragmentManager().findFragmentById(R.id.ind_list_fragment);
+        if (indListFragment == null) {
+            IndListFragment newIndListFragment = new IndListFragment();
+            Bundle args = new Bundle();
+            args.putString("famCode", famCode);
+            newIndListFragment.setArguments(args);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.activity_detail, newIndListFragment);
+            transaction.addToBackStack(null);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+        else {
+            indListFragment.setFamCode(famCode);
+            indListFragment.restartCursorLoader();
+        }
+    }
+
+    //    @Override
 //    public void onItemSelected(Uri contentUri) {
 //        Intent intent;
 //        String path = contentUri.getPathSegments().get(0);
@@ -74,10 +98,10 @@ public class DetailActivity extends AppCompatActivity {
 //                intent = new Intent(this, IndDetailActivity.class).setData(contentUri);
 //                break;
 //            case "panel":
-//                intent = new Intent(this, DetailActivity.class).setData(contentUri);
+//                intent = new Intent(this, FamDetailActivity.class).setData(contentUri);
 //                break;
 //            default:
-//                intent = new Intent(this, DetailActivity.class).setData(contentUri);
+//                intent = new Intent(this, FamDetailActivity.class).setData(contentUri);
 //                break;
 //        }
 //

@@ -55,16 +55,18 @@ public class PTProvider extends ContentProvider {
         return _famQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[]{famCode}, null, null, sortOrder);
     }
 
-    private Cursor getIndividualsByFamCode(Uri uri, String[] projection, String sortOrder) {
+    private Cursor getIndividualsByFamCode(Uri uri, String sortOrder) {
         String selection = _individualsByFamCodeSelection;
         String famCode = PTContract.Fam.getFamCodeFromUri(uri);
+        String[] projection = new String[] { PTContract.Ind._ID, PTContract.Ind.COLUMN_FAM_CODE, PTContract.Ind.COLUMN_IND_CODE, PTContract.Ind.COLUMN_IND_NAME};
         return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[]{famCode}, null, null, sortOrder);
     }
 
-    private Cursor getIndividualByFamAndIndCode(Uri uri, String[] projection, String sortOrder) {
+    private Cursor getIndividualByFamAndIndCode(Uri uri, String sortOrder) {
         String selection = _individualByFamAndIndCodeSelection;
         String famCode = PTContract.Fam.getFamCodeFromUri(uri);
         int indCode = PTContract.Ind.getIndCodeFromUri(uri);
+        String[] projection = new String[] { PTContract.Ind._ID, PTContract.Ind.COLUMN_FAM_CODE, PTContract.Ind.COLUMN_IND_CODE, PTContract.Ind.COLUMN_IND_NAME};
         return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[]{famCode, Integer.toString(indCode)}, null, null, sortOrder);
     }
 
@@ -120,10 +122,10 @@ public class PTProvider extends ContentProvider {
                 retCursor = getFamilyByFamCode(uri, projection, sortOrder);
                 break;
             case INDIVIDUAL_BY_FAMILY:
-                retCursor = getIndividualsByFamCode(uri, projection, sortOrder);
+                retCursor = getIndividualsByFamCode(uri, sortOrder);
                 break;
             case INDIVIDUAL_BY_FAM_AND_IND_CODE:
-                retCursor = getIndividualByFamAndIndCode(uri, projection, sortOrder);
+                retCursor = getIndividualByFamAndIndCode(uri, sortOrder);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);

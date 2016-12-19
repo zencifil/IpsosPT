@@ -146,7 +146,7 @@ public class PTDbHelper extends SQLiteOpenHelper {
                 PTContract.Ind.COLUMN_PHONE2 + ", " + PTContract.Ind.COLUMN_EMAIL + ", " +
                 PTContract.Ind.COLUMN_EMAIL2 + ", " + PTContract.Ind.COLUMN_SP + ", " +
                 PTContract.Ind.COLUMN_ALK + ", " + PTContract.Ind.COLUMN_FP + ") " +
-                "VALUES ('01W1050', 2, 'GIDAK BIREY', '5555517654', NULL, NULL, NULL, 1, 0, 0);";
+                "VALUES ('01W1050', 2, 'TEST IKIEY', '5555517654', NULL, NULL, NULL, 1, 0, 0);";
         sqLiteDatabase.execSQL(testIndInsert);
     }
 

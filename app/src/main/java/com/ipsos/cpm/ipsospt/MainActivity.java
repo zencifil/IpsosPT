@@ -1,6 +1,5 @@
 package com.ipsos.cpm.ipsospt;
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -11,7 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,19 +19,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ipsos.cpm.ipsospt.Data.PTContract;
 import com.ipsos.cpm.ipsospt.Helper.ConnectivityReceiver;
 import com.ipsos.cpm.ipsospt.Helper.Utils;
 
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
 
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Locale;
-
-import static com.ipsos.cpm.ipsospt.Helper.Constants.EXTRA_EMAIL;
-import static com.ipsos.cpm.ipsospt.Helper.Constants.EXTRA_FLDNAME;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -99,11 +91,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //TODO get data from session not with intent
         TextView fldNameTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.fld_name_nav_header);
-        fldNameTextView.setText(getIntent().getStringExtra(EXTRA_FLDNAME));
+        fldNameTextView.setText(_sessionManager.getUserDetails().get(SessionManager.KEY_NAME));
         TextView emailTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.fld_email_nav_header);
-        emailTextView.setText(getIntent().getStringExtra(EXTRA_EMAIL));
+        emailTextView.setText(_sessionManager.getUserDetails().get(SessionManager.KEY_EMAIL));
 
         _daysSpinner = (Spinner) findViewById(R.id.days_spinner);
         int today = Utils.getTodayIndex();
@@ -189,8 +180,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        IpsosPTApplication.getInstance().setConnectivityListener(this);
+    }
+
+    @Override
     public void onItemSelected(Uri contentUri) {
-        Intent intent = new Intent(this, DetailActivity.class).setData(contentUri);
+        Intent intent = new Intent(this, FamDetailActivity.class).setData(contentUri);
         startActivity(intent);
     }
 

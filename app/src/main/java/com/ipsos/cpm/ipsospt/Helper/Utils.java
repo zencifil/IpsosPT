@@ -2,6 +2,7 @@ package com.ipsos.cpm.ipsospt.Helper;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -55,4 +56,5 @@ public class Utils {
         else
             return false;
     }
+
 }
