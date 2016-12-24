@@ -68,12 +68,16 @@ public class PTDbHelper extends SQLiteOpenHelper {
                 PTContract.Ind.COLUMN_ALK + " TEXT, " +
                 PTContract.Ind.COLUMN_FP + " TEXT);";
 
-        final String SQL_CREATE_PANEL_TABLE = "CREATE TABLE " + PTContract.Panel.TABLE_NAME + " (" +
-                PTContract.Panel._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                PTContract.Panel.COLUMN_FAM_CODE + " TEXT NOT NULL, " +
-                PTContract.Panel.COLUMN_IND_CODE + " INTEGER NOT NULL, " +
-                PTContract.Panel.COLUMN_IND_NAME + " TEXT NOT NULL" +
-                ");";
+        final String SQL_CREATE_PANELFAM_TABLE = "CREATE TABLE " + PTContract.PanelFam.TABLE_NAME + " (" +
+                PTContract.PanelFam._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                PTContract.PanelFam.COLUMN_FLD_CODE + " TEXT NOT NULL, " +
+                PTContract.PanelFam.COLUMN_PANEL_TYPE + " TEXT NOT NULL, " +
+                PTContract.PanelFam.COLUMN_FAM_CODE + " TEXT NOT NULL, " +
+                PTContract.PanelFam.COLUMN_WEEK1 + " INTEGER NOT NULL, " +
+                PTContract.PanelFam.COLUMN_WEEK2 + " INTEGER NOT NULL, " +
+                PTContract.PanelFam.COLUMN_WEEK3 + " INTEGER NOT NULL, " +
+                PTContract.PanelFam.COLUMN_WEEK4 + " INTEGER NOT NULL, " +
+                PTContract.PanelFam.COLUMN_WEEK5 + " INTEGER NOT NULL);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_FAM_TABLE);
         Log.d(LOG_TAG, "Family table created");
@@ -81,8 +85,8 @@ public class PTDbHelper extends SQLiteOpenHelper {
         Log.d(LOG_TAG, "Individual table created");
         sqLiteDatabase.execSQL(SQL_CREATE_FLD_TABLE);
         Log.d(LOG_TAG, "PT table created");
-        sqLiteDatabase.execSQL(SQL_CREATE_PANEL_TABLE);
-        Log.d(LOG_TAG, "Panel table created");
+        sqLiteDatabase.execSQL(SQL_CREATE_PANELFAM_TABLE);
+        Log.d(LOG_TAG, "Panel Fam table created");
 
         //TODO dont forget to close!!!
         //for test purpose
@@ -148,6 +152,14 @@ public class PTDbHelper extends SQLiteOpenHelper {
                 PTContract.Ind.COLUMN_ALK + ", " + PTContract.Ind.COLUMN_FP + ") " +
                 "VALUES ('01W1050', 2, 'TEST IKIEY', '5555517654', NULL, NULL, NULL, 1, 0, 0);";
         sqLiteDatabase.execSQL(testIndInsert);
+
+        String testPanelFamInsert = "INSERT INTO " + PTContract.PanelFam.TABLE_NAME + " (" +
+                PTContract.PanelFam.COLUMN_FLD_CODE + ", " + PTContract.PanelFam.COLUMN_PANEL_TYPE + ", " +
+                PTContract.PanelFam.COLUMN_FAM_CODE + ", " + PTContract.PanelFam.COLUMN_WEEK1 + ", " +
+                PTContract.PanelFam.COLUMN_WEEK2 + ", " + PTContract.PanelFam.COLUMN_WEEK3 + ", " +
+                PTContract.PanelFam.COLUMN_WEEK4 + ", " + PTContract.PanelFam.COLUMN_WEEK5 + ") " +
+                "VALUES ('G5', 'AVP', '01W1050', 2, 2, 1, 0, 0);";
+        sqLiteDatabase.execSQL(testPanelFamInsert);
     }
 
     @Override
@@ -158,7 +170,7 @@ public class PTDbHelper extends SQLiteOpenHelper {
         Log.d(LOG_TAG, "Individual table dropped");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PTContract.Ind.TABLE_NAME);
         Log.d(LOG_TAG, "PT table dropped");
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PTContract.Panel.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PTContract.PanelFam.TABLE_NAME);
         Log.d(LOG_TAG, "Panel table dropped");
         onCreate(sqLiteDatabase);
     }

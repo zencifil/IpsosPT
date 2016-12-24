@@ -18,7 +18,7 @@ public class PTContract {
     public static final String PATH_FAMILY = "fam";
     public static final String PATH_FLD = "fld";
     public static final String PATH_IND = "ind";
-    public static final String PATH_PANEL = "panel";
+    public static final String PATH_PANELFAM = "panelfam";
 
 //    public static long normalizeDate(long date) {
 //        Time time = new Time();
@@ -151,21 +151,37 @@ public class PTContract {
         }
     }
 
-    public static final class Panel implements BaseColumns {
+    public static final class PanelFam implements BaseColumns {
 
         public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PANEL).build();
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PANELFAM).build();
 
         public static final String CONTENT_DIR_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANEL;
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANELFAM;
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANEL;
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANELFAM;
 
-        public static final String TABLE_NAME = "panel";
+        public static final String TABLE_NAME = "panelfam";
 
+        public static final String COLUMN_FLD_CODE = "fld_code";
+        public static final String COLUMN_PANEL_TYPE = "panel_type";
         public static final String COLUMN_FAM_CODE = "fam_code";
-        public static final String COLUMN_IND_CODE = "ind_code";
-        public static final String COLUMN_IND_NAME = "ind_name";
-        public static final String COLUMN_PANEL_NAME = "panel_name";
+        public static final String COLUMN_WEEK1 = "week1";
+        public static final String COLUMN_WEEK2 = "week2";
+        public static final String COLUMN_WEEK3 = "week3";
+        public static final String COLUMN_WEEK4 = "week4";
+        public static final String COLUMN_WEEK5 = "week5";
+
+        public static Uri buildPanelFamUriWithPanelTypeAndFamCode(String panelType, String famCode) {
+            return CONTENT_URI.buildUpon().appendPath(panelType).appendPath(famCode).build();
+        }
+
+        public static String getPanelTypeFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
+        public static String getFamCodeFromUri(Uri uri) {
+            return uri.getPathSegments().get(2);
+        }
     }
 }

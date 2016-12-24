@@ -23,25 +23,33 @@ public class PTProvider extends ContentProvider {
     static final int INDIVIDUAL = 200;
     static final int INDIVIDUAL_BY_FAMILY = 201;
     static final int INDIVIDUAL_BY_FAM_AND_IND_CODE = 202;
+    static final int PANELFAM_BY_PANELTYPE_AND_FAMCODE = 301;
 
     private static final SQLiteQueryBuilder _famQueryBuilder;
     private static final SQLiteQueryBuilder _indQueryBuilder;
     private static final SQLiteQueryBuilder _fldQueryBuilder;
+    private static final SQLiteQueryBuilder _panelFamQueryBuilder;
     static {
         _famQueryBuilder = new SQLiteQueryBuilder();
         _indQueryBuilder = new SQLiteQueryBuilder();
         _fldQueryBuilder = new SQLiteQueryBuilder();
+        _panelFamQueryBuilder = new SQLiteQueryBuilder();
 
         _famQueryBuilder.setTables(PTContract.Fam.TABLE_NAME);
         _indQueryBuilder.setTables(PTContract.Ind.TABLE_NAME);
         _fldQueryBuilder.setTables(PTContract.Fld.TABLE_NAME);
+        _panelFamQueryBuilder.setTables(PTContract.PanelFam.TABLE_NAME);
     }
 
     private static final String _familyByVisitDaySelection = PTContract.Fam.TABLE_NAME + "." + PTContract.Fam.COLUMN_VISIT_DAY + " = ? ";
     private static final String _familyByFamCodeSelection = PTContract.Fam.TABLE_NAME + "." + PTContract.Fam.COLUMN_FAM_CODE + " = ? ";
+
     private static final String _individualsByFamCodeSelection = PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_FAM_CODE + " = ? ";
     private static final String _individualByFamAndIndCodeSelection = PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_FAM_CODE + " = ? AND " +
             PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_IND_CODE + " = ? ";
+
+    private static final String _panelFamByPanelTypeAndFamCodeSelection = PTContract.PanelFam.TABLE_NAME + "." + PTContract.PanelFam.COLUMN_PANEL_TYPE + " = ? AND " +
+            PTContract.PanelFam.TABLE_NAME + "." + PTContract.PanelFam.COLUMN_FAM_CODE + " = ? ";
 
     private Cursor getFamilyListByVisitDay(Uri uri, String[] projection, String sortOrder) {
         String selection = _familyByVisitDaySelection;
@@ -70,6 +78,15 @@ public class PTProvider extends ContentProvider {
         return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[]{famCode, Integer.toString(indCode)}, null, null, sortOrder);
     }
 
+    private Cursor getPanelFamByPanelTypeAndFamCode(Uri uri, String sortOrder) {
+        String selection = _panelFamByPanelTypeAndFamCodeSelection;
+        String panelType = PTContract.PanelFam.getPanelTypeFromUri(uri);
+        String famCode = PTContract.PanelFam.getFamCodeFromUri(uri);
+        String[] projection = new String[] { PTContract.PanelFam._ID, PTContract.PanelFam.COLUMN_PANEL_TYPE, PTContract.PanelFam.COLUMN_WEEK1, PTContract.PanelFam.COLUMN_WEEK2,
+                PTContract.PanelFam.COLUMN_WEEK3, PTContract.PanelFam.COLUMN_WEEK4, PTContract.PanelFam.COLUMN_WEEK5};
+        return _panelFamQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[] {panelType, famCode}, null, null, sortOrder);
+    }
+
     static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = PTContract.CONTENT_AUTHORITY;
@@ -79,6 +96,7 @@ public class PTProvider extends ContentProvider {
         matcher.addURI(authority, PTContract.PATH_FAMILY + "/*", FAMILY_BY_FAM_CODE);
         matcher.addURI(authority, PTContract.PATH_IND + "/*", INDIVIDUAL_BY_FAMILY);
         matcher.addURI(authority, PTContract.PATH_IND + "/*/#", INDIVIDUAL_BY_FAM_AND_IND_CODE);
+        matcher.addURI(authority, PTContract.PATH_PANELFAM + "/*/*", PANELFAM_BY_PANELTYPE_AND_FAMCODE);
 
         return matcher;
     }
@@ -103,6 +121,8 @@ public class PTProvider extends ContentProvider {
                 return PTContract.Ind.CONTENT_DIR_TYPE;
             case INDIVIDUAL_BY_FAM_AND_IND_CODE:
                 return PTContract.Ind.CONTENT_ITEM_TYPE;
+            case PANELFAM_BY_PANELTYPE_AND_FAMCODE:
+                return PTContract.PanelFam.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -126,6 +146,9 @@ public class PTProvider extends ContentProvider {
                 break;
             case INDIVIDUAL_BY_FAM_AND_IND_CODE:
                 retCursor = getIndividualByFamAndIndCode(uri, sortOrder);
+                break;
+            case PANELFAM_BY_PANELTYPE_AND_FAMCODE:
+                retCursor = getPanelFamByPanelTypeAndFamCode(uri, sortOrder);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);

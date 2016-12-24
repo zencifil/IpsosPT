@@ -189,9 +189,13 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
                 _doorNoTextView.setText(doorNo);
 
                 String phone = data.getString(COL_PHONE);
+                if (!phone.startsWith("0") && phone.length() == 10)
+                    phone = "0" + phone;
                 _phoneTextView.setText(phone);
 
                 String phone2 = data.getString(COL_PHONE2);
+                if (!phone2.startsWith("0") && phone2.length() == 10)
+                    phone2 = "0" + phone2;
                 _phone2TextView.setText(phone2);
 
                 int point = data.getInt(COL_POINT);
