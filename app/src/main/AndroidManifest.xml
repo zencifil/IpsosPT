@@ -33,9 +33,8 @@
             android:label="@string/title_activity_detail"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".FamPanelActivity"
-            android:label="@string/title_activity_panel"
-            android:screenOrientation="landscape" />
+            android:name=".PanelActivity"
+            android:label="@string/title_activity_panel" />
 
         <provider
             android:name=".Data.PTProvider"

@@ -18,14 +18,8 @@ public class PTContract {
     public static final String PATH_FAMILY = "fam";
     public static final String PATH_FLD = "fld";
     public static final String PATH_IND = "ind";
-    public static final String PATH_PANELFAM = "panelfam";
-
-//    public static long normalizeDate(long date) {
-//        Time time = new Time();
-//        time.set(date);
-//        int julianDay = Time.getJulianDay(date, time.gmtoff);
-//        return time.setJulianDay(julianDay);
-//    }
+    public static final String PATH_PANEL = "panel";
+    public static final String PATH_PANELS_WEEKS = "panels_weeks";
 
     public static final class Fam implements BaseColumns {
 
@@ -56,7 +50,7 @@ public class PTContract {
         public static final String COLUMN_SP = "sp";
         public static final String COLUMN_ALK = "alk";
         public static final String COLUMN_BABY = "baby";
-        public static final String COLUMN_HP = "hp";
+        //public static final String COLUMN_HP = "hp";
         public static final String COLUMN_EK_ALK = "ek_alk";
         public static final String COLUMN_ACTIVE = "active";
         public static final String COLUMN_POINT = "point";
@@ -151,28 +145,38 @@ public class PTContract {
         }
     }
 
-    public static final class PanelFam implements BaseColumns {
+    public static final class Panel implements BaseColumns {
 
         public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PANELFAM).build();
-
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PANEL).build();
         public static final String CONTENT_DIR_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANELFAM;
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANEL;
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANELFAM;
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANEL;
 
-        public static final String TABLE_NAME = "panelfam";
+        public static final String TABLE_NAME = "panel";
 
         public static final String COLUMN_FLD_CODE = "fld_code";
         public static final String COLUMN_PANEL_TYPE = "panel_type";
         public static final String COLUMN_FAM_CODE = "fam_code";
-        public static final String COLUMN_WEEK1 = "week1";
-        public static final String COLUMN_WEEK2 = "week2";
-        public static final String COLUMN_WEEK3 = "week3";
-        public static final String COLUMN_WEEK4 = "week4";
-        public static final String COLUMN_WEEK5 = "week5";
+        public static final String COLUMN_IND_CODE = "ind_code";
+        public static final String COLUMN_IND_NAME = "ind_name";
+        public static final String COLUMN_WEEK1_CODE = "week1_code";
+        public static final String COLUMN_WEEK1_CHECK = "week1_check";
+        public static final String COLUMN_WEEK2_CODE = "week2_code";
+        public static final String COLUMN_WEEK2_CHECK = "week2_check";
+        public static final String COLUMN_WEEK3_CODE = "week3_code";
+        public static final String COLUMN_WEEK3_CHECK = "week3_check";
+        public static final String COLUMN_WEEK4_CODE = "week4_code";
+        public static final String COLUMN_WEEK4_CHECK = "week4_check";
+        public static final String COLUMN_WEEK5_CODE = "week5_code";
+        public static final String COLUMN_WEEK5_CHECK = "week5_check";
 
-        public static Uri buildPanelFamUriWithPanelTypeAndFamCode(String panelType, String famCode) {
+        public static Uri buildPanelUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildPanelUriWithPanelTypeAndFamCode(String panelType, String famCode) {
             return CONTENT_URI.buildUpon().appendPath(panelType).appendPath(famCode).build();
         }
 
@@ -184,4 +188,39 @@ public class PTContract {
             return uri.getPathSegments().get(2);
         }
     }
+
+    public static final class PanelsWeeks implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PANELS_WEEKS).build();
+        public static final String CONTENT_DIR_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANELS_WEEKS;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANELS_WEEKS;
+
+        public static final String TABLE_NAME = "panels_weeks";
+
+        public static final String COLUMN_PANEL_TYPE = "panel_type";
+        public static final String COLUMN_WEEK_CODE = "week_code";
+        public static final String COLUMN_START_DATE = "start_date";
+        public static final String COLUMN_END_DATE = "end_date";
+        public static final String COLUMN_ACTIVE = "active";
+
+        public static Uri buildPanelsWeeksUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildPanelsUri() {
+            return CONTENT_URI.buildUpon().build();
+        }
+
+        public static Uri buildWeeksUri(String panelType) {
+            return CONTENT_URI.buildUpon().appendPath(panelType).build();
+        }
+
+        public static String getPanelTypeFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+    }
+
 }

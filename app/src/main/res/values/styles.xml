@@ -40,4 +40,20 @@
         <item name="android:layout_marginLeft">10dp</item>
     </style>
 
+    <style name="AvpGridColumn">
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">fill</item>
+    </style>
+
+    <style name="AvpGridCheckBoxes">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+
+    </style>
 </resources>

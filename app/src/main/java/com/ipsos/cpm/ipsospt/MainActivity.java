@@ -29,7 +29,8 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-            FamListFragment.Callback, ConnectivityReceiver.ConnectivityReceiverListener{
+            FamListFragment.Callback,
+            ConnectivityReceiver.ConnectivityReceiverListener {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
@@ -70,8 +71,9 @@ public class MainActivity extends AppCompatActivity
 //
 //            }
 //        }
-        _sessionManager.checkLogin();
+
         checkConnection();
+        _sessionManager.checkLogin();
         HashMap<String, String> user = _sessionManager.getUserDetails();
         String name = user.get(SessionManager.KEY_NAME);
         String email = user.get(SessionManager.KEY_EMAIL);

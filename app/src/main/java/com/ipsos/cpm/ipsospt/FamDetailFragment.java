@@ -1,6 +1,5 @@
 package com.ipsos.cpm.ipsospt;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -46,7 +44,6 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
             PTContract.Fam.COLUMN_SP,
             PTContract.Fam.COLUMN_EK_ALK,
             PTContract.Fam.COLUMN_BABY,
-            PTContract.Fam.COLUMN_HP,
             PTContract.Fam.COLUMN_POINT
     };
 
@@ -66,8 +63,7 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
     public static final int COL_SP = 13;
     public static final int COL_EK_ALK = 14;
     public static final int COL_BABY = 15;
-    public static final int COL_HP = 16;
-    public static final int COL_POINT = 17;
+    public static final int COL_POINT = 16;
 
     public static final String IND_LIST_BUTTON = "ind_list";
     public static final String FAM_PANELS_BUTTON = "panel_list";
@@ -139,8 +135,8 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
         _panels.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO panel listesini ac
-
+                Intent intent = new Intent(getActivity(), PanelActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -215,9 +211,6 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
 
                 boolean baby = data.getInt(COL_BABY) == 1;
                 _babyCheckBox.setChecked(baby);
-
-                boolean hp = data.getInt(COL_HP) == 1;
-                _hpCheckBox.setChecked(hp);
             }
         }
     }

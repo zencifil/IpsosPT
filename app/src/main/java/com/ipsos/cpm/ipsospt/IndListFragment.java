@@ -30,7 +30,7 @@ public class IndListFragment extends Fragment implements LoaderManager.LoaderCal
     private static final int IND_LIST_LOADER = 0;
     //specify the columns we need
     private static final String[] IND_LIST_COLUMNS = {
-            PTContract.Ind.TABLE_NAME + "." + PTContract.Fam._ID,
+            PTContract.Ind.TABLE_NAME + "." + PTContract.Ind._ID,
             PTContract.Ind.COLUMN_FAM_CODE,
             PTContract.Ind.COLUMN_IND_CODE,
             PTContract.Ind.COLUMN_IND_NAME

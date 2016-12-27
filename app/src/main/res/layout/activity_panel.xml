@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_fam_panel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ipsos.cpm.ipsospt.PanelActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/panel_types_spinner"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="15dp">
+        </Spinner>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/panel_weeks_spinner"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="15dp">
+        </Spinner>
+    </LinearLayout>
+
+
+    <fragment
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/panel_fragment"
+        android:name="com.ipsos.cpm.ipsospt.PanelFragment"
+        tools:layout="@layout/list_item_panel" />
+
+</LinearLayout>

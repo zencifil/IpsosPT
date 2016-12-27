@@ -23,22 +23,28 @@ public class PTProvider extends ContentProvider {
     static final int INDIVIDUAL = 200;
     static final int INDIVIDUAL_BY_FAMILY = 201;
     static final int INDIVIDUAL_BY_FAM_AND_IND_CODE = 202;
-    static final int PANELFAM_BY_PANELTYPE_AND_FAMCODE = 301;
+    static final int PANEL = 300;
+    static final int PANEL_BY_PANELTYPE_AND_FAMCODE = 301;
+    static final int PANELS_WEEKS = 400;
+    static final int PANELS_WEEKS_BY_PANEL_TYPE = 401;
 
     private static final SQLiteQueryBuilder _famQueryBuilder;
     private static final SQLiteQueryBuilder _indQueryBuilder;
     private static final SQLiteQueryBuilder _fldQueryBuilder;
-    private static final SQLiteQueryBuilder _panelFamQueryBuilder;
+    private static final SQLiteQueryBuilder _panelQueryBuilder;
+    private static final SQLiteQueryBuilder _panelsWeeksQueryBuilder;
     static {
         _famQueryBuilder = new SQLiteQueryBuilder();
         _indQueryBuilder = new SQLiteQueryBuilder();
         _fldQueryBuilder = new SQLiteQueryBuilder();
-        _panelFamQueryBuilder = new SQLiteQueryBuilder();
+        _panelQueryBuilder = new SQLiteQueryBuilder();
+        _panelsWeeksQueryBuilder = new SQLiteQueryBuilder();
 
         _famQueryBuilder.setTables(PTContract.Fam.TABLE_NAME);
         _indQueryBuilder.setTables(PTContract.Ind.TABLE_NAME);
         _fldQueryBuilder.setTables(PTContract.Fld.TABLE_NAME);
-        _panelFamQueryBuilder.setTables(PTContract.PanelFam.TABLE_NAME);
+        _panelQueryBuilder.setTables(PTContract.Panel.TABLE_NAME);
+        _panelsWeeksQueryBuilder.setTables(PTContract.PanelsWeeks.TABLE_NAME);
     }
 
     private static final String _familyByVisitDaySelection = PTContract.Fam.TABLE_NAME + "." + PTContract.Fam.COLUMN_VISIT_DAY + " = ? ";
@@ -48,8 +54,11 @@ public class PTProvider extends ContentProvider {
     private static final String _individualByFamAndIndCodeSelection = PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_FAM_CODE + " = ? AND " +
             PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_IND_CODE + " = ? ";
 
-    private static final String _panelFamByPanelTypeAndFamCodeSelection = PTContract.PanelFam.TABLE_NAME + "." + PTContract.PanelFam.COLUMN_PANEL_TYPE + " = ? AND " +
-            PTContract.PanelFam.TABLE_NAME + "." + PTContract.PanelFam.COLUMN_FAM_CODE + " = ? ";
+    private static final String _panelByPanelTypeAndFamCodeSelection = PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_PANEL_TYPE + " = ? AND " +
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_FAM_CODE + " = ? ";
+
+    private static final String _panelsWeeksPanelsSelection = PTContract.PanelsWeeks.TABLE_NAME + "." + PTContract.PanelsWeeks.COLUMN_ACTIVE + " = 1 ";
+    private static final String _panelsWeeksWeeksSelection = PTContract.PanelsWeeks.TABLE_NAME + "." + PTContract.PanelsWeeks.COLUMN_PANEL_TYPE + " = ? ";
 
     private Cursor getFamilyListByVisitDay(Uri uri, String[] projection, String sortOrder) {
         String selection = _familyByVisitDaySelection;
@@ -78,13 +87,26 @@ public class PTProvider extends ContentProvider {
         return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[]{famCode, Integer.toString(indCode)}, null, null, sortOrder);
     }
 
-    private Cursor getPanelFamByPanelTypeAndFamCode(Uri uri, String sortOrder) {
-        String selection = _panelFamByPanelTypeAndFamCodeSelection;
-        String panelType = PTContract.PanelFam.getPanelTypeFromUri(uri);
-        String famCode = PTContract.PanelFam.getFamCodeFromUri(uri);
-        String[] projection = new String[] { PTContract.PanelFam._ID, PTContract.PanelFam.COLUMN_PANEL_TYPE, PTContract.PanelFam.COLUMN_WEEK1, PTContract.PanelFam.COLUMN_WEEK2,
-                PTContract.PanelFam.COLUMN_WEEK3, PTContract.PanelFam.COLUMN_WEEK4, PTContract.PanelFam.COLUMN_WEEK5};
-        return _panelFamQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[] {panelType, famCode}, null, null, sortOrder);
+    private Cursor getPanelByPanelTypeAndFamCode(Uri uri, String sortOrder) {
+        String selection = _panelByPanelTypeAndFamCodeSelection;
+        String panelType = PTContract.Panel.getPanelTypeFromUri(uri);
+        String famCode = PTContract.Panel.getFamCodeFromUri(uri);
+        String[] projection = new String[] { PTContract.Panel._ID, PTContract.Panel.COLUMN_PANEL_TYPE, PTContract.Panel.COLUMN_WEEK1_CODE, PTContract.Panel.COLUMN_WEEK2_CODE,
+                PTContract.Panel.COLUMN_WEEK3_CODE, PTContract.Panel.COLUMN_WEEK4_CODE, PTContract.Panel.COLUMN_WEEK5_CODE};
+        return _panelQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[] {panelType, famCode}, null, null, sortOrder);
+    }
+
+    private Cursor getPanelTypes(Uri uri, String sortOrder) {
+        String selection = _panelsWeeksPanelsSelection;
+        String[] projection = new String[] { PTContract.PanelsWeeks._ID, PTContract.PanelsWeeks.COLUMN_PANEL_TYPE };
+        return _panelsWeeksQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, null, PTContract.PanelsWeeks.COLUMN_PANEL_TYPE, null, sortOrder);
+    }
+
+    private Cursor getPanelWeeks(Uri uri, String sortOrder) {
+        String selection = _panelsWeeksWeeksSelection;
+        String[] projection = new String[] { PTContract.PanelsWeeks._ID, PTContract.PanelsWeeks.COLUMN_WEEK_CODE };
+        String panelType = PTContract.PanelsWeeks.getPanelTypeFromUri(uri);
+        return _panelsWeeksQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[] {panelType}, null, null, sortOrder);
     }
 
     static UriMatcher buildUriMatcher() {
@@ -96,7 +118,9 @@ public class PTProvider extends ContentProvider {
         matcher.addURI(authority, PTContract.PATH_FAMILY + "/*", FAMILY_BY_FAM_CODE);
         matcher.addURI(authority, PTContract.PATH_IND + "/*", INDIVIDUAL_BY_FAMILY);
         matcher.addURI(authority, PTContract.PATH_IND + "/*/#", INDIVIDUAL_BY_FAM_AND_IND_CODE);
-        matcher.addURI(authority, PTContract.PATH_PANELFAM + "/*/*", PANELFAM_BY_PANELTYPE_AND_FAMCODE);
+        matcher.addURI(authority, PTContract.PATH_PANEL + "/*/*", PANEL_BY_PANELTYPE_AND_FAMCODE);
+        matcher.addURI(authority, PTContract.PATH_PANELS_WEEKS, PANELS_WEEKS);
+        matcher.addURI(authority, PTContract.PATH_PANELS_WEEKS + "/*", PANELS_WEEKS_BY_PANEL_TYPE);
 
         return matcher;
     }
@@ -121,8 +145,12 @@ public class PTProvider extends ContentProvider {
                 return PTContract.Ind.CONTENT_DIR_TYPE;
             case INDIVIDUAL_BY_FAM_AND_IND_CODE:
                 return PTContract.Ind.CONTENT_ITEM_TYPE;
-            case PANELFAM_BY_PANELTYPE_AND_FAMCODE:
-                return PTContract.PanelFam.CONTENT_ITEM_TYPE;
+            case PANEL_BY_PANELTYPE_AND_FAMCODE:
+                return PTContract.Panel.CONTENT_DIR_TYPE;
+            case PANELS_WEEKS:
+                return PTContract.PanelsWeeks.CONTENT_DIR_TYPE;
+            case PANELS_WEEKS_BY_PANEL_TYPE:
+                return PTContract.PanelsWeeks.CONTENT_DIR_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -147,8 +175,14 @@ public class PTProvider extends ContentProvider {
             case INDIVIDUAL_BY_FAM_AND_IND_CODE:
                 retCursor = getIndividualByFamAndIndCode(uri, sortOrder);
                 break;
-            case PANELFAM_BY_PANELTYPE_AND_FAMCODE:
-                retCursor = getPanelFamByPanelTypeAndFamCode(uri, sortOrder);
+            case PANEL_BY_PANELTYPE_AND_FAMCODE:
+                retCursor = getPanelByPanelTypeAndFamCode(uri, sortOrder);
+                break;
+            case PANELS_WEEKS:
+                retCursor = getPanelTypes(uri, sortOrder);
+                break;
+            case PANELS_WEEKS_BY_PANEL_TYPE:
+                retCursor = getPanelWeeks(uri, sortOrder);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
@@ -180,6 +214,20 @@ public class PTProvider extends ContentProvider {
                 else
                     throw new SQLException("Failed to insert row into " + uri);
                 break;
+            case PANEL:
+                id = db.insert(PTContract.Panel.TABLE_NAME, null, contentValues);
+                if (id > 0)
+                    returnUri = PTContract.Panel.buildPanelUri(id);
+                else
+                    throw new SQLException("Failed to insert row into " + uri);
+                break;
+            case PANELS_WEEKS:
+                id = db.insert(PTContract.PanelsWeeks.TABLE_NAME, null, contentValues);
+                if (id > 0)
+                    returnUri = PTContract.PanelsWeeks.buildPanelsWeeksUri(id);
+                else
+                    throw new SQLException("Failed to insert row into " + uri);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -207,8 +255,7 @@ public class PTProvider extends ContentProvider {
                 finally {
                     db.endTransaction();
                 }
-                getContext().getContentResolver().notifyChange(uri, null);
-                return returnCount;
+                break;
             case INDIVIDUAL:
                 db.beginTransaction();
                 try {
@@ -221,11 +268,38 @@ public class PTProvider extends ContentProvider {
                 finally {
                     db.endTransaction();
                 }
-                getContext().getContentResolver().notifyChange(uri, null);
-                return returnCount;
+                break;
+            case PANEL:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        id = db.insert(PTContract.Panel.TABLE_NAME, null, value);
+                        if (id != -1)
+                            returnCount++;
+                    }
+                }
+                finally {
+                    db.endTransaction();
+                }
+                break;
+            case PANELS_WEEKS:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        id = db.insert(PTContract.PanelsWeeks.TABLE_NAME, null, value);
+                        if (id != -1)
+                            returnCount++;
+                    }
+                }
+                finally {
+                    db.endTransaction();
+                }
+                break;
             default:
-                return super.bulkInsert(uri, values);
+                returnCount = super.bulkInsert(uri, values);
         }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return returnCount;
     }
 
     @Override
