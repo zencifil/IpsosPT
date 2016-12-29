@@ -24,6 +24,7 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
     private static final String LOG_TAG = FamDetailFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
     private Uri _famUri;
+    private String _famCode;
 
     private static final int DETAIL_LOADER = 0;
 
@@ -120,7 +121,6 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
         _spCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailSP);
         _ekAlkCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailEkAlkol);
         _babyCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailBaby);
-        _hpCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailHP);
         _pointTextView = (TextView) rootView.findViewById(R.id.famDetailPoint);
         _indList = (Button) rootView.findViewById(R.id.famDetailIndListButton);
         _panels = (Button) rootView.findViewById(R.id.famDetailPanelsButton);
@@ -136,6 +136,7 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), PanelActivity.class);
+                intent.putExtra("FAM_CODE", _famCode);
                 startActivity(intent);
             }
         });
@@ -163,7 +164,8 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == DETAIL_LOADER) {
             if (data != null && data.moveToFirst()) {
-                String famCodeName = data.getString(COL_FAM_CODE) + " - " + data.getString(COL_FAM_NAME);
+                _famCode = data.getString(COL_FAM_CODE);
+                String famCodeName = _famCode + " - " + data.getString(COL_FAM_NAME);
                 _famCodeTextView.setText(famCodeName);
 
                 String town = data.getString(COL_TOWN);

@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFF9F9F9">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fam_code_list_item_panel"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="15dp"
+        android:maxLines="1"
+        android:ellipsize="middle" />
 
-</LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/panel_status_list_item_panel"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:maxLines="1"
+        android:ellipsize="middle"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/fam_code_list_item_panel" />
+</RelativeLayout>

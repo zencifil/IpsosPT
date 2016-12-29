@@ -76,23 +76,16 @@ public class PTDbHelper extends SQLiteOpenHelper {
                 PTContract.Panel.COLUMN_PANEL_TYPE + " TEXT NOT NULL, " +
                 PTContract.Panel.COLUMN_FAM_CODE + " TEXT NOT NULL, " +
                 PTContract.Panel.COLUMN_IND_CODE + " INTEGER NOT NULL, " +
-                PTContract.Panel.COLUMN_IND_NAME + " TEXT NOT NULL, " +
-                PTContract.Panel.COLUMN_WEEK1_CODE + " INTEGER NOT NULL, " +
-                PTContract.Panel.COLUMN_WEEK1_CHECK + " INTEGER NOT NULL, " +
-                PTContract.Panel.COLUMN_WEEK2_CODE + " INTEGER NOT NULL, " +
-                PTContract.Panel.COLUMN_WEEK2_CHECK + " INTEGER NOT NULL, " +
-                PTContract.Panel.COLUMN_WEEK3_CODE + " INTEGER NOT NULL, " +
-                PTContract.Panel.COLUMN_WEEK3_CHECK + " INTEGER NOT NULL, " +
-                PTContract.Panel.COLUMN_WEEK4_CODE + " INTEGER NOT NULL, " +
-                PTContract.Panel.COLUMN_WEEK4_CHECK + " INTEGER NOT NULL, " +
-                PTContract.Panel.COLUMN_WEEK5_CODE + " INTEGER NOT NULL, " +
-                PTContract.Panel.COLUMN_WEEK5_CHECK + " INTEGER NOT NULL " +
+                PTContract.Panel.COLUMN_IND_NAME + " TEXT, " +
+                PTContract.Panel.COLUMN_WEEK_CODE + " INTEGER NOT NULL, " +
+                PTContract.Panel.COLUMN_WEEK_CHECK + " INTEGER NOT NULL " +
                 ");";
 
         final String SQL_CREATE_PANELS_WEEKS_TABLE = "CREATE TABLE " + PTContract.PanelsWeeks.TABLE_NAME + " (" +
                 PTContract.PanelsWeeks._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 PTContract.PanelsWeeks.COLUMN_PANEL_TYPE + " TEXT NOT NULL, " +
                 PTContract.PanelsWeeks.COLUMN_WEEK_CODE + " INTEGER NOT NULL, " +
+                PTContract.PanelsWeeks.COLUMN_WEEK_DESC + " TEXT NOT NULL, " +
                 PTContract.PanelsWeeks.COLUMN_START_DATE + " TEXT NOT NULL, " +
                 PTContract.PanelsWeeks.COLUMN_END_DATE + " TEXT NOT NULL, " +
                 PTContract.PanelsWeeks.COLUMN_ACTIVE + " INTEGER NOT NULL " +
@@ -174,20 +167,56 @@ public class PTDbHelper extends SQLiteOpenHelper {
         String testPanelInsert = "INSERT INTO " + PTContract.PanelsWeeks.TABLE_NAME + " (" +
                 PTContract.PanelsWeeks.COLUMN_PANEL_TYPE + ", " + PTContract.PanelsWeeks.COLUMN_WEEK_CODE + ", " +
                 PTContract.PanelsWeeks.COLUMN_START_DATE + ", " + PTContract.PanelsWeeks.COLUMN_END_DATE + ", " +
-                PTContract.PanelsWeeks.COLUMN_ACTIVE + ") " +
-                "VALUES ('AVP', 7264, '05.12.2016', '11.12.2016', 1);";
+                PTContract.PanelsWeeks.COLUMN_ACTIVE + ", " + PTContract.PanelsWeeks.COLUMN_WEEK_DESC + ") " +
+                "VALUES ('AVP', 7264, '05.12.2016', '11.12.2016', 1, '5 - 11 Haftasi');";
         sqLiteDatabase.execSQL(testPanelInsert);
         testPanelInsert = "INSERT INTO " + PTContract.PanelsWeeks.TABLE_NAME + " (" +
                 PTContract.PanelsWeeks.COLUMN_PANEL_TYPE + ", " + PTContract.PanelsWeeks.COLUMN_WEEK_CODE + ", " +
                 PTContract.PanelsWeeks.COLUMN_START_DATE + ", " + PTContract.PanelsWeeks.COLUMN_END_DATE + ", " +
-                PTContract.PanelsWeeks.COLUMN_ACTIVE + ") " +
-                "VALUES ('AVP', 7271, '12.12.2016', '18.12.2016', 1);";
+                PTContract.PanelsWeeks.COLUMN_ACTIVE + ", " + PTContract.PanelsWeeks.COLUMN_WEEK_DESC + ") " +
+                "VALUES ('AVP', 7271, '12.12.2016', '18.12.2016', 1, '12 - 18 Haftasi');";
         sqLiteDatabase.execSQL(testPanelInsert);
         testPanelInsert = "INSERT INTO " + PTContract.PanelsWeeks.TABLE_NAME + " (" +
                 PTContract.PanelsWeeks.COLUMN_PANEL_TYPE + ", " + PTContract.PanelsWeeks.COLUMN_WEEK_CODE + ", " +
                 PTContract.PanelsWeeks.COLUMN_START_DATE + ", " + PTContract.PanelsWeeks.COLUMN_END_DATE + ", " +
-                PTContract.PanelsWeeks.COLUMN_ACTIVE + ") " +
-                "VALUES ('AVP', 7278, '19.12.2016', '25.12.2016', 1);";
+                PTContract.PanelsWeeks.COLUMN_ACTIVE + ", " + PTContract.PanelsWeeks.COLUMN_WEEK_DESC + ") " +
+                "VALUES ('AVP', 7278, '19.12.2016', '25.12.2016', 1, '19 - 25 Haftasi');";
+        sqLiteDatabase.execSQL(testPanelInsert);
+
+        testPanelInsert = "INSERT INTO " + PTContract.Panel.TABLE_NAME + " (" +
+                PTContract.Panel.COLUMN_FLD_CODE + ", " + PTContract.Panel.COLUMN_PANEL_TYPE + ", " +
+                PTContract.Panel.COLUMN_FAM_CODE + ", " + PTContract.Panel.COLUMN_IND_CODE + ", " +
+                PTContract.Panel.COLUMN_IND_NAME + ", " + PTContract.Panel.COLUMN_WEEK_CODE + ", " +
+                PTContract.Panel.COLUMN_WEEK_CHECK + ") " +
+                "VALUES ('G5', 'AVP', '01W1050', 0, NULL, 7264, 2);";
+        sqLiteDatabase.execSQL(testPanelInsert);
+        testPanelInsert = "INSERT INTO " + PTContract.Panel.TABLE_NAME + " (" +
+                PTContract.Panel.COLUMN_FLD_CODE + ", " + PTContract.Panel.COLUMN_PANEL_TYPE + ", " +
+                PTContract.Panel.COLUMN_FAM_CODE + ", " + PTContract.Panel.COLUMN_IND_CODE + ", " +
+                PTContract.Panel.COLUMN_IND_NAME + ", " + PTContract.Panel.COLUMN_WEEK_CODE + ", " +
+                PTContract.Panel.COLUMN_WEEK_CHECK + ") " +
+                "VALUES ('G5', 'AVP', '01W1050', 0, NULL, 7271, 2);";
+        sqLiteDatabase.execSQL(testPanelInsert);
+        testPanelInsert = "INSERT INTO " + PTContract.Panel.TABLE_NAME + " (" +
+                PTContract.Panel.COLUMN_FLD_CODE + ", " + PTContract.Panel.COLUMN_PANEL_TYPE + ", " +
+                PTContract.Panel.COLUMN_FAM_CODE + ", " + PTContract.Panel.COLUMN_IND_CODE + ", " +
+                PTContract.Panel.COLUMN_IND_NAME + ", " + PTContract.Panel.COLUMN_WEEK_CODE + ", " +
+                PTContract.Panel.COLUMN_WEEK_CHECK + ") " +
+                "VALUES ('G5', 'AVP', '01W1050', 0, NULL, 7278, 1);";
+        sqLiteDatabase.execSQL(testPanelInsert);
+        testPanelInsert = "INSERT INTO " + PTContract.Panel.TABLE_NAME + " (" +
+                PTContract.Panel.COLUMN_FLD_CODE + ", " + PTContract.Panel.COLUMN_PANEL_TYPE + ", " +
+                PTContract.Panel.COLUMN_FAM_CODE + ", " + PTContract.Panel.COLUMN_IND_CODE + ", " +
+                PTContract.Panel.COLUMN_IND_NAME + ", " + PTContract.Panel.COLUMN_WEEK_CODE + ", " +
+                PTContract.Panel.COLUMN_WEEK_CHECK + ") " +
+                "VALUES ('G5', 'AVP', '01W1050', 0, NULL, 7285, 0);";
+        sqLiteDatabase.execSQL(testPanelInsert);
+        testPanelInsert = "INSERT INTO " + PTContract.Panel.TABLE_NAME + " (" +
+                PTContract.Panel.COLUMN_FLD_CODE + ", " + PTContract.Panel.COLUMN_PANEL_TYPE + ", " +
+                PTContract.Panel.COLUMN_FAM_CODE + ", " + PTContract.Panel.COLUMN_IND_CODE + ", " +
+                PTContract.Panel.COLUMN_IND_NAME + ", " + PTContract.Panel.COLUMN_WEEK_CODE + ", " +
+                PTContract.Panel.COLUMN_WEEK_CHECK + ") " +
+                "VALUES ('G5', 'AVP', '01W1050', 0, NULL, 7292, 0);";
         sqLiteDatabase.execSQL(testPanelInsert);
     }
 

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class PanelFragment extends Fragment implements LoaderManager.LoaderCallb
     private ListView _listView;
     private String _famCode;
     private String _panelType;
+    private int _weekCode;
 
     private static final int PANEL_LOADER = 0;
     //specify the columns we need
@@ -34,16 +36,8 @@ public class PanelFragment extends Fragment implements LoaderManager.LoaderCallb
             PTContract.Panel.COLUMN_FAM_CODE,
             PTContract.Panel.COLUMN_IND_CODE,
             PTContract.Panel.COLUMN_IND_NAME,
-            PTContract.Panel.COLUMN_WEEK1_CODE,
-            PTContract.Panel.COLUMN_WEEK1_CHECK,
-            PTContract.Panel.COLUMN_WEEK2_CODE,
-            PTContract.Panel.COLUMN_WEEK2_CHECK,
-            PTContract.Panel.COLUMN_WEEK3_CODE,
-            PTContract.Panel.COLUMN_WEEK3_CHECK,
-            PTContract.Panel.COLUMN_WEEK4_CODE,
-            PTContract.Panel.COLUMN_WEEK4_CHECK,
-            PTContract.Panel.COLUMN_WEEK5_CODE,
-            PTContract.Panel.COLUMN_WEEK5_CHECK
+            PTContract.Panel.COLUMN_WEEK_CODE,
+            PTContract.Panel.COLUMN_WEEK_CHECK
     };
 
     static final int COL_ID = 0;
@@ -51,16 +45,9 @@ public class PanelFragment extends Fragment implements LoaderManager.LoaderCallb
     static final int COL_FAM_CODE = 2;
     static final int COL_IND_CODE = 3;
     static final int COL_IND_NAME = 4;
-    static final int COL_WEEK1_CODE = 5;
-    static final int COL_WEEK1_CHECK = 6;
-    static final int COL_WEEK2_CODE = 7;
-    static final int COL_WEEK2_CHECK = 8;
-    static final int COL_WEEK3_CODE = 9;
-    static final int COL_WEEK3_CHECK = 10;
-    static final int COL_WEEK4_CODE = 11;
-    static final int COL_WEEK4_CHECK = 12;
-    static final int COL_WEEK5_CODE = 13;
-    static final int COL_WEEK5_CHECK = 14;
+    static final int COL_WEEK_CODE = 5;
+    static final int COL_WEEK_CHECK = 6;
+
 
     public PanelFragment() {
         // Required empty public constructor
@@ -105,7 +92,6 @@ public class PanelFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        getLoaderManager().initLoader(PANEL_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -121,7 +107,7 @@ public class PanelFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String sortOrder = PTContract.Panel.COLUMN_IND_CODE + " ASC";
-        Uri panelsUri = PTContract.Panel.buildPanelUriWithPanelTypeAndFamCode(_panelType, _famCode);
+        Uri panelsUri = PTContract.Panel.buildPanelUriWithPanelTypeFamCodeAndWeekCode(_panelType, _famCode, _weekCode);
         return new CursorLoader(getActivity(), panelsUri, PANEL_COLUMNS, null, null, sortOrder);
     }
 
@@ -142,4 +128,9 @@ public class PanelFragment extends Fragment implements LoaderManager.LoaderCallb
     public void setPanelType(String panelType) {
         _panelType = panelType;
     }
+
+    public void setWeekCode(int weekCode) {
+        _weekCode = weekCode;
+    }
+
 }

@@ -161,23 +161,15 @@ public class PTContract {
         public static final String COLUMN_FAM_CODE = "fam_code";
         public static final String COLUMN_IND_CODE = "ind_code";
         public static final String COLUMN_IND_NAME = "ind_name";
-        public static final String COLUMN_WEEK1_CODE = "week1_code";
-        public static final String COLUMN_WEEK1_CHECK = "week1_check";
-        public static final String COLUMN_WEEK2_CODE = "week2_code";
-        public static final String COLUMN_WEEK2_CHECK = "week2_check";
-        public static final String COLUMN_WEEK3_CODE = "week3_code";
-        public static final String COLUMN_WEEK3_CHECK = "week3_check";
-        public static final String COLUMN_WEEK4_CODE = "week4_code";
-        public static final String COLUMN_WEEK4_CHECK = "week4_check";
-        public static final String COLUMN_WEEK5_CODE = "week5_code";
-        public static final String COLUMN_WEEK5_CHECK = "week5_check";
+        public static final String COLUMN_WEEK_CODE = "week_code";
+        public static final String COLUMN_WEEK_CHECK = "week_check";
 
         public static Uri buildPanelUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-        public static Uri buildPanelUriWithPanelTypeAndFamCode(String panelType, String famCode) {
-            return CONTENT_URI.buildUpon().appendPath(panelType).appendPath(famCode).build();
+        public static Uri buildPanelUriWithPanelTypeFamCodeAndWeekCode(String panelType, String famCode, int weekCode) {
+            return CONTENT_URI.buildUpon().appendPath(panelType).appendPath(famCode).appendPath(Integer.toString(weekCode)).build();
         }
 
         public static String getPanelTypeFromUri(Uri uri) {
@@ -186,6 +178,10 @@ public class PTContract {
 
         public static String getFamCodeFromUri(Uri uri) {
             return uri.getPathSegments().get(2);
+        }
+
+        public static int getWeekCodeFromUri(Uri uri) {
+            return Integer.parseInt(uri.getPathSegments().get(3));
         }
     }
 
@@ -202,6 +198,7 @@ public class PTContract {
 
         public static final String COLUMN_PANEL_TYPE = "panel_type";
         public static final String COLUMN_WEEK_CODE = "week_code";
+        public static final String COLUMN_WEEK_DESC = "week_desc";
         public static final String COLUMN_START_DATE = "start_date";
         public static final String COLUMN_END_DATE = "end_date";
         public static final String COLUMN_ACTIVE = "active";

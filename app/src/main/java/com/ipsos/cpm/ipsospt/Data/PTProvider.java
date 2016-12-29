@@ -8,6 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 
 /**
  * Created by zencifil on 17/11/2016.
@@ -24,7 +25,7 @@ public class PTProvider extends ContentProvider {
     static final int INDIVIDUAL_BY_FAMILY = 201;
     static final int INDIVIDUAL_BY_FAM_AND_IND_CODE = 202;
     static final int PANEL = 300;
-    static final int PANEL_BY_PANELTYPE_AND_FAMCODE = 301;
+    static final int PANEL_BY_PANELTYPE_FAMCODE_AND_WEEKCODE = 301;
     static final int PANELS_WEEKS = 400;
     static final int PANELS_WEEKS_BY_PANEL_TYPE = 401;
 
@@ -47,66 +48,90 @@ public class PTProvider extends ContentProvider {
         _panelsWeeksQueryBuilder.setTables(PTContract.PanelsWeeks.TABLE_NAME);
     }
 
-    private static final String _familyByVisitDaySelection = PTContract.Fam.TABLE_NAME + "." + PTContract.Fam.COLUMN_VISIT_DAY + " = ? ";
-    private static final String _familyByFamCodeSelection = PTContract.Fam.TABLE_NAME + "." + PTContract.Fam.COLUMN_FAM_CODE + " = ? ";
+    private static final String _familyByVisitDaySelection =
+            PTContract.Fam.TABLE_NAME + "." + PTContract.Fam.COLUMN_VISIT_DAY + " = ? ";
+    private static final String _familyByFamCodeSelection =
+            PTContract.Fam.TABLE_NAME + "." + PTContract.Fam.COLUMN_FAM_CODE + " = ? ";
 
-    private static final String _individualsByFamCodeSelection = PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_FAM_CODE + " = ? ";
-    private static final String _individualByFamAndIndCodeSelection = PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_FAM_CODE + " = ? AND " +
+    private static final String _individualsByFamCodeSelection =
+            PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_FAM_CODE + " = ? ";
+    private static final String _individualByFamAndIndCodeSelection =
+            PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_FAM_CODE + " = ? AND " +
             PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_IND_CODE + " = ? ";
 
-    private static final String _panelByPanelTypeAndFamCodeSelection = PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_PANEL_TYPE + " = ? AND " +
-            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_FAM_CODE + " = ? ";
+    private static final String _panelByPanelTypeFamCodeAndWeekCodeSelection =
+            PTContract.Panel.COLUMN_PANEL_TYPE + " = ? AND " +
+            PTContract.Panel.COLUMN_FAM_CODE + " = ? AND " +
+            PTContract.Panel.COLUMN_WEEK_CODE + " = ? ";
 
-    private static final String _panelsWeeksPanelsSelection = PTContract.PanelsWeeks.TABLE_NAME + "." + PTContract.PanelsWeeks.COLUMN_ACTIVE + " = 1 ";
-    private static final String _panelsWeeksWeeksSelection = PTContract.PanelsWeeks.TABLE_NAME + "." + PTContract.PanelsWeeks.COLUMN_PANEL_TYPE + " = ? ";
+    private static final String _panelsWeeksPanelsSelection =
+            PTContract.PanelsWeeks.TABLE_NAME + "." + PTContract.PanelsWeeks.COLUMN_ACTIVE + " = 1 ";
+    private static final String _panelsWeeksWeeksSelection =
+            PTContract.PanelsWeeks.TABLE_NAME + "." + PTContract.PanelsWeeks.COLUMN_PANEL_TYPE + " = ? ";
 
     private Cursor getFamilyListByVisitDay(Uri uri, String[] projection, String sortOrder) {
         String selection = _familyByVisitDaySelection;
         int visitDay = PTContract.Fam.getVisitDayFromUri(uri);
-        return _famQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[]{Integer.toString(visitDay)}, null, null, sortOrder);
+        return _famQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection,
+                new String[]{Integer.toString(visitDay)}, null, null, sortOrder);
     }
 
     private Cursor getFamilyByFamCode(Uri uri, String[] projection, String sortOrder) {
         String selection = _familyByFamCodeSelection;
         String famCode = PTContract.Fam.getFamCodeFromUri(uri);
-        return _famQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[]{famCode}, null, null, sortOrder);
+        return _famQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection,
+                new String[]{famCode}, null, null, sortOrder);
     }
 
     private Cursor getIndividualsByFamCode(Uri uri, String sortOrder) {
         String selection = _individualsByFamCodeSelection;
         String famCode = PTContract.Fam.getFamCodeFromUri(uri);
-        String[] projection = new String[] { PTContract.Ind._ID, PTContract.Ind.COLUMN_FAM_CODE, PTContract.Ind.COLUMN_IND_CODE, PTContract.Ind.COLUMN_IND_NAME};
-        return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[]{famCode}, null, null, sortOrder);
+        String[] projection = new String[] { PTContract.Ind._ID, PTContract.Ind.COLUMN_FAM_CODE,
+                PTContract.Ind.COLUMN_IND_CODE, PTContract.Ind.COLUMN_IND_NAME};
+        return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection,
+                new String[]{famCode}, null, null, sortOrder);
     }
 
     private Cursor getIndividualByFamAndIndCode(Uri uri, String sortOrder) {
         String selection = _individualByFamAndIndCodeSelection;
         String famCode = PTContract.Fam.getFamCodeFromUri(uri);
         int indCode = PTContract.Ind.getIndCodeFromUri(uri);
-        String[] projection = new String[] { PTContract.Ind._ID, PTContract.Ind.COLUMN_FAM_CODE, PTContract.Ind.COLUMN_IND_CODE, PTContract.Ind.COLUMN_IND_NAME};
-        return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[]{famCode, Integer.toString(indCode)}, null, null, sortOrder);
+        String[] projection = new String[] { PTContract.Ind._ID, PTContract.Ind.COLUMN_FAM_CODE,
+                PTContract.Ind.COLUMN_IND_CODE, PTContract.Ind.COLUMN_IND_NAME};
+        return _indQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection,
+                new String[]{famCode, Integer.toString(indCode)}, null, null, sortOrder);
     }
 
-    private Cursor getPanelByPanelTypeAndFamCode(Uri uri, String sortOrder) {
-        String selection = _panelByPanelTypeAndFamCodeSelection;
+    @Nullable
+    private Cursor getPanelByPanelTypeFamCodeAndWeekCode(Uri uri, String sortOrder) {
+        String selection = _panelByPanelTypeFamCodeAndWeekCodeSelection;
         String panelType = PTContract.Panel.getPanelTypeFromUri(uri);
         String famCode = PTContract.Panel.getFamCodeFromUri(uri);
-        String[] projection = new String[] { PTContract.Panel._ID, PTContract.Panel.COLUMN_PANEL_TYPE, PTContract.Panel.COLUMN_WEEK1_CODE, PTContract.Panel.COLUMN_WEEK2_CODE,
-                PTContract.Panel.COLUMN_WEEK3_CODE, PTContract.Panel.COLUMN_WEEK4_CODE, PTContract.Panel.COLUMN_WEEK5_CODE};
-        return _panelQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[] {panelType, famCode}, null, null, sortOrder);
+        int weekCode = PTContract.Panel.getWeekCodeFromUri(uri);
+        if (panelType == null || famCode == null || panelType == "null" || famCode == "null")
+            return null;
+        String[] projection = new String[] { PTContract.Panel._ID, PTContract.Panel.COLUMN_PANEL_TYPE,
+                PTContract.Panel.COLUMN_FAM_CODE, PTContract.Panel.COLUMN_IND_CODE, PTContract.Panel.COLUMN_IND_NAME,
+                PTContract.Panel.COLUMN_WEEK_CODE, PTContract.Panel.COLUMN_WEEK_CHECK };
+        return _panelQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection,
+                new String[] {panelType, famCode, Integer.toString(weekCode)}, null, null, sortOrder);
     }
 
     private Cursor getPanelTypes(Uri uri, String sortOrder) {
+        //TODO famCode may be added as parameter
         String selection = _panelsWeeksPanelsSelection;
         String[] projection = new String[] { PTContract.PanelsWeeks._ID, PTContract.PanelsWeeks.COLUMN_PANEL_TYPE };
-        return _panelsWeeksQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, null, PTContract.PanelsWeeks.COLUMN_PANEL_TYPE, null, sortOrder);
+        return _panelsWeeksQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection,
+                null, PTContract.PanelsWeeks.COLUMN_PANEL_TYPE, null, sortOrder);
     }
 
     private Cursor getPanelWeeks(Uri uri, String sortOrder) {
         String selection = _panelsWeeksWeeksSelection;
-        String[] projection = new String[] { PTContract.PanelsWeeks._ID, PTContract.PanelsWeeks.COLUMN_WEEK_CODE };
+        String[] projection = new String[] { PTContract.PanelsWeeks._ID, PTContract.PanelsWeeks.COLUMN_WEEK_CODE,
+                PTContract.PanelsWeeks.COLUMN_WEEK_DESC };
         String panelType = PTContract.PanelsWeeks.getPanelTypeFromUri(uri);
-        return _panelsWeeksQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, new String[] {panelType}, null, null, sortOrder);
+        return _panelsWeeksQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection,
+                new String[] {panelType}, null, null, sortOrder);
     }
 
     static UriMatcher buildUriMatcher() {
@@ -118,7 +143,7 @@ public class PTProvider extends ContentProvider {
         matcher.addURI(authority, PTContract.PATH_FAMILY + "/*", FAMILY_BY_FAM_CODE);
         matcher.addURI(authority, PTContract.PATH_IND + "/*", INDIVIDUAL_BY_FAMILY);
         matcher.addURI(authority, PTContract.PATH_IND + "/*/#", INDIVIDUAL_BY_FAM_AND_IND_CODE);
-        matcher.addURI(authority, PTContract.PATH_PANEL + "/*/*", PANEL_BY_PANELTYPE_AND_FAMCODE);
+        matcher.addURI(authority, PTContract.PATH_PANEL + "/*/*/#", PANEL_BY_PANELTYPE_FAMCODE_AND_WEEKCODE);
         matcher.addURI(authority, PTContract.PATH_PANELS_WEEKS, PANELS_WEEKS);
         matcher.addURI(authority, PTContract.PATH_PANELS_WEEKS + "/*", PANELS_WEEKS_BY_PANEL_TYPE);
 
@@ -145,7 +170,7 @@ public class PTProvider extends ContentProvider {
                 return PTContract.Ind.CONTENT_DIR_TYPE;
             case INDIVIDUAL_BY_FAM_AND_IND_CODE:
                 return PTContract.Ind.CONTENT_ITEM_TYPE;
-            case PANEL_BY_PANELTYPE_AND_FAMCODE:
+            case PANEL_BY_PANELTYPE_FAMCODE_AND_WEEKCODE:
                 return PTContract.Panel.CONTENT_DIR_TYPE;
             case PANELS_WEEKS:
                 return PTContract.PanelsWeeks.CONTENT_DIR_TYPE;
@@ -161,7 +186,8 @@ public class PTProvider extends ContentProvider {
         Cursor retCursor;
         switch (_uriMatcher.match(uri)) {
             case FAMILY:
-                retCursor = _dbHelper.getReadableDatabase().query(PTContract.Fam.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                retCursor = _dbHelper.getReadableDatabase().query(PTContract.Fam.TABLE_NAME, projection, selection,
+                        selectionArgs, null, null, sortOrder);
                 break;
             case FAMILY_BY_VISIT_DAY:
                 retCursor = getFamilyListByVisitDay(uri, projection, sortOrder);
@@ -175,8 +201,8 @@ public class PTProvider extends ContentProvider {
             case INDIVIDUAL_BY_FAM_AND_IND_CODE:
                 retCursor = getIndividualByFamAndIndCode(uri, sortOrder);
                 break;
-            case PANEL_BY_PANELTYPE_AND_FAMCODE:
-                retCursor = getPanelByPanelTypeAndFamCode(uri, sortOrder);
+            case PANEL_BY_PANELTYPE_FAMCODE_AND_WEEKCODE:
+                retCursor = getPanelByPanelTypeFamCodeAndWeekCode(uri, sortOrder);
                 break;
             case PANELS_WEEKS:
                 retCursor = getPanelTypes(uri, sortOrder);

@@ -57,7 +57,6 @@
     <string name="form_sp" translatable="false">SP: </string>
     <string name="form_ek_alkol" translatable="false">Ek Alkol: </string>
     <string name="form_baby" translatable="false">Bebek: </string>
-    <string name="form_hp" translatable="false">HP: </string>
     <string name="form_visit_day" translatable="false">Ziyaret Günü: </string>
     <string name="form_point" translatable="false">Puan: </string>
     <string name="form_ind_list" translatable="false">Bireyler</string>
@@ -71,8 +70,10 @@
     <string name="form_ind_job" translatable="false">Meslek:</string>
     <string name="form_ind_email" translatable="false">E-Posta:</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-
+    <!-- Panel form -->
+    <string name="form_panel_list_item_none" translatable="false">Form durumu alınamadı.</string>
+    <string name="form_panel_list_item_0" translatable="false">Henüz form bırakılmadı.</string>
+    <string name="form_panel_list_item_1" translatable="false">Form bırakıldı, teslim alınacak.</string>
+    <string name="form_panel_list_item_2" translatable="false">Form teslim alındı, gönderime hazır.</string>
 
 </resources>

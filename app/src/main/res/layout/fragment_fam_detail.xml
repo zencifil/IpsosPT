@@ -156,13 +156,6 @@
                 android:id="@+id/famDetailBaby"
                 android:enabled="false"
                 style="@style/FamDetailText"/>
-            <TextView
-                android:text="@string/form_hp"
-                style="@style/FamDetailTextLabel"/>
-            <CheckBox
-                android:id="@+id/famDetailHP"
-                android:enabled="false"
-                style="@style/FamDetailText"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
