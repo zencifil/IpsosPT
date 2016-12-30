@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TabHost;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.ipsos.cpm.ipsospt.Data.PTContract;
 
 import java.util.ArrayList;

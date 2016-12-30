@@ -1,18 +1,38 @@
 package com.ipsos.cpm.ipsospt;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.adapters.CursorSwipeAdapter;
 
 /**
  * Created by zencifil on 26/12/2016.
  */
 
-public class PanelAdapter extends CursorAdapter {
+public class PanelAdapter extends CursorSwipeAdapter {
+
+    private SwipeLayout _swipeLayout;
+
+    @Override
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.list_item_panel_swipe;
+    }
+
+    @Override
+    public void closeAllItems() {
+
+    }
 
     public static class ViewHolder {
         public final TextView famCodeView;
@@ -39,11 +59,49 @@ public class PanelAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, Cursor cursor) {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
         if (viewHolder == null || viewHolder.panelStatusView == null || viewHolder.famCodeView == null)
             return;
+
+        _swipeLayout = (SwipeLayout) view.findViewById(getSwipeLayoutResourceId(cursor.getPosition()));
+        _swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+        _swipeLayout.addDrag(SwipeLayout.DragEdge.Left, _swipeLayout.findViewById(R.id.bottom_wrapper_child1));
+        _swipeLayout.addDrag(SwipeLayout.DragEdge.Right, _swipeLayout.findViewById(R.id.bottom_wrapper_child2));
+
+        ImageView check1 = (ImageView) view.findViewById(R.id.pt2house_image_view);
+        check1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(context).setTitle("Form birakildi onayi")
+                        .setMessage("Form birakildi olarak isaretlenecek, emin misiniz?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(context, "Form birakildi", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).show();
+            }
+        });
+        ImageView check2 = (ImageView) view.findViewById(R.id.house2pt_image_view);
+        check2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(context).setTitle("Form alindi onayi")
+                        .setMessage("Form alindi olarak isaretlenecek, emin misiniz?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(context, "Form alindi", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).show();
+            }
+        });
 
         String famCode = cursor.getString(PanelFragment.COL_FAM_CODE);
         int indCode = cursor.getInt(PanelFragment.COL_IND_CODE);

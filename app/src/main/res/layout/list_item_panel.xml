@@ -1,27 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<!--<RelativeLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="#FFF9F9F9">-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/fam_code_list_item_panel"-->
+        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:layout_marginEnd="15dp"-->
+        <!--android:maxLines="1"-->
+        <!--android:ellipsize="middle" />-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/panel_status_list_item_panel"-->
+        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+        <!--android:maxLines="1"-->
+        <!--android:ellipsize="middle"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_toEndOf="@id/fam_code_list_item_panel" />-->
+<!--</RelativeLayout>-->
+
+<com.daimajia.swipe.SwipeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_item_panel_swipe"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFF9F9F9">
+    android:layout_height="70dp"
+    app:clickToClose="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fam_code_list_item_panel"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="15dp"
-        android:maxLines="1"
-        android:ellipsize="middle" />
+    <LinearLayout
+        android:id="@+id/bottom_wrapper_child1"
+        android:orientation="horizontal"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="#f7e79c"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/pt2house_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/pt2house" />
+    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/panel_status_list_item_panel"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:maxLines="1"
-        android:ellipsize="middle"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@id/fam_code_list_item_panel" />
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/bottom_wrapper_child2"
+        android:orientation="horizontal"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="#4cd964"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/house2pt_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/house2pt" />
+    </LinearLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFF9F9F9"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fam_code_list_item_panel"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="15dp"
+            android:maxLines="1"
+            android:ellipsize="middle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/panel_status_list_item_panel"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:maxLines="1"
+            android:ellipsize="middle"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/fam_code_list_item_panel" />
+    </RelativeLayout>
+</com.daimajia.swipe.SwipeLayout>

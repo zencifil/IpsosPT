@@ -182,6 +182,12 @@ public class PTDbHelper extends SQLiteOpenHelper {
                 PTContract.PanelsWeeks.COLUMN_ACTIVE + ", " + PTContract.PanelsWeeks.COLUMN_WEEK_DESC + ") " +
                 "VALUES ('AVP', 7278, '19.12.2016', '25.12.2016', 1, '19 - 25 Haftasi');";
         sqLiteDatabase.execSQL(testPanelInsert);
+        testPanelInsert = "INSERT INTO " + PTContract.PanelsWeeks.TABLE_NAME + " (" +
+                PTContract.PanelsWeeks.COLUMN_PANEL_TYPE + ", " + PTContract.PanelsWeeks.COLUMN_WEEK_CODE + ", " +
+                PTContract.PanelsWeeks.COLUMN_START_DATE + ", " + PTContract.PanelsWeeks.COLUMN_END_DATE + ", " +
+                PTContract.PanelsWeeks.COLUMN_ACTIVE + ", " + PTContract.PanelsWeeks.COLUMN_WEEK_DESC + ") " +
+                "VALUES ('AVP', 7285, '26.12.2016', '01.01.2017', 1, '26 - 1 Haftasi');";
+        sqLiteDatabase.execSQL(testPanelInsert);
 
         testPanelInsert = "INSERT INTO " + PTContract.Panel.TABLE_NAME + " (" +
                 PTContract.Panel.COLUMN_FLD_CODE + ", " + PTContract.Panel.COLUMN_PANEL_TYPE + ", " +
