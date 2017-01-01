@@ -8,14 +8,13 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-/**
- * Created by zencifil on 17/11/2016.
- */
+import android.util.Log;
 
 public class PTProvider extends ContentProvider {
 
+    private String LOG_TAG = PTProvider.class.getSimpleName();
     private PTDbHelper _dbHelper;
     private static final UriMatcher _uriMatcher = buildUriMatcher();
     static final int FAMILY = 100;
@@ -143,6 +142,7 @@ public class PTProvider extends ContentProvider {
         matcher.addURI(authority, PTContract.PATH_FAMILY + "/*", FAMILY_BY_FAM_CODE);
         matcher.addURI(authority, PTContract.PATH_IND + "/*", INDIVIDUAL_BY_FAMILY);
         matcher.addURI(authority, PTContract.PATH_IND + "/*/#", INDIVIDUAL_BY_FAM_AND_IND_CODE);
+        matcher.addURI(authority, PTContract.PATH_PANEL, PANEL);
         matcher.addURI(authority, PTContract.PATH_PANEL + "/*/*/#", PANEL_BY_PANELTYPE_FAMCODE_AND_WEEKCODE);
         matcher.addURI(authority, PTContract.PATH_PANELS_WEEKS, PANELS_WEEKS);
         matcher.addURI(authority, PTContract.PATH_PANELS_WEEKS + "/*", PANELS_WEEKS_BY_PANEL_TYPE);
@@ -157,7 +157,7 @@ public class PTProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         final int match = _uriMatcher.match(uri);
         switch (match) {
             case FAMILY_BY_VISIT_DAY:
@@ -182,7 +182,7 @@ public class PTProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor retCursor;
         switch (_uriMatcher.match(uri)) {
             case FAMILY:
@@ -219,7 +219,7 @@ public class PTProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
+    public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
         final SQLiteDatabase db = _dbHelper.getWritableDatabase();
         final int match = _uriMatcher.match(uri);
         Uri returnUri;
@@ -262,7 +262,7 @@ public class PTProvider extends ContentProvider {
     }
 
     @Override
-    public int bulkInsert(Uri uri, ContentValues[] values) {
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         final SQLiteDatabase db = _dbHelper.getWritableDatabase();
         final int match = _uriMatcher.match(uri);
         long id;
@@ -329,13 +329,53 @@ public class PTProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
-        return 0;
+    public int delete(@NonNull Uri uri, String s, String[] strings) {
+        final SQLiteDatabase db = _dbHelper.getWritableDatabase();
+        final int match = _uriMatcher.match(uri);
+        int rowsDeleted;
+
+        try {
+            switch (match) {
+                case PANEL:
+                    rowsDeleted = db.delete(PTContract.Panel.TABLE_NAME, s, strings);
+                    break;
+                default:
+                    rowsDeleted = -1;
+                    break;
+            }
+            if (rowsDeleted > 0)
+                getContext().getContentResolver().notifyChange(uri, null);
+        }
+        catch (Exception ex) {
+            rowsDeleted = -1;
+            Log.e(LOG_TAG, ex.getMessage());
+        }
+        return rowsDeleted;
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return 0;
+    public int update(@NonNull Uri uri, ContentValues contentValues, String s, String[] strings) {
+        final SQLiteDatabase db = _dbHelper.getWritableDatabase();
+        final int match = _uriMatcher.match(uri);
+        int rowsUpdated;
+
+        try {
+            switch (match) {
+                case PANEL:
+                    rowsUpdated = db.update(PTContract.Panel.TABLE_NAME, contentValues, s, strings);
+                    break;
+                default:
+                    rowsUpdated = -1;
+                    break;
+            }
+            if (rowsUpdated > 0)
+                getContext().getContentResolver().notifyChange(uri, null);
+        }
+        catch (Exception ex) {
+            rowsUpdated = -1;
+            Log.e(LOG_TAG, ex.getMessage());
+        }
+        return rowsUpdated;
     }
 
     @Override

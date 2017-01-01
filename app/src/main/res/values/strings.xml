@@ -7,13 +7,14 @@
 
     <string name="internet_no_connection" translatable="false">İnternete bağlı değilsiniz! Uygulama çevrim dışı çalışacak.</string>
     <string name="internet_connection" translatable="false">İnternet bağlantısı aktif.</string>
+    <string name="invalid_operation" translatable="false">Geçersiz işlem!</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email" translatable="false">Email</string>
     <string name="prompt_password" translatable="false">Şifre</string>
     <string name="action_sign_in" translatable="false">Giriş</string>
     <string name="error_invalid_email" translatable="false">Şirket maili kullanmanız gerekmektedir.</string>
-    <string name="error_invalid_password" translatable="false">Şifre en az 6 haneli olmalıdır.</string>
+    <string name="error_invalid_password" translatable="false">Şifre en az 8 haneli olmalıdır.</string>
     <string name="error_incorrect_password" translatable="false">Kullanıcı adı veya şifre hatalı.</string>
     <string name="error_field_required" translatable="false">Zorunlu alan!</string>
 
@@ -75,5 +76,25 @@
     <string name="form_panel_list_item_0" translatable="false">Henüz form bırakılmadı.</string>
     <string name="form_panel_list_item_1" translatable="false">Form bırakıldı, teslim alınacak.</string>
     <string name="form_panel_list_item_2" translatable="false">Form teslim alındı, gönderime hazır.</string>
+    <string name="form_panel_list_item_3" translatable="false">Form kargoya verildi.</string>
+    <string name="form_panel_list_left_confirmation_title" translatable="false">Form bırakıldı onayı</string>
+    <string name="form_panel_list_left_confirmation" translatable="false">Form bırakıldı olarak işaretlenecek, emin misiniz?</string>
+    <string name="form_panel_list_left_remove_confirmation" translatable="false">Form bırakıldı onayı kaldırılacak, emin misiniz?</string>
+    <string name="form_panel_list_left" translatable="false">Form bırakıldı.</string>
+    <string name="form_panel_list_left_remove" translatable="false">Form bırakıldı onayı kaldırıdı.</string>
+    <string name="form_panel_list_taken_confirmation_title" translatable="false">Form alındı onayı</string>
+    <string name="form_panel_list_taken_confirmation" translatable="false">Form alındı olarak işaretlenecek, emin misiniz?</string>
+    <string name="form_panel_list_taken_remove_confirmation" translatable="false">Form alındı onayı kaldırılacak, emin misiniz?</string>
+    <string name="form_panel_list_taken" translatable="false">Form alındı.</string>
+    <string name="form_panel_list_taken_remove" translatable="false">Form alındı onayı kaldırıldı.</string>
+    <string name="form_panel_list_sent_confirmation_title" translatable="false">Form kargoya verildi onayı</string>
+    <string name="form_panel_list_sent_confirmation" translatable="false">Form kargoya verildi olarak işaretlenecek, emin misiniz?</string>
+    <string name="form_panel_list_sent_remove_confirmation" translatable="false">Form kargoya verildi onayı kaldırılacak, emin misiniz?</string>
+    <string name="form_panel_list_sent" translatable="false">Form kargoya verildi.</string>
+    <string name="form_panel_list_sent_remove" translatable="false">Form kargoya verildi onayı kaldırıldı.</string>
+    <string name="form_panel_list_already_taken_error" translatable="false">Form alındı olarak işaretlendiği için bu işlemi yapamazsınız.</string>
+    <string name="form_panel_list_not_yet_taken_error" translatable="false">Form alındı olarak işaretlenmeden bu işlemi yapamazsınız.</string>
+    <string name="form_panel_list_not_yet_left_error" translatable="false">Form bırakıldı olarak işaretlenmeden bu işlemi yapamazsınız.</string>
+    <string name="form_panel_list_already_sent_error" translatable="false">Form kargolandı olarak işaretlendiği için bu işlemi yapamazsınız.</string>
 
 </resources>

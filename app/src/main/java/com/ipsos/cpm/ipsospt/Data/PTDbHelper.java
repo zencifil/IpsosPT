@@ -5,17 +5,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-/**
- * Created by zencifil on 17/11/2016.
- */
-
-public class PTDbHelper extends SQLiteOpenHelper {
+class PTDbHelper extends SQLiteOpenHelper {
 
     private static final String LOG_TAG = PTDbHelper.class.getSimpleName();
     private static final int DATABASE_VERSION = 1;
     static final String DATABASE_NAME = "pt.db";
 
-    public PTDbHelper(Context context) {
+    PTDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
