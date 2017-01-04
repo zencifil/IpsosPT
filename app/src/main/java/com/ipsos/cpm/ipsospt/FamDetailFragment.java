@@ -30,16 +30,17 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
 
     private static final String[] DETAIL_COLUMNS = {
             PTContract.Fam.TABLE_NAME + "." + PTContract.Fam._ID,
+            PTContract.Fam.COLUMN_COUNTRY_CODE,
             PTContract.Fam.COLUMN_FAM_CODE,
             PTContract.Fam.COLUMN_FAM_NAME,
-            PTContract.Fam.COLUMN_TOWN,
+            PTContract.Fam.COLUMN_REG_BEG,
             PTContract.Fam.COLUMN_DISTRICT,
-            PTContract.Fam.COLUMN_STREET,
-            PTContract.Fam.COLUMN_ROAD,
-            PTContract.Fam.COLUMN_HOUSE_NO,
-            PTContract.Fam.COLUMN_DOOR_NO,
-            PTContract.Fam.COLUMN_PHONE,
-            PTContract.Fam.COLUMN_PHONE2,
+            PTContract.Fam.COLUMN_PROVINCE,
+            PTContract.Fam.COLUMN_NEIGHBORHOOD,
+            PTContract.Fam.COLUMN_ADDRESS,
+            PTContract.Fam.COLUMN_LANDLINE,
+            PTContract.Fam.COLUMN_WORKLINE,
+            PTContract.Fam.COLUMN_CELLULAR,
             PTContract.Fam.COLUMN_AVP,
             PTContract.Fam.COLUMN_ALK,
             PTContract.Fam.COLUMN_SP,
@@ -49,49 +50,46 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
     };
 
     public static final int COL_ID = 0;
-    public static final int COL_FAM_CODE = 1;
-    public static final int COL_FAM_NAME = 2;
-    public static final int COL_TOWN = 3;
-    public static final int COL_DISTRICT = 4;
-    public static final int COL_STREET = 5;
-    public static final int COL_ROAD = 6;
-    public static final int COL_HOUSE_NO = 7;
-    public static final int COL_DOOR_NO = 8;
-    public static final int COL_PHONE = 9;
-    public static final int COL_PHONE2 = 10;
-    public static final int COL_AVP = 11;
-    public static final int COL_ALK = 12;
-    public static final int COL_SP = 13;
-    public static final int COL_EK_ALK = 14;
-    public static final int COL_BABY = 15;
-    public static final int COL_POINT = 16;
+    public static final int COL_COUNTRY_CODE = 1;
+    public static final int COL_FAM_CODE = 2;
+    public static final int COL_FAM_NAME = 3;
+    public static final int COL_REG_BEG = 4;
+    public static final int COL_DISTRICT = 5;
+    public static final int COL_PROVINCE = 6;
+    public static final int COL_NEIGHBORHOOD = 7;
+    public static final int COL_ADDRESS = 8;
+    public static final int COL_LANDLINE = 9;
+    public static final int COL_WORKLINE = 10;
+    public static final int COL_CELLULAR = 11;
+    public static final int COL_AVP = 12;
+    public static final int COL_ALK = 13;
+    public static final int COL_SP = 14;
+    public static final int COL_EK_ALK = 15;
+    public static final int COL_BABY = 16;
+    public static final int COL_POINT = 17;
 
     public static final String IND_LIST_BUTTON = "ind_list";
-    public static final String FAM_PANELS_BUTTON = "panel_list";
+    //public static final String FAM_PANELS_BUTTON = "panel_list";
 
     private TextView _famCodeTextView;
-    private TextView _townTextView;
+    private TextView _regBegTextView;
     private TextView _districtTextView;
-    private TextView _streetTextView;
-    private TextView _roadTextView;
-    private TextView _houseNoTextView;
-    private TextView _doorNoTextView;
-    private TextView _phoneTextView;
-    private TextView _phone2TextView;
+    private TextView _neighborhoodTextView;
+    private TextView _addressTextView;
+    private TextView _landlineTextView;
+    private TextView _worklineTextView;
+    private TextView _cellularTextView;
     private CheckBox _avpCheckBox;
     private CheckBox _alkCheckBox;
     private CheckBox _spCheckBox;
     private CheckBox _ekAlkCheckBox;
     private CheckBox _babyCheckBox;
-    private CheckBox _hpCheckBox;
     private TextView _pointTextView;
-    private Button _indList;
-    private Button _panels;
 
     OnFamDetailButtonClickedListener _buttonClickedListener;
 
     public interface OnFamDetailButtonClickedListener {
-        public void onFamDetailButtonClicked(String buttonTag, String famCode);
+        void onFamDetailButtonClicked(String buttonTag, String famCode);
     }
 
     public FamDetailFragment() {
@@ -108,31 +106,31 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_fam_detail, container, false);
         _famCodeTextView = (TextView) rootView.findViewById(R.id.famDetailFamCode);
-        _townTextView = (TextView) rootView.findViewById(R.id.famDetailTown);
+        _regBegTextView = (TextView) rootView.findViewById(R.id.famDetailRegBeg);
         _districtTextView = (TextView) rootView.findViewById(R.id.famDetailDistrict);
-        _streetTextView = (TextView) rootView.findViewById(R.id.famDetailStreet);
-        _roadTextView = (TextView) rootView.findViewById(R.id.famDetailRoad);
-        _houseNoTextView = (TextView) rootView.findViewById(R.id.famDetailHouseNo);
-        _doorNoTextView = (TextView) rootView.findViewById(R.id.famDetailDoorNo);
-        _phoneTextView = (TextView) rootView.findViewById(R.id.famDetailPhone);
-        _phone2TextView = (TextView) rootView.findViewById(R.id.famDetailPhone2);
+        _neighborhoodTextView = (TextView) rootView.findViewById(R.id.famDetailNeighborhood);
+        _addressTextView = (TextView) rootView.findViewById(R.id.famDetailAddress);
+        _landlineTextView = (TextView) rootView.findViewById(R.id.famDetailLandLine);
+        _worklineTextView = (TextView) rootView.findViewById(R.id.famDetailWorkLine);
+        _cellularTextView = (TextView) rootView.findViewById(R.id.famDetailCellular);
         _avpCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailAVP);
         _alkCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailAlkol);
         _spCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailSP);
         _ekAlkCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailEkAlkol);
         _babyCheckBox = (CheckBox) rootView.findViewById(R.id.famDetailBaby);
         _pointTextView = (TextView) rootView.findViewById(R.id.famDetailPoint);
-        _indList = (Button) rootView.findViewById(R.id.famDetailIndListButton);
-        _panels = (Button) rootView.findViewById(R.id.famDetailPanelsButton);
 
-        _indList.setOnClickListener(new View.OnClickListener() {
+        Button indList = (Button) rootView.findViewById(R.id.famDetailIndListButton);
+        Button panels = (Button) rootView.findViewById(R.id.famDetailPanelsButton);
+
+        indList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 _buttonClickedListener.onFamDetailButtonClicked(IND_LIST_BUTTON, _famCodeTextView.getText().subSequence(0, 7).toString());
             }
         });
 
-        _panels.setOnClickListener(new View.OnClickListener() {
+        panels.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), PanelActivity.class);
@@ -167,37 +165,27 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
                 _famCode = data.getString(COL_FAM_CODE);
                 String famCodeName = _famCode + " - " + data.getString(COL_FAM_NAME);
                 _famCodeTextView.setText(famCodeName);
+                _regBegTextView.setText(data.getString(COL_REG_BEG));
+                _districtTextView.setText(data.getString(COL_DISTRICT));
+                _neighborhoodTextView.setText(data.getString(COL_NEIGHBORHOOD));
+                _addressTextView.setText(data.getString(COL_ADDRESS));
 
-                String town = data.getString(COL_TOWN);
-                _townTextView.setText(town);
+                String landline = data.getString(COL_LANDLINE);
+                if (landline != null && !landline.startsWith("0") && landline.length() == 10)
+                    landline = "0" + landline;
+                _landlineTextView.setText(landline);
 
-                String district = data.getString(COL_DISTRICT);
-                _districtTextView.setText(district);
+                String workline = data.getString(COL_WORKLINE);
+                if (workline != null && !workline.startsWith("0") && workline.length() == 10)
+                    workline = "0" + workline;
+                _worklineTextView.setText(workline);
 
-                String street = data.getString(COL_STREET);
-                _streetTextView.setText(street);
+                String cellular = data.getString(COL_CELLULAR);
+                if (cellular != null && !cellular.startsWith("0") && cellular.length() == 10)
+                    cellular = "0" + cellular;
+                _cellularTextView.setText(cellular);
 
-                String road = data.getString(COL_ROAD);
-                _roadTextView.setText(road);
-
-                String houseNo = data.getString(COL_HOUSE_NO);
-                _houseNoTextView.setText(houseNo);
-
-                String doorNo = data.getString(COL_DOOR_NO);
-                _doorNoTextView.setText(doorNo);
-
-                String phone = data.getString(COL_PHONE);
-                if (!phone.startsWith("0") && phone.length() == 10)
-                    phone = "0" + phone;
-                _phoneTextView.setText(phone);
-
-                String phone2 = data.getString(COL_PHONE2);
-                if (!phone2.startsWith("0") && phone2.length() == 10)
-                    phone2 = "0" + phone2;
-                _phone2TextView.setText(phone2);
-
-                int point = data.getInt(COL_POINT);
-                _pointTextView.setText(Integer.toString(point));
+                _pointTextView.setText(data.getString(COL_POINT));
 
                 boolean avp = data.getInt(COL_AVP) == 1;
                 _avpCheckBox.setChecked(avp);

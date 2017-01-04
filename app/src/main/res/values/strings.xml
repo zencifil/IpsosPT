@@ -26,6 +26,7 @@
     <string name="navigation_communication" translatable="false">İletişim</string>
     <string name="navigation_send_mail" translatable="false">E-Posta Gonder</string>
     <string name="navigation_call" translatable="false">Ara</string>
+    <string name="navigation_shipping" translatable="false">Kargo</string>
 
     <string name="action_logout" translatable="false">Çıkış</string>
 
@@ -43,22 +44,19 @@
 
     <!-- Detail form -->
     <string name="form_fam_code" translatable="false">Hane: </string>
-    <string name="form_city" translatable="false">Şehir: </string>
-    <string name="form_town" translatable="false">İlçe: </string>
-    <string name="form_district" translatable="false">Mahalle: </string>
-    <string name="form_street" translatable="false">Cadde: </string>
-    <string name="form_road" translatable="false">Sokak: </string>
-    <string name="form_house_no" translatable="false">Bina No: </string>
-    <string name="form_door_no" translatable="false">Kapı No: </string>
-    <string name="form_phone" translatable="false">Telefon: </string>
-    <string name="form_phone2" translatable="false">Telefon 2: </string>
-    <string name="form_active" translatable="false">Aktif: </string>
+    <string name="form_reg_beg" translatable="false">Kayıt Tarihi: </string>
+    <string name="form_district" translatable="false">İlçe: </string>
+    <string name="form_province" translatable="false">Şehir: </string>
+    <string name="form_neighborhood" translatable="false">Mahalle: </string>
+    <string name="form_address" translatable="false">Adres: </string>
+    <string name="form_landline" translatable="false">Ev Tel: </string>
+    <string name="form_workline" translatable="false">İş Tel: </string>
+    <string name="form_cellular" translatable="false">Cel Tel: </string>
     <string name="form_avp" translatable="false">AVP: </string>
     <string name="form_alk" translatable="false">Alkol: </string>
     <string name="form_sp" translatable="false">SP: </string>
     <string name="form_ek_alkol" translatable="false">Ek Alkol: </string>
     <string name="form_baby" translatable="false">Bebek: </string>
-    <string name="form_visit_day" translatable="false">Ziyaret Günü: </string>
     <string name="form_point" translatable="false">Puan: </string>
     <string name="form_ind_list" translatable="false">Bireyler</string>
     <string name="form_panels" translatable="false">Paneller</string>

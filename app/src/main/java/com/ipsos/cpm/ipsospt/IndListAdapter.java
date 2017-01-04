@@ -8,23 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-/**
- * Created by zencifil on 18/12/2016.
- */
+class IndListAdapter extends CursorAdapter {
 
-public class IndListAdapter extends CursorAdapter {
+    private static class IndViewHolder {
+        final TextView indCodeView;
+        final TextView indNameView;
 
-    public static class IndViewHolder {
-        public final TextView indCodeView;
-        public final TextView indNameView;
-
-        public IndViewHolder (View view) {
+        IndViewHolder (View view) {
             indCodeView = (TextView) view.findViewById(R.id.ind_code_list_item);
             indNameView = (TextView) view.findViewById(R.id.ind_name_list_item);
         }
     }
 
-    public IndListAdapter(Context context, Cursor c, int flags) {
+    IndListAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 

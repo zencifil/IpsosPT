@@ -34,14 +34,14 @@ public class PanelActivity extends FragmentActivity implements LoaderManager.Loa
     private static final int WEEK_LOADER = 1;
 
     private static final String[] PANELTYPES_COLUMNS = {
-            PTContract.PanelsWeeks.TABLE_NAME + "." + PTContract.PanelsWeeks._ID,
-            PTContract.PanelsWeeks.COLUMN_PANEL_TYPE
+            PTContract.PanelWeek.TABLE_NAME + "." + PTContract.PanelWeek._ID,
+            PTContract.PanelWeek.COLUMN_PANEL_TYPE
     };
 
     private static final String[] WEEK_COLUMNS = {
-            PTContract.PanelsWeeks.TABLE_NAME + "." + PTContract.PanelsWeeks._ID,
-            PTContract.PanelsWeeks.COLUMN_WEEK_CODE,
-            PTContract.PanelsWeeks.COLUMN_WEEK_DESC
+            PTContract.PanelWeek.TABLE_NAME + "." + PTContract.PanelWeek._ID,
+            PTContract.PanelWeek.COLUMN_WEEK_CODE,
+            PTContract.PanelWeek.COLUMN_WEEK_DESC
     };
 
     static final int COL_ID = 0;
@@ -103,14 +103,14 @@ public class PanelActivity extends FragmentActivity implements LoaderManager.Loa
         String sortOrder;
         switch (id) {
             case PANELTYPE_LOADER:
-                sortOrder = PTContract.PanelsWeeks.COLUMN_PANEL_TYPE + " ASC";
+                sortOrder = PTContract.PanelWeek.COLUMN_PANEL_TYPE + " ASC";
                 //Uri panelsUri = PTContract.PanelsWeeks.buildPanelsUri(_famCode);
                 //TODO make it famCode dependant
-                Uri panelsUri = PTContract.PanelsWeeks.buildPanelsUri();
+                Uri panelsUri = PTContract.PanelWeek.buildPanelsUri();
                 return new CursorLoader(getApplicationContext(), panelsUri, PANELTYPES_COLUMNS, null, null, sortOrder);
             case WEEK_LOADER:
-                sortOrder = PTContract.PanelsWeeks.COLUMN_WEEK_CODE + " DESC";
-                Uri weeksUri = PTContract.PanelsWeeks.buildWeeksUri(_panelType);
+                sortOrder = PTContract.PanelWeek.COLUMN_WEEK_CODE + " DESC";
+                Uri weeksUri = PTContract.PanelWeek.buildWeeksUri(_panelType);
                 return new CursorLoader(getApplicationContext(), weeksUri, WEEK_COLUMNS, null, null, sortOrder);
             default:
                 return null;
@@ -123,7 +123,7 @@ public class PanelActivity extends FragmentActivity implements LoaderManager.Loa
             ArrayList<String> panelTypes = new ArrayList<>();
             data.moveToFirst();
             while (!data.isAfterLast()) {
-                panelTypes.add(data.getString(data.getColumnIndex(PTContract.PanelsWeeks.COLUMN_PANEL_TYPE)));
+                panelTypes.add(data.getString(data.getColumnIndex(PTContract.PanelWeek.COLUMN_PANEL_TYPE)));
                 data.moveToNext();
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, panelTypes);
@@ -135,9 +135,9 @@ public class PanelActivity extends FragmentActivity implements LoaderManager.Loa
             data.moveToFirst();
             ArrayList<String> weeksArray = new ArrayList<>();
             while (!data.isAfterLast()) {
-                _weeks.put(data.getString(data.getColumnIndex(PTContract.PanelsWeeks.COLUMN_WEEK_DESC)),
-                        data.getInt(data.getColumnIndex(PTContract.PanelsWeeks.COLUMN_WEEK_CODE)));
-                weeksArray.add(data.getString(data.getColumnIndex(PTContract.PanelsWeeks.COLUMN_WEEK_DESC)));
+                _weeks.put(data.getString(data.getColumnIndex(PTContract.PanelWeek.COLUMN_WEEK_DESC)),
+                        data.getInt(data.getColumnIndex(PTContract.PanelWeek.COLUMN_WEEK_CODE)));
+                weeksArray.add(data.getString(data.getColumnIndex(PTContract.PanelWeek.COLUMN_WEEK_DESC)));
                 data.moveToNext();
             }
             ArrayAdapter<String> weeksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, weeksArray);

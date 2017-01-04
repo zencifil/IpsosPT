@@ -38,25 +38,17 @@ public class FamListFragment extends Fragment implements LoaderManager.LoaderCal
             PTContract.Fam.TABLE_NAME + "." + PTContract.Fam._ID,
             PTContract.Fam.COLUMN_FAM_CODE,
             PTContract.Fam.COLUMN_FAM_NAME,
-            PTContract.Fam.COLUMN_CITY,
-            PTContract.Fam.COLUMN_TOWN,
             PTContract.Fam.COLUMN_DISTRICT,
-            PTContract.Fam.COLUMN_STREET,
-            PTContract.Fam.COLUMN_ROAD,
-            PTContract.Fam.COLUMN_HOUSE_NO,
-            PTContract.Fam.COLUMN_DOOR_NO
+            PTContract.Fam.COLUMN_NEIGHBORHOOD,
+            PTContract.Fam.COLUMN_ADDRESS
     };
 
     static final int COL_ID = 0;
     static final int COL_FAM_CODE = 1;
     static final int COL_FAM_NAME = 2;
-    static final int COL_CITY = 3;
-    static final int COL_TOWN = 4;
-    static final int COL_DISTRICT = 5;
-    static final int COL_STREET = 6;
-    static final int COL_ROAD = 7;
-    static final int COL_HOUSE_NO = 8;
-    static final int COL_DOOR_NO = 9;
+    static final int COL_DISTRICT = 3;
+    static final int COL_NEIGHBORHOOD = 4;
+    static final int COL_ADDRESS = 5;
 
     /**
      * A callback interface that all activities containing this fragment must

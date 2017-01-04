@@ -1,6 +1,5 @@
 package com.ipsos.cpm.ipsospt;
 
-
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,10 +15,6 @@ import android.widget.ListView;
 
 import com.ipsos.cpm.ipsospt.Data.PTContract;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class IndListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String LOG_TAG = IndListFragment.class.getSimpleName();
@@ -40,8 +35,6 @@ public class IndListFragment extends Fragment implements LoaderManager.LoaderCal
     static final int COL_FAM_CODE = 1;
     static final int COL_IND_CODE = 2;
     static final int COL_IND_NAME = 3;
-
-
 
     public IndListFragment() {
         // Required empty public constructor

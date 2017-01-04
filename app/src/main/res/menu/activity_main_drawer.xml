@@ -10,6 +10,11 @@
             android:id="@+id/nav_all_list"
             android:icon="@drawable/ic_show_all_fam_list"
             android:title="@string/navigation_show_all" />
+
+        <item
+            android:id="@+id/nav_shipping"
+            android:icon="@drawable/ic_shipping"
+            android:title="@string/navigation_shipping" />
     </group>
 
     <item android:title="@string/navigation_communication">
@@ -20,7 +25,7 @@
                 android:title="@string/navigation_call" />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/ic_send_mail"
+                android:icon="@drawable/ic_email"
                 android:title="@string/navigation_send_mail" />
         </menu>
     </item>

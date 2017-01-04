@@ -1,5 +1,6 @@
 package com.ipsos.cpm.ipsospt;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,24 +16,25 @@ import android.widget.ListView;
 
 import com.ipsos.cpm.ipsospt.Data.PTContract;
 
-public class PanelFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    public static final String LOG_TAG = PanelFragment.class.getSimpleName();
-    private PanelAdapter _panelAdapter;
+public class ShippingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    public static final String LOG_TAG = ShippingFragment.class.getSimpleName();
+    private ShippingAdapter _shippingAdapter;
     private String _famCode;
     private String _panelType;
     private int _weekCode;
 
-    private static final int PANEL_LOADER = 0;
+    private static final int SHIPPING_LOADER = 0;
     //specify the columns we need
-    private static final String[] PANEL_COLUMNS = {
+    private static final String[] SHIPPING_COLUMNS = {
             PTContract.Panel.TABLE_NAME + "." + PTContract.Fam._ID,
             PTContract.Panel.COLUMN_PANEL_TYPE,
             PTContract.Panel.COLUMN_FAM_CODE,
             PTContract.Panel.COLUMN_IND_CODE,
             PTContract.Ind.COLUMN_IND_NAME,
             PTContract.Panel.COLUMN_WEEK_CODE,
-            PTContract.Panel.COLUMN_WEEK_CHECK,
-            PTContract.PanelWeek.COLUMN_WEEK_DESC
+            PTContract.PanelWeek.COLUMN_WEEK_DESC,
+            PTContract.Panel.COLUMN_WEEK_CHECK
     };
 
     static final int COL_ID = 0;
@@ -41,25 +43,25 @@ public class PanelFragment extends Fragment implements LoaderManager.LoaderCallb
     static final int COL_IND_CODE = 3;
     static final int COL_IND_NAME = 4;
     static final int COL_WEEK_CODE = 5;
-    static final int COL_WEEK_CHECK = 6;
-    static final int COL_WEEK_DESC = 7;
+    static final int COL_WEEK_DESC = 6;
+    static final int COL_WEEK_CHECK = 7;
 
-    public PanelFragment() {
-        // Required empty public constructor
+    public ShippingFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        _panelAdapter = new PanelAdapter(getActivity(), null, 0);
-        View rootView = inflater.inflate(R.layout.fragment_panel, container, false);
+        _shippingAdapter = new ShippingAdapter(getActivity(), null, 0);
+        View rootView = inflater.inflate(R.layout.list_item_shipping, container, false);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.panel_list_fragment_panel);
-        listView.setAdapter(_panelAdapter);
+        ListView listView = (ListView) rootView.findViewById(R.id.shipping_fragment_shipping);
+        listView.setAdapter(_shippingAdapter);
 
         return rootView;
     }
@@ -75,36 +77,24 @@ public class PanelFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     public void restartCursorLoader() {
-        getLoaderManager().restartLoader(PANEL_LOADER, null, this);
+        getLoaderManager().restartLoader(SHIPPING_LOADER, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String sortOrder = PTContract.Panel.COLUMN_IND_CODE + " ASC";
-        Uri panelsUri = PTContract.Panel.buildPanelUriWithPanelTypeFamCodeAndWeekCode(_panelType, _famCode, _weekCode);
-        return new CursorLoader(getActivity(), panelsUri, PANEL_COLUMNS, null, null, sortOrder);
+        String sortOrder = PTContract.Panel.COLUMN_FAM_CODE + " ASC ";
+        Uri shippingUri = PTContract.Panel.CONTENT_URI;
+        String selection = PTContract.Panel.COLUMN_WEEK_CHECK + " = 2 ";
+        return new CursorLoader(getActivity(), shippingUri, SHIPPING_COLUMNS, selection, null, sortOrder);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        _panelAdapter.swapCursor(data);
+        _shippingAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        _panelAdapter.swapCursor(null);
+        _shippingAdapter.swapCursor(null);
     }
-
-    public void setFamCode(String famCode) {
-        _famCode = famCode;
-    }
-
-    public void setPanelType(String panelType) {
-        _panelType = panelType;
-    }
-
-    public void setWeekCode(int weekCode) {
-        _weekCode = weekCode;
-    }
-
 }

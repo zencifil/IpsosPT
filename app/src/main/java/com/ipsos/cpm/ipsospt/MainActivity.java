@@ -169,11 +169,22 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_all_list) {
             _daysSpinner.setSelection(0);
         }
+        else if (id == R.id.nav_shipping) {
+            Intent intent = new Intent(getApplicationContext(), ShippingActivity.class);
+            startActivity(intent);
+        }
         else if (id == R.id.nav_call) {
-
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:05359348602"));
+            startActivity(Intent.createChooser(intent, "Ara"));
         }
         else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("plain/text");
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "savas.cilve@ipsos.com" });
+            intent.putExtra(Intent.EXTRA_SUBJECT, "subject");
+            intent.putExtra(Intent.EXTRA_TEXT, "mail body");
+            startActivity(Intent.createChooser(intent, "E-posta gonder"));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

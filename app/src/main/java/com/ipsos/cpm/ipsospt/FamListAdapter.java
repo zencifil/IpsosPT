@@ -8,25 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-/**
- * Created by zencifil on 29/11/2016.
- */
+class FamListAdapter extends CursorAdapter {
 
-public class FamListAdapter extends CursorAdapter {
+    private static class ViewHolder {
+        final TextView famCodeView;
+        final TextView famNameView;
+        final TextView addressView;
 
-    public static class ViewHolder {
-        public final TextView famCodeView;
-        public final TextView famNameView;
-        public final TextView addressView;
-
-        public ViewHolder (View view) {
+        ViewHolder (View view) {
             famCodeView = (TextView) view.findViewById(R.id.fam_code_list_item);
             famNameView = (TextView) view.findViewById(R.id.fam_name_list_item);
             addressView = (TextView) view.findViewById(R.id.fam_address_list_item);
         }
     }
 
-    public FamListAdapter(Context context, Cursor c, int flags) {
+    FamListAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
@@ -53,39 +49,8 @@ public class FamListAdapter extends CursorAdapter {
     }
 
     private String joinAddressColumns(Cursor cursor) {
-        String city = cursor.getString(FamListFragment.COL_CITY);
-        String town = cursor.getString(FamListFragment.COL_TOWN);
-        String district = cursor.getString(FamListFragment.COL_DISTRICT);
-        String street = cursor.getString(FamListFragment.COL_STREET);
-        String road = cursor.getString(FamListFragment.COL_ROAD);
-        String houseNo = cursor.getString(FamListFragment.COL_HOUSE_NO);
-        String doorNo = cursor.getString(FamListFragment.COL_DOOR_NO);
-
-        String address = district + " ";
-        if (street != null && !street.isEmpty()) {
-            if (!street.contains("Cad.") && !street.contains("CAD.") && !street.contains("Caddesi") && !street.contains("CADDESI"))
-                street += " Cad.";
-            address += street + " ";
-        }
-        if (road != null && !road.isEmpty()) {
-            if (!road.contains("Sok.") && !road.contains("SOK.") && !road.contains("Sokak") && !road.contains("SOKAK") && !road.contains("Sokağı") && !road.contains("SOKAĞI"))
-                road += " Sok.";
-            address += road + " ";
-        }
-        if (houseNo != null && !houseNo.isEmpty()) {
-            if (houseNo.matches("^\\d+$"))
-                houseNo = "No: " + houseNo;
-            address += houseNo + " ";
-        }
-        if (doorNo != null && !doorNo.isEmpty()) {
-            if (doorNo.matches("^\\d+$"))
-                doorNo = "D: " + doorNo;
-            address += doorNo + " ";
-        }
-
-        address += town + " ";
-        address += city;
-
-        return address;
+        return cursor.getString(FamListFragment.COL_NEIGHBORHOOD) + " " +
+                cursor.getString(FamListFragment.COL_ADDRESS) + " " +
+                cursor.getString(FamListFragment.COL_DISTRICT);
     }
 }

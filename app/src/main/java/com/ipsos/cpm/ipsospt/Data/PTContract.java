@@ -15,11 +15,12 @@ public class PTContract {
     public static final String CONTENT_AUTHORITY = "com.ipsos.cpm.ipsospt";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final String PATH_FAMILY = "fam";
-    public static final String PATH_FLD = "fld";
-    public static final String PATH_IND = "ind";
-    public static final String PATH_PANEL = "panel";
-    public static final String PATH_PANELS_WEEKS = "panels_weeks";
+    public static final String PATH_FAMILY = "FAM00";
+    public static final String PATH_FLD = "FLD00";
+    public static final String PATH_IND = "IND00";
+    public static final String PATH_PANEL = "PANEL";
+    public static final String PATH_PANEL_WEEK = "PANEL_WEEK";
+    public static final String PATH_LOG = "LOG";
 
     public static final class Fam implements BaseColumns {
 
@@ -31,29 +32,31 @@ public class PTContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FAMILY;
 
-        public static final String TABLE_NAME = "fam";
+        public static final String TABLE_NAME = "FAM00";
 
-        public static final String COLUMN_FAM_CODE = "fam_code";
-        public static final String COLUMN_FAM_NAME = "fam_name";
-        public static final String COLUMN_CITY = "city";
-        public static final String COLUMN_TOWN = "town";
-        public static final String COLUMN_DISTRICT = "district";
-        public static final String COLUMN_STREET = "street";
-        public static final String COLUMN_ROAD = "road";
-        public static final String COLUMN_HOUSE_NO = "house_no";
-        public static final String COLUMN_DOOR_NO = "door_no";
-        public static final String COLUMN_PHONE = "phone";
-        public static final String COLUMN_PHONE2 = "phone2";
-        public static final String COLUMN_FLD_CODE = "fld_code";
-        public static final String COLUMN_VISIT_DAY = "visit_day";
-        public static final String COLUMN_AVP = "avp";
-        public static final String COLUMN_SP = "sp";
-        public static final String COLUMN_ALK = "alk";
-        public static final String COLUMN_BABY = "baby";
-        //public static final String COLUMN_HP = "hp";
-        public static final String COLUMN_EK_ALK = "ek_alk";
-        public static final String COLUMN_ACTIVE = "active";
-        public static final String COLUMN_POINT = "point";
+        public static final String COLUMN_COUNTRY_CODE = "COUNTRY_CODE";
+        public static final String COLUMN_FAM_CODE = "FAM00_CODE";
+        public static final String COLUMN_FAM_NAME = "FAM00_NAME";
+        public static final String COLUMN_REG_BEG = "FAM00_REG_BEG";
+        public static final String COLUMN_DISTRICT = "FAM00_DISTRICT";
+        public static final String COLUMN_PROVINCE = "FAM00_PROVINCE";
+        public static final String COLUMN_NEIGHBORHOOD = "FAM00_NEIGHBORHOOD";
+        public static final String COLUMN_ADDRESS = "FAM00_ADDRESS";
+        public static final String COLUMN_LANDLINE = "FAM00_LANDLINE";
+        public static final String COLUMN_WORKLINE = "FAM00_WORKLINE";
+        public static final String COLUMN_CELLULAR = "FAM00_CELLULAR";
+        public static final String COLUMN_FLD_CODE = "FAM00_FLD00_CODE";
+        public static final String COLUMN_VISIT_DAY = "FAM00_VISIT_DAY";
+        public static final String COLUMN_AVP = "FAM00_AVP";
+        public static final String COLUMN_ALK = "FAM00_ALK";
+        public static final String COLUMN_SP = "FAM00_SP";
+        public static final String COLUMN_EK_ALK = "FAM00_EK_ALK";
+        public static final String COLUMN_BABY = "FAM00_BABY";
+        public static final String COLUMN_POINT = "FAM00_POINT";
+        public static final String COLUMN_ISUSER = "FAM00_ISUSER";
+        public static final String COLUMN_ACTIVE = "FAM00_ACTIVE";
+        public static final String COLUMN_SYNC = "FAM00_SYNC";
+        public static final String COLUMN_SYNC_DATE = "FAM00_SYNC_DATE";
 
         public static Uri buildFamilyUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -89,15 +92,21 @@ public class PTContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FLD;
 
-        public static final String TABLE_NAME = "fld";
+        public static final String TABLE_NAME = "FLD00";
 
-        public static final String COLUMN_FLD_CODE = "fld_code";
-        public static final String COLUMN_FLD_NAME = "fld_name";
-        public static final String COLUMN_CITY = "city";
-        public static final String COLUMN_PHONE = "phone";
-        public static final String COLUMN_PHONE2 = "phone2";
-        public static final String COLUMN_EMAIL = "email";
-        public static final String COLUMN_EMAIL2 = "email2";
+        public static final String COLUMN_COUNTRY_CODE = "COUNTRY_CODE";
+        public static final String COLUMN_FLD_CODE = "FLD00_CODE";
+        public static final String COLUMN_FLD_NAME = "FLD00_NAMESURNAME";
+        public static final String COLUMN_PROVINCE = "FLD00_PROVINCE";
+        public static final String COLUMN_REGION = "FLD00_REGION";
+        public static final String COLUMN_PHONE = "FLD00_PHONE";
+        public static final String COLUMN_PHONE2 = "FLD00_PHONE2";
+        public static final String COLUMN_EMAIL = "FLD00_EMAIL";
+        public static final String COLUMN_EMAIL2 = "FLD00_EMAIL2";
+        public static final String COLUMN_ISUSER = "FLD00_ISUSER";
+        public static final String COLUMN_ACTIVE = "FLD00_ACTIVE";
+        public static final String COLUMN_SYNC = "FLD00_SYNC";
+        public static final String COLUMN_SYNC_DATE = "FLD00_SYNC_DATE";
 
         public static Uri buildFldUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -114,18 +123,23 @@ public class PTContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_IND;
 
-        public static final String TABLE_NAME = "ind";
+        public static final String TABLE_NAME = "IND00";
 
-        public static final String COLUMN_FAM_CODE = "fam_code";
-        public static final String COLUMN_IND_CODE = "ind_code";
-        public static final String COLUMN_IND_NAME = "ind_name";
-        public static final String COLUMN_PHONE = "phone";
-        public static final String COLUMN_PHONE2 = "phone2";
-        public static final String COLUMN_EMAIL = "email";
-        public static final String COLUMN_EMAIL2 = "email2";
-        public static final String COLUMN_SP = "sp"; //sigara
-        public static final String COLUMN_ALK = "alk"; //alkol gunluk
-        public static final String COLUMN_FP = "fp"; //ucus paneli
+        public static final String COLUMN_COUNTRY_CODE = "COUNTRY_CODE";
+        public static final String COLUMN_FAM_CODE = "FAM00_CODE";
+        public static final String COLUMN_IND_CODE = "IND00_CODE";
+        public static final String COLUMN_IND_NAME = "IND00_NAME";
+        public static final String COLUMN_DOB = "IND00_DOB";
+        public static final String COLUMN_PHONE = "IND00_PHONE";
+        public static final String COLUMN_PHONE2 = "IND00_PHONE2";
+        public static final String COLUMN_EMAIL = "IND00_EMAIL";
+        public static final String COLUMN_EMAIL2 = "IND00_EMAIL2";
+        public static final String COLUMN_SP = "IND00_SP"; //sigara
+        public static final String COLUMN_ALK = "IND00_ALK"; //alkol gunluk
+        public static final String COLUMN_ISUSER = "IND00_ISUSER";
+        public static final String COLUMN_ACTIVE = "IND00_ACTIVE";
+        public static final String COLUMN_SYNC = "IND00_SYNC";
+        public static final String COLUMN_SYNC_DATE = "IND00_SYNC_DATE";
 
         public static Uri buildIndUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -154,15 +168,17 @@ public class PTContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANEL;
 
-        public static final String TABLE_NAME = "panel";
+        public static final String TABLE_NAME = "PANEL";
 
-        public static final String COLUMN_FLD_CODE = "fld_code";
-        public static final String COLUMN_PANEL_TYPE = "panel_type";
-        public static final String COLUMN_FAM_CODE = "fam_code";
-        public static final String COLUMN_IND_CODE = "ind_code";
-        public static final String COLUMN_IND_NAME = "ind_name";
-        public static final String COLUMN_WEEK_CODE = "week_code";
-        public static final String COLUMN_WEEK_CHECK = "week_check";
+        public static final String COLUMN_COUNTRY_CODE = "COUNTRY_CODE";
+        public static final String COLUMN_FLD_CODE = "FLD00_CODE";
+        public static final String COLUMN_PANEL_TYPE = "PANEL_TYPE";
+        public static final String COLUMN_FAM_CODE = "FAM00_CODE";
+        public static final String COLUMN_IND_CODE = "IND00_CODE";
+        public static final String COLUMN_WEEK_CODE = "WEEK_CODE";
+        public static final String COLUMN_WEEK_CHECK = "WEEK_CHECK";
+        public static final String COLUMN_SYNC = "PANEL_SYNC";
+        public static final String COLUMN_SYNC_DATE = "PANEL_SYNC_DATE";
 
         public static Uri buildPanelUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -185,23 +201,26 @@ public class PTContract {
         }
     }
 
-    public static final class PanelsWeeks implements BaseColumns {
+    public static final class PanelWeek implements BaseColumns {
 
         public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PANELS_WEEKS).build();
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PANEL_WEEK).build();
         public static final String CONTENT_DIR_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANELS_WEEKS;
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANEL_WEEK;
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANELS_WEEKS;
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANEL_WEEK;
 
-        public static final String TABLE_NAME = "panels_weeks";
+        public static final String TABLE_NAME = "PANEL_WEEK";
 
-        public static final String COLUMN_PANEL_TYPE = "panel_type";
-        public static final String COLUMN_WEEK_CODE = "week_code";
-        public static final String COLUMN_WEEK_DESC = "week_desc";
-        public static final String COLUMN_START_DATE = "start_date";
-        public static final String COLUMN_END_DATE = "end_date";
-        public static final String COLUMN_ACTIVE = "active";
+        public static final String COLUMN_COUNTRY_CODE = "COUNTRY_CODE";
+        public static final String COLUMN_PANEL_TYPE = "PANEL_TYPE";
+        public static final String COLUMN_WEEK_CODE = "WEEK_CODE";
+        public static final String COLUMN_WEEK_DESC = "WEEK_DESC";
+        public static final String COLUMN_START_DATE = "START_DATE";
+        public static final String COLUMN_END_DATE = "END_DATE";
+        public static final String COLUMN_ACTIVE = "ACTIVE";
+        public static final String COLUMN_SYNC = "PANEL_WEEK_SYNC";
+        public static final String COLUMN_SYNC_DATE = "PANEL_WEEK_SYNC_DATE";
 
         public static Uri buildPanelsWeeksUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -220,4 +239,25 @@ public class PTContract {
         }
     }
 
+    public static final class Log implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOG).build();
+        public static final String CONTENT_DIR_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_LOG;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_LOG;
+
+        public static final String TABLE_NAME = "LOG";
+
+        public static final String COLUMN_COUNTRY_CODE = "COUNTRY_CODE";
+        public static final String COLUMN_LOG_TYPE = "LOG_TYPE";
+        public static final String COLUMN_LOG_MESSAGE = "LOG_MESSAGE";
+        public static final String COLUMN_LOG_DATE = "LOG_DATE";
+        public static final String COLUMN_VERSION = "VERSION";
+        public static final String COLUMN_USER = "USER";
+        public static final String COLUMN_ACTIVITY = "ACTIVITY";
+        public static final String COLUMN_SYNC = "LOG_SYNC";
+        public static final String COLUMN_SYNC_DATE = "LOG_SYNC_DATE";
+    }
 }

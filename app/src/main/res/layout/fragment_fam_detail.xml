@@ -18,21 +18,13 @@
                 android:id="@+id/famDetailFamCode"
                 style="@style/FamDetailText" />
         </LinearLayout>
-        <!--<LinearLayout style="@style/FamDetailHorizontalLayout">-->
-            <!--<TextView-->
-                <!--android:text="@string/form_city"-->
-                <!--style="@style/FamDetailTextLabel"/>-->
-            <!--<TextView-->
-                <!--android:id="@+id/famDetailCity"-->
-                <!--style="@style/FamDetailText"/>-->
-        <!--</LinearLayout>-->
         <LinearLayout style="@style/FamDetailHorizontalLayout">
             <TextView
-                android:text="@string/form_town"
+                android:text="@string/form_reg_beg"
                 style="@style/FamDetailTextLabel"/>
             <TextView
-                android:id="@+id/famDetailTown"
-                style="@style/FamDetailText"/>
+                android:id="@+id/famDetailRegBeg"
+                style="@style/FamDetailText" />
         </LinearLayout>
         <LinearLayout style="@style/FamDetailHorizontalLayout">
             <TextView
@@ -44,71 +36,47 @@
         </LinearLayout>
         <LinearLayout style="@style/FamDetailHorizontalLayout">
             <TextView
-                android:text="@string/form_street"
+                android:text="@string/form_neighborhood"
                 style="@style/FamDetailTextLabel"/>
             <TextView
-                android:id="@+id/famDetailStreet"
+                android:id="@+id/famDetailNeighborhood"
                 style="@style/FamDetailText"/>
         </LinearLayout>
         <LinearLayout style="@style/FamDetailHorizontalLayout">
             <TextView
-                android:text="@string/form_road"
+                android:text="@string/form_address"
                 style="@style/FamDetailTextLabel"/>
             <TextView
-                android:id="@+id/famDetailRoad"
+                android:id="@+id/famDetailAddress"
                 style="@style/FamDetailText"/>
         </LinearLayout>
         <LinearLayout style="@style/FamDetailHorizontalLayout">
             <TextView
-                android:text="@string/form_house_no"
+                android:text="@string/form_landline"
                 style="@style/FamDetailTextLabel"/>
             <TextView
-                android:id="@+id/famDetailHouseNo"
-                style="@style/FamDetailText"/>
-        </LinearLayout>
-        <LinearLayout style="@style/FamDetailHorizontalLayout">
-            <TextView
-                android:text="@string/form_door_no"
-                style="@style/FamDetailTextLabel"/>
-            <TextView
-                android:id="@+id/famDetailDoorNo"
-                style="@style/FamDetailText"/>
-        </LinearLayout>
-        <LinearLayout style="@style/FamDetailHorizontalLayout">
-            <TextView
-                android:text="@string/form_phone"
-                style="@style/FamDetailTextLabel"/>
-            <TextView
-                android:id="@+id/famDetailPhone"
+                android:id="@+id/famDetailLandLine"
                 android:autoLink="phone"
                 style="@style/FamDetailText"/>
         </LinearLayout>
         <LinearLayout style="@style/FamDetailHorizontalLayout">
             <TextView
-                android:text="@string/form_phone2"
+                android:text="@string/form_workline"
                 style="@style/FamDetailTextLabel"/>
             <TextView
-                android:id="@+id/famDetailPhone2"
+                android:id="@+id/famDetailWorkLine"
                 android:autoLink="phone"
                 style="@style/FamDetailText"/>
         </LinearLayout>
-        <!--<LinearLayout style="@style/FamDetailHorizontalLayout">-->
-            <!--<TextView-->
-                <!--android:text="@string/form_active"-->
-                <!--style="@style/FamDetailTextLabel"/>-->
-            <!--<CheckBox-->
-                <!--android:id="@+id/famDetailActive"-->
-                <!--android:enabled="false"-->
-                <!--style="@style/FamDetailText"/>-->
-        <!--</LinearLayout>-->
-        <!--<LinearLayout style="@style/FamDetailHorizontalLayout">-->
-            <!--<TextView-->
-                <!--android:text="@string/form_visit_day"-->
-                <!--style="@style/FamDetailTextLabel"/>-->
-            <!--<TextView-->
-                <!--android:id="@+id/famDetailVisitDay"-->
-                <!--style="@style/FamDetailText"/>-->
-        <!--</LinearLayout>-->
+        <LinearLayout style="@style/FamDetailHorizontalLayout">
+            <TextView
+                android:text="@string/form_cellular"
+                style="@style/FamDetailTextLabel"/>
+            <TextView
+                android:id="@+id/famDetailCellular"
+                android:autoLink="phone"
+                style="@style/FamDetailText"/>
+        </LinearLayout>
         <LinearLayout style="@style/FamDetailHorizontalLayout">
             <TextView
                 android:text="@string/form_point"
