@@ -27,18 +27,21 @@ public class PTProvider extends ContentProvider {
     static final int PANEL_BY_PANELTYPE_FAMCODE_AND_WEEKCODE = 301;
     static final int PANEL_WEEK = 400;
     static final int PANEL_WEEK_BY_PANEL_TYPE = 401;
+    static final int LOG = 500;
 
     private static final SQLiteQueryBuilder _famQueryBuilder;
     private static final SQLiteQueryBuilder _indQueryBuilder;
     private static final SQLiteQueryBuilder _fldQueryBuilder;
     private static final SQLiteQueryBuilder _panelQueryBuilder;
     private static final SQLiteQueryBuilder _panelWeekQueryBuilder;
+    private static final SQLiteQueryBuilder _logQueryBuilder;
     static {
         _famQueryBuilder = new SQLiteQueryBuilder();
         _indQueryBuilder = new SQLiteQueryBuilder();
         _fldQueryBuilder = new SQLiteQueryBuilder();
         _panelQueryBuilder = new SQLiteQueryBuilder();
         _panelWeekQueryBuilder = new SQLiteQueryBuilder();
+        _logQueryBuilder = new SQLiteQueryBuilder();
 
         _famQueryBuilder.setTables(PTContract.Fam.TABLE_NAME);
         _indQueryBuilder.setTables(PTContract.Ind.TABLE_NAME);
@@ -55,6 +58,7 @@ public class PTProvider extends ContentProvider {
                 PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_IND_CODE + " = " +
                 PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_IND_NAME );
         _panelWeekQueryBuilder.setTables(PTContract.PanelWeek.TABLE_NAME);
+        _logQueryBuilder.setTables(PTContract.Log.TABLE_NAME);
     }
 
     private static final String _familyByVisitDaySelection =
@@ -158,6 +162,7 @@ public class PTProvider extends ContentProvider {
         matcher.addURI(authority, PTContract.PATH_PANEL + "/*/*/#", PANEL_BY_PANELTYPE_FAMCODE_AND_WEEKCODE);
         matcher.addURI(authority, PTContract.PATH_PANEL_WEEK, PANEL_WEEK);
         matcher.addURI(authority, PTContract.PATH_PANEL_WEEK + "/*", PANEL_WEEK_BY_PANEL_TYPE);
+        matcher.addURI(authority, PTContract.PATH_LOG, LOG);
 
         return matcher;
     }
@@ -263,6 +268,13 @@ public class PTProvider extends ContentProvider {
                 id = db.insert(PTContract.PanelWeek.TABLE_NAME, null, contentValues);
                 if (id > 0)
                     returnUri = PTContract.PanelWeek.buildPanelsWeeksUri(id);
+                else
+                    throw new SQLException("Failed to insert row into " + uri);
+                break;
+            case LOG:
+                id = db.insert(PTContract.Log.TABLE_NAME, null, contentValues);
+                if (id > 0)
+                    returnUri = PTContract.Log.buildLogUri(id);
                 else
                     throw new SQLException("Failed to insert row into " + uri);
                 break;

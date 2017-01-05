@@ -1,10 +1,13 @@
 package com.ipsos.cpm.ipsospt.Data;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
+import java.security.PublicKey;
 import java.util.HashSet;
 
 /**
@@ -63,6 +66,7 @@ public class TestDb extends AndroidTestCase {
         famColumnHashSet.add(PTContract.Fam.COLUMN_COUNTRY_CODE);
         famColumnHashSet.add(PTContract.Fam.COLUMN_FAM_CODE);
         famColumnHashSet.add(PTContract.Fam.COLUMN_FAM_NAME);
+        famColumnHashSet.add(PTContract.Fam.COLUMN_REG_BEG);
         famColumnHashSet.add(PTContract.Fam.COLUMN_DISTRICT);
         famColumnHashSet.add(PTContract.Fam.COLUMN_PROVINCE);
         famColumnHashSet.add(PTContract.Fam.COLUMN_NEIGHBORHOOD);
@@ -203,7 +207,7 @@ public class TestDb extends AndroidTestCase {
         c = db.rawQuery("PRAGMA table_info(" + PTContract.Log.TABLE_NAME + ")", null);
         assertTrue("Error: This means that we were unable to query the database for PANEL_WEEK table information.", c.moveToFirst());
 
-        Log.d(LOG_TAG, "checking columns for PANEL_WEEK table");
+        Log.d(LOG_TAG, "checking columns for LOG table");
         final HashSet<String> logColumnHashSet = new HashSet<>();
         logColumnHashSet.add(PTContract.Log._ID);
         logColumnHashSet.add(PTContract.Log.COLUMN_COUNTRY_CODE);
@@ -213,6 +217,8 @@ public class TestDb extends AndroidTestCase {
         logColumnHashSet.add(PTContract.Log.COLUMN_VERSION);
         logColumnHashSet.add(PTContract.Log.COLUMN_USER);
         logColumnHashSet.add(PTContract.Log.COLUMN_ACTIVITY);
+        logColumnHashSet.add(PTContract.Log.COLUMN_SYNC);
+        logColumnHashSet.add(PTContract.Log.COLUMN_SYNC_DATE);
 
         columnNameIndex = c.getColumnIndex("name");
         do {
@@ -226,5 +232,147 @@ public class TestDb extends AndroidTestCase {
         db.close();
     }
 
+    public void testFamInsertData() throws Throwable {
+        SQLiteDatabase db = new PTDbHelper(this.mContext).getWritableDatabase();
+        assertEquals(true, db.isOpen());
 
+        Uri uri = PTContract.Fam.CONTENT_URI;
+        ContentValues values = new ContentValues();
+        values.put(PTContract.Fam.COLUMN_COUNTRY_CODE, "TR");
+        values.put(PTContract.Fam.COLUMN_FAM_CODE, "01W1048");
+        values.put(PTContract.Fam.COLUMN_FAM_NAME, "TEST HANESI");
+        values.put(PTContract.Fam.COLUMN_REG_BEG, "10.05.2012");
+        values.put(PTContract.Fam.COLUMN_DISTRICT, "ADALAR");
+        values.put(PTContract.Fam.COLUMN_PROVINCE, "ISTANBUL");
+        values.put(PTContract.Fam.COLUMN_NEIGHBORHOOD, "HEYBELIADA");
+        values.put(PTContract.Fam.COLUMN_ADDRESS, "HEYBETLI CAD. HEYBECI SOK. NO:2 D:3");
+        values.put(PTContract.Fam.COLUMN_LANDLINE, "02165871030");
+        values.put(PTContract.Fam.COLUMN_WORKLINE, "");
+        values.put(PTContract.Fam.COLUMN_CELLULAR, "05359348602");
+        values.put(PTContract.Fam.COLUMN_FLD_CODE, "G5");
+        values.put(PTContract.Fam.COLUMN_VISIT_DAY, "4");
+        values.put(PTContract.Fam.COLUMN_AVP, "1");
+        values.put(PTContract.Fam.COLUMN_ALK, "0");
+        values.put(PTContract.Fam.COLUMN_SP, "1");
+        values.put(PTContract.Fam.COLUMN_EK_ALK, "0");
+        values.put(PTContract.Fam.COLUMN_BABY, "0");
+        values.put(PTContract.Fam.COLUMN_POINT, "4724");
+        values.put(PTContract.Fam.COLUMN_ISUSER, "1");
+        values.put(PTContract.Fam.COLUMN_ACTIVE, "1");
+        values.put(PTContract.Fam.COLUMN_SYNC, "0");
+        values.put(PTContract.Fam.COLUMN_SYNC_DATE, "");
+
+        Uri returnUri = getContext().getContentResolver().insert(uri, values);
+        assertTrue("FAM00 insert failed!", returnUri == null);
+    }
+
+    public void testIndInsertData() throws Throwable {
+        SQLiteDatabase db = new PTDbHelper(this.mContext).getWritableDatabase();
+        assertEquals(true, db.isOpen());
+
+        Uri uri = PTContract.Ind.CONTENT_URI;
+        ContentValues values = new ContentValues();
+        values.put(PTContract.Ind.COLUMN_COUNTRY_CODE, "TR");
+        values.put(PTContract.Ind.COLUMN_FAM_CODE, "01W1048");
+        values.put(PTContract.Ind.COLUMN_IND_CODE, "1");
+        values.put(PTContract.Ind.COLUMN_IND_NAME, "TEST BIREY");
+        values.put(PTContract.Ind.COLUMN_DOB, "01.01.1990");
+        values.put(PTContract.Ind.COLUMN_PHONE, "05359348602");
+        values.put(PTContract.Ind.COLUMN_PHONE2, "");
+        values.put(PTContract.Ind.COLUMN_EMAIL, "ALI@VELI.COM");
+        values.put(PTContract.Ind.COLUMN_EMAIL2, "");
+        values.put(PTContract.Ind.COLUMN_SP, "0");
+        values.put(PTContract.Ind.COLUMN_ALK, "0");
+        values.put(PTContract.Ind.COLUMN_ISUSER, "1");
+        values.put(PTContract.Ind.COLUMN_ACTIVE, "1");
+        values.put(PTContract.Ind.COLUMN_SYNC, "0");
+        values.put(PTContract.Ind.COLUMN_SYNC_DATE, "");
+
+        Uri returnUri = getContext().getContentResolver().insert(uri, values);
+        assertTrue("IND00 insert failed!", returnUri == null);
+    }
+
+    public void testFldInsertData() throws Throwable {
+        SQLiteDatabase db = new PTDbHelper(this.mContext).getWritableDatabase();
+        assertEquals(true, db.isOpen());
+
+        Uri uri = PTContract.Fld.CONTENT_URI;
+        ContentValues values = new ContentValues();
+        values.put(PTContract.Fld.COLUMN_COUNTRY_CODE, "TR");
+        values.put(PTContract.Fld.COLUMN_FLD_CODE, "G5");
+        values.put(PTContract.Fld.COLUMN_FLD_NAME, "ALI VELI");
+        values.put(PTContract.Fld.COLUMN_PROVINCE, "ISTANBUL");
+        values.put(PTContract.Fld.COLUMN_REGION, "ANADOLU");
+        values.put(PTContract.Fld.COLUMN_PHONE, "05359348602");
+        values.put(PTContract.Fld.COLUMN_PHONE2, "");
+        values.put(PTContract.Fld.COLUMN_EMAIL, "ALI@VELI.COM");
+        values.put(PTContract.Fld.COLUMN_EMAIL2, "");
+        values.put(PTContract.Fld.COLUMN_ISUSER, "1");
+        values.put(PTContract.Fld.COLUMN_ACTIVE, "1");
+        values.put(PTContract.Fld.COLUMN_SYNC, "0");
+        values.put(PTContract.Fld.COLUMN_SYNC_DATE, "");
+
+        Uri returnUri = getContext().getContentResolver().insert(uri, values);
+        assertTrue("FLD00 insert failed!", returnUri == null);
+    }
+
+    public void testPanelInsertData() throws Throwable {
+        SQLiteDatabase db = new PTDbHelper(this.mContext).getWritableDatabase();
+        assertEquals(true, db.isOpen());
+
+        Uri uri = PTContract.Panel.CONTENT_URI;
+        ContentValues values = new ContentValues();
+        values.put(PTContract.Panel.COLUMN_COUNTRY_CODE, "TR");
+        values.put(PTContract.Panel.COLUMN_FLD_CODE, "G5");
+        values.put(PTContract.Panel.COLUMN_PANEL_TYPE, "AVP");
+        values.put(PTContract.Panel.COLUMN_FAM_CODE, "01W1049");
+        values.put(PTContract.Panel.COLUMN_IND_CODE, "0");
+        values.put(PTContract.Panel.COLUMN_WEEK_CODE, "7162");
+        values.put(PTContract.Panel.COLUMN_WEEK_CHECK, "0");
+        values.put(PTContract.Panel.COLUMN_SYNC, "0");
+        values.put(PTContract.Panel.COLUMN_SYNC_DATE, "");
+
+        Uri returnUri = getContext().getContentResolver().insert(uri, values);
+        assertTrue("PANEL insert failed!", returnUri == null);
+    }
+
+    public void testPanelWeekInsertData() throws Throwable {
+        SQLiteDatabase db = new PTDbHelper(this.mContext).getWritableDatabase();
+        assertEquals(true, db.isOpen());
+
+        Uri uri = PTContract.PanelWeek.CONTENT_URI;
+        ContentValues values = new ContentValues();
+        values.put(PTContract.PanelWeek.COLUMN_COUNTRY_CODE, "TR");
+        values.put(PTContract.PanelWeek.COLUMN_PANEL_TYPE, "AVP");
+        values.put(PTContract.PanelWeek.COLUMN_WEEK_CODE, "7162");
+        values.put(PTContract.PanelWeek.COLUMN_WEEK_DESC, "15 - 21 HAFTASI");
+        values.put(PTContract.PanelWeek.COLUMN_START_DATE, "15");
+        values.put(PTContract.PanelWeek.COLUMN_END_DATE, "21");
+        values.put(PTContract.PanelWeek.COLUMN_ACTIVE, "1");
+        values.put(PTContract.PanelWeek.COLUMN_SYNC, "0");
+        values.put(PTContract.PanelWeek.COLUMN_SYNC_DATE, "");
+
+        Uri returnUri = getContext().getContentResolver().insert(uri, values);
+        assertTrue("PANEL WEEK insert failed!", returnUri == null);
+    }
+
+    public void testLogInsertData() throws Throwable {
+        SQLiteDatabase db = new PTDbHelper(this.mContext).getWritableDatabase();
+        assertEquals(true, db.isOpen());
+
+        Uri uri = PTContract.Log.CONTENT_URI;
+        ContentValues values = new ContentValues();
+        values.put(PTContract.Log.COLUMN_COUNTRY_CODE, "TR");
+        values.put(PTContract.Log.COLUMN_LOG_TYPE, "ERROR");
+        values.put(PTContract.Log.COLUMN_LOG_MESSAGE, "TEST");
+        values.put(PTContract.Log.COLUMN_LOG_DATE, "05.01.2017");
+        values.put(PTContract.Log.COLUMN_VERSION, "1.0.0");
+        values.put(PTContract.Log.COLUMN_USER, "ALI");
+        values.put(PTContract.Log.COLUMN_ACTIVITY, "LOGIN");
+        values.put(PTContract.Log.COLUMN_SYNC, "0");
+        values.put(PTContract.Log.COLUMN_SYNC_DATE, "");
+
+        Uri returnUri = getContext().getContentResolver().insert(uri, values);
+        assertTrue("LOG insert failed!", returnUri == null);
+    }
 }

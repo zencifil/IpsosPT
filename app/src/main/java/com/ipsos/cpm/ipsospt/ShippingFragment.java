@@ -58,9 +58,9 @@ public class ShippingFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         _shippingAdapter = new ShippingAdapter(getActivity(), null, 0);
-        View rootView = inflater.inflate(R.layout.list_item_shipping, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_shipping, container, false);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.shipping_fragment_shipping);
+        ListView listView = (ListView) rootView.findViewById(R.id.shipping_list_fragment);
         listView.setAdapter(_shippingAdapter);
 
         return rootView;

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 class ShippingAdapter extends CursorAdapter {
 
-    static class ShippingViewHolder {
+    private static class ShippingViewHolder {
         final TextView famCodeView;
         final TextView panelTypeView;
         final TextView weekDescView;
@@ -22,7 +22,7 @@ class ShippingAdapter extends CursorAdapter {
         }
     }
 
-    public ShippingAdapter(Context context, Cursor c, int flags) {
+    ShippingAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
@@ -43,11 +43,12 @@ class ShippingAdapter extends CursorAdapter {
         String famCode = cursor.getString(ShippingFragment.COL_FAM_CODE);
         int indCode = cursor.getInt(ShippingFragment.COL_IND_CODE);
         String indName = cursor.getString(ShippingFragment.COL_IND_NAME);
-        viewHolder.famCodeView.setText(famCode);
-        String famName = cursor.getString(ShippingFragment.COL_PANEL_TYPE);
-        viewHolder.panelTypeView.setText(famName);
-        String address = cursor.getString(ShippingFragment.COL_WEEK_DESC);
-        viewHolder.weekDescView.setText(address);
+        if (indCode == 0)
+            viewHolder.famCodeView.setText(famCode);
+        else
+            viewHolder.famCodeView.setText(Integer.toString(indCode) + " - " + indName);
+        viewHolder.panelTypeView.setText(cursor.getString(ShippingFragment.COL_PANEL_TYPE));
+        viewHolder.weekDescView.setText(cursor.getString(ShippingFragment.COL_WEEK_DESC));
     }
 
 }

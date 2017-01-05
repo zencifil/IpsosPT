@@ -259,5 +259,9 @@ public class PTContract {
         public static final String COLUMN_ACTIVITY = "ACTIVITY";
         public static final String COLUMN_SYNC = "LOG_SYNC";
         public static final String COLUMN_SYNC_DATE = "LOG_SYNC_DATE";
+
+        public static Uri buildLogUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
     }
 }
