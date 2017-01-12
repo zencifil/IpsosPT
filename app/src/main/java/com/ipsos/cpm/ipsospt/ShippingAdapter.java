@@ -1,24 +1,27 @@
 package com.ipsos.cpm.ipsospt;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.CheckedTextView;
+
+import com.ipsos.cpm.ipsospt.data.PTContract;
+import com.ipsos.cpm.ipsospt.helper.Constants;
+
+import java.util.ArrayList;
 
 class ShippingAdapter extends CursorAdapter {
 
     private static class ShippingViewHolder {
-        final TextView famCodeView;
-        final TextView panelTypeView;
-        final TextView weekDescView;
+        final CheckedTextView listItem;
 
-        ShippingViewHolder (View view) {
-            famCodeView = (TextView) view.findViewById(R.id.fam_code_list_item_shipping);
-            panelTypeView = (TextView) view.findViewById(R.id.panel_type_list_item_shipping);
-            weekDescView = (TextView) view.findViewById(R.id.week_code_list_item_shipping);
+        ShippingViewHolder(View view) {
+            listItem = (CheckedTextView) view.findViewById(R.id.list_item_checked_text);
         }
     }
 
@@ -40,15 +43,35 @@ class ShippingAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         ShippingViewHolder viewHolder = (ShippingViewHolder) view.getTag();
 
-        String famCode = cursor.getString(ShippingFragment.COL_FAM_CODE);
-        int indCode = cursor.getInt(ShippingFragment.COL_IND_CODE);
-        String indName = cursor.getString(ShippingFragment.COL_IND_NAME);
+        String listItemText;
+        String famCode = cursor.getString(ShippingActivity.COL_FAM_CODE);
+        int indCode = cursor.getInt(ShippingActivity.COL_IND_CODE);
+        String indName = cursor.getString(ShippingActivity.COL_IND_NAME);
         if (indCode == 0)
-            viewHolder.famCodeView.setText(famCode);
+            listItemText = famCode;
         else
-            viewHolder.famCodeView.setText(Integer.toString(indCode) + " - " + indName);
-        viewHolder.panelTypeView.setText(cursor.getString(ShippingFragment.COL_PANEL_TYPE));
-        viewHolder.weekDescView.setText(cursor.getString(ShippingFragment.COL_WEEK_DESC));
+            listItemText = Integer.toString(indCode) + " - " + indName;
+        listItemText += " - " + cursor.getString(ShippingActivity.COL_PANEL_TYPE);
+        listItemText += " - " + cursor.getString(ShippingActivity.COL_WEEK_DESC);
+
+        viewHolder.listItem.setText(listItemText);
     }
 
+    void onItemSelect(View view) {
+        ShippingViewHolder viewHolder = (ShippingViewHolder) view.getTag();
+        viewHolder.listItem.toggle();
+    }
+
+    void sendItems(Context context, ArrayList items) {
+        Uri uri = PTContract.Panel.CONTENT_URI;
+        ContentValues values = new ContentValues();
+        String where;
+        String[] args;
+        for (Object item : items) {
+            values.put(PTContract.Panel.COLUMN_WEEK_CHECK, Constants.SHIPPED_FLAG);
+            where = PTContract.Panel._ID + " = ? ";
+            args = new String[]{ item.toString() }; //_panelType, Integer.toString(_weekCode), _famCode, Integer.toString(indCode) };
+            context.getContentResolver().update(uri, values, where, args);
+        }
+    }
 }

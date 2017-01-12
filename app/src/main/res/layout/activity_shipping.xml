@@ -8,19 +8,43 @@
     tools:context="com.ipsos.cpm.ipsospt.ShippingActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <CheckBox
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/select_all_shipping" />
-    </LinearLayout>
-
-    <fragment
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/shipping_fragment"
-        android:name="com.ipsos.cpm.ipsospt.ShippingFragment"
-        tools:layout="@layout/list_item_shipping" />
+        android:orientation="horizontal"
+        android:layout_marginBottom="15dp">
+
+        <!--<CheckBox-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:id="@+id/select_all_shipping_checkbox"-->
+            <!--android:text="@string/form_shipping_select_all"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_marginStart="10dp"-->
+            <!--android:layout_marginTop="5dp" />-->
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/send_all_shipping_button"
+            android:text="@string/form_shipping_send_all"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/send_shipping_button"
+            android:gravity="center_vertical|end"
+            android:text="@string/form_shipping_shipped"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp" />
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/shipping_list_fragment"
+        android:choiceMode="multipleChoice" >
+    </ListView>
 </LinearLayout>

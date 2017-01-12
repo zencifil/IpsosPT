@@ -15,6 +15,11 @@
             android:id="@+id/nav_shipping"
             android:icon="@drawable/ic_shipping"
             android:title="@string/navigation_shipping" />
+
+        <item
+            android:id="@+id/nav_new_fam_form"
+            android:icon="@drawable/ic_new_form"
+            android:title="@string/navigation_new_form" />
     </group>
 
     <item android:title="@string/navigation_communication">

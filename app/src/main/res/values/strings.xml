@@ -4,10 +4,12 @@
     <string name="title_activity_detail" translatable="false">Hane Detayı</string>
     <string name="title_activity_ind_detail" translatable="false">Birey Detayı</string>
     <string name="title_activity_panel" translatable="false">Hane Panelleri</string>
+    <string name="title_activity_shipping" translatable="false">Kargo</string>
 
     <string name="internet_no_connection" translatable="false">İnternete bağlı değilsiniz! Uygulama çevrim dışı çalışacak.</string>
     <string name="internet_connection" translatable="false">İnternet bağlantısı aktif.</string>
     <string name="invalid_operation" translatable="false">Geçersiz işlem!</string>
+    <string name="no_data_found" translatable="false">Gösterilecek veri bulunamadı.</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email" translatable="false">Email</string>
@@ -24,9 +26,10 @@
     <string name="navigation_show_all" translatable="false">Bütün Haneler</string>
     <string name="navigation_show_today" translatable="false">Bugünkü Ziyaretler</string>
     <string name="navigation_communication" translatable="false">İletişim</string>
-    <string name="navigation_send_mail" translatable="false">E-Posta Gonder</string>
+    <string name="navigation_send_mail" translatable="false">E-Posta Gönder</string>
     <string name="navigation_call" translatable="false">Ara</string>
     <string name="navigation_shipping" translatable="false">Kargo</string>
+    <string name="navigation_new_form" translatable="false">Yeni Form</string>
 
     <string name="action_logout" translatable="false">Çıkış</string>
 
@@ -94,5 +97,14 @@
     <string name="form_panel_list_not_yet_taken_error" translatable="false">Form alındı olarak işaretlenmeden bu işlemi yapamazsınız.</string>
     <string name="form_panel_list_not_yet_left_error" translatable="false">Form bırakıldı olarak işaretlenmeden bu işlemi yapamazsınız.</string>
     <string name="form_panel_list_already_sent_error" translatable="false">Form kargolandı olarak işaretlendiği için bu işlemi yapamazsınız.</string>
+
+    <!-- Shipping form -->
+    <string name="form_shipping_select_all" translatable="false">Hepsini seç</string>
+    <string name="form_shipping_send_all" translatable="false">Hepsini Gönder</string>
+    <string name="form_shipping_shipped" translatable="false">Seçilenleri Gönder</string>
+    <string name="form_shipping_nothing_selected" translatable="false">Henüz bir form seçmediniz.</string>
+    <string name="form_shipping_confirmation_title" translatable="false">Form kargo</string>
+    <string name="form_shipping_send_all_confirmation" translatable="false">BÜTÜN formları kargoya verildi olarak işaretlemek istediğinizden emin misiniz?</string>
+    <string name="form_shipping_send_confirmation" translatable="false">Seçilen formları kargoya verildi olarak işaretlemek istediğinizden emin misiniz?</string>
 
 </resources>

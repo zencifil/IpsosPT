@@ -1,17 +1,10 @@
-package com.ipsos.cpm.ipsospt.Helper;
+package com.ipsos.cpm.ipsospt.helper;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 
-import java.io.File;
 import java.util.Calendar;
 import java.util.Locale;
-
-import static android.content.Intent.ACTION_SENDTO;
-import static android.content.Intent.EXTRA_SUBJECT;
-import static android.content.Intent.EXTRA_TEXT;
 
 /**
  * Created by zencifil on 14/12/2016.

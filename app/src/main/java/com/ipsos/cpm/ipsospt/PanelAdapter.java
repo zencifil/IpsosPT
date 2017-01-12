@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.CursorSwipeAdapter;
-import com.ipsos.cpm.ipsospt.Data.PTContract;
+import com.ipsos.cpm.ipsospt.data.PTContract;
 
 class PanelAdapter extends CursorSwipeAdapter {
 

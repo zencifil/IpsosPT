@@ -1,14 +1,41 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+    }
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
+
+    def versionPropsFile = file('version.properties')
+    def versionBuild
+
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+        versionBuild = versionProps['VERSION_BUILD'].toInteger()
+    }
+    else {
+        throw new GradleException("Could not read version.properties!")
+    }
+
+    ext.autoIncrementBuildNumber = {
+        if (versionPropsFile.canRead()) {
+            def Properties versionProps = new Properties()
+            versionProps.load(new FileInputStream(versionPropsFile))
+            versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
+            versionProps['VERSION_BUILD'] = versionBuild.toString()
+            versionProps.store(versionPropsFile.newWriter(), null)
+        } else {
+            throw new GradleException("Could not read version.properties!")
+        }
+    }
+
     defaultConfig {
         applicationId "com.ipsos.cpm.ipsospt"
         minSdkVersion 22
         targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        versionCode 0
+        versionName '0.1.' + versionBuild
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "be50dafaaa1b438b8ff1fe1fa838f3b1"]
     }
@@ -18,17 +45,28 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
+
+    gradle.taskGraph.whenReady {taskGraph ->
+        if (taskGraph.hasTask(assembleDebug)) {  /* when run debug task */
+            autoIncrementBuildNumber()
+        }
+        else if (taskGraph.hasTask(assembleRelease)) { /* when run release task */
+            autoIncrementBuildNumber()
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
-    compile 'net.hockeyapp.android:HockeySDK:4.1.1'
+//    compile 'net.hockeyapp.android:HockeySDK:4.1.1'
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     compile 'com.daimajia.androidanimations:library:1.1.2@aar'
     compile 'com.android.support:recyclerview-v7:24.2.1'

@@ -1,4 +1,4 @@
-package com.ipsos.cpm.ipsospt.Data;
+package com.ipsos.cpm.ipsospt.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
-import java.security.PublicKey;
 import java.util.HashSet;
 
 /**

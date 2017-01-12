@@ -1,4 +1,4 @@
-package com.ipsos.cpm.ipsospt.Helper;
+package com.ipsos.cpm.ipsospt.helper;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

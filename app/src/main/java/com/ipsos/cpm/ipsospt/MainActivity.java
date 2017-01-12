@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -19,11 +20,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ipsos.cpm.ipsospt.Helper.ConnectivityReceiver;
-import com.ipsos.cpm.ipsospt.Helper.Utils;
-
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.UpdateManager;
+import com.ipsos.cpm.ipsospt.data.PTContract;
+import com.ipsos.cpm.ipsospt.helper.ConnectivityReceiver;
+import com.ipsos.cpm.ipsospt.helper.Constants;
+import com.ipsos.cpm.ipsospt.helper.Utils;
 
 import java.util.HashMap;
 
@@ -37,27 +37,9 @@ public class MainActivity extends AppCompatActivity
 
     private SessionManager _sessionManager;
     private Spinner _daysSpinner;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        checkForCrashes();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        unregisterManagers();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        unregisterManagers();
-    }
+    private String _fldCode;
+    private String _fldName;
+    private String _fldEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,21 +47,15 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         _sessionManager = new SessionManager(getApplicationContext());
-//        if (!_sessionManager.isLoggedIn()) {
-//            if (!Utils.isConnected(getApplicationContext())) {
-//                Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_LONG);
-//
-//            }
-//        }
-
         checkConnection();
         _sessionManager.checkLogin();
         HashMap<String, String> user = _sessionManager.getUserDetails();
-        String name = user.get(SessionManager.KEY_NAME);
-        String email = user.get(SessionManager.KEY_EMAIL);
+        _fldName = user.get(Constants.KEY_FLD_NAME);
+        _fldEmail = user.get(Constants.KEY_FLD_EMAIL);
+        _fldCode = user.get(Constants.KEY_FLD_CODE);
         Toast.makeText(getApplicationContext(),
                 "User Login Status: " + _sessionManager.isLoggedIn() + "\r\n" +
-                        "Name: " + name + "\r\n" + "Email: " + email, Toast.LENGTH_LONG).show();
+                        "Name: " + _fldName + "\r\n" + "Email: " + _fldEmail, Toast.LENGTH_LONG).show();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,9 +70,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         TextView fldNameTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.fld_name_nav_header);
-        fldNameTextView.setText(_sessionManager.getUserDetails().get(SessionManager.KEY_NAME));
+        fldNameTextView.setText(_fldCode + " - " + _fldName);
         TextView emailTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.fld_email_nav_header);
-        emailTextView.setText(_sessionManager.getUserDetails().get(SessionManager.KEY_EMAIL));
+        emailTextView.setText(_fldEmail);
 
         _daysSpinner = (Spinner) findViewById(R.id.days_spinner);
         int today = Utils.getTodayIndex();
@@ -112,8 +88,6 @@ public class MainActivity extends AppCompatActivity
                 //do nothing
             }
         });
-
-        checkForUpdates();
     }
 
     @Override
@@ -159,7 +133,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -171,20 +145,26 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_shipping) {
             Intent intent = new Intent(getApplicationContext(), ShippingActivity.class);
+            intent.setData(PTContract.Panel.buildShippingUri());
             startActivity(intent);
         }
         else if (id == R.id.nav_call) {
             Intent intent = new Intent(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel:05359348602"));
-            startActivity(Intent.createChooser(intent, "Ara"));
+            intent.setData(Uri.parse("tel:" + Constants.PHONE_NUMBER));
+            startActivity(Intent.createChooser(intent, getString(R.string.navigation_call)));
         }
         else if (id == R.id.nav_send) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("plain/text");
-            intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "savas.cilve@ipsos.com" });
-            intent.putExtra(Intent.EXTRA_SUBJECT, "subject");
-            intent.putExtra(Intent.EXTRA_TEXT, "mail body");
-            startActivity(Intent.createChooser(intent, "E-posta gonder"));
+            intent.putExtra(Intent.EXTRA_EMAIL, Constants.EMAIL_TO_LIST);
+            intent.putExtra(Intent.EXTRA_SUBJECT, Constants.EMAIL_SUBJECT.replace("{0}", _fldCode + " - " + _fldName));
+            intent.putExtra(Intent.EXTRA_TEXT, "");
+            startActivity(Intent.createChooser(intent, getString(R.string.navigation_send_mail)));
+        }
+        else if (id == R.id.nav_new_fam_form) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(Constants.LINK_TO_NEW_FORM));
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -211,19 +191,6 @@ public class MainActivity extends AppCompatActivity
             return;
         famListFragment.setVisitDay(day);
         famListFragment.restartCursorLoader();
-    }
-
-    private void checkForCrashes() {
-        CrashManager.register(this);
-    }
-
-    private void checkForUpdates() {
-        //TODO Remove this for store builds!
-        UpdateManager.register(this);
-    }
-
-    private void unregisterManagers() {
-        UpdateManager.unregister();
     }
 
     private void checkConnection() {

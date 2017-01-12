@@ -1,10 +1,9 @@
-package com.ipsos.cpm.ipsospt.Data;
+package com.ipsos.cpm.ipsospt.data;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.text.format.Time;
 
 /**
  * Created by zencifil on 17/11/2016.
@@ -198,6 +197,10 @@ public class PTContract {
 
         public static int getWeekCodeFromUri(Uri uri) {
             return Integer.parseInt(uri.getPathSegments().get(3));
+        }
+
+        public static Uri buildShippingUri() {
+            return CONTENT_URI.buildUpon().appendPath("SHIPPING").build();
         }
     }
 

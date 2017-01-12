@@ -1,4 +1,4 @@
-package com.ipsos.cpm.ipsospt.Data;
+package com.ipsos.cpm.ipsospt.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -162,7 +162,7 @@ class PTDbHelper extends SQLiteOpenHelper {
                 "'BOSTANCI MAH.', 'BOSTAN CAD. BOSTANLI SOK. NO:2 D:3', '02165871030', NULL, " +
                 "'5359348602', 'G5', 3, 1, 1, 0, 0, 0, 2750);";
         sqLiteDatabase.execSQL(query);
-        query = " INSERT INTO " + PTContract.Ind.TABLE_NAME + " (" +
+        query = "INSERT INTO " + PTContract.Ind.TABLE_NAME + " (" +
                 PTContract.Ind.COLUMN_COUNTRY_CODE + ", " + PTContract.Ind.COLUMN_FAM_CODE + ", " +
                 PTContract.Ind.COLUMN_IND_CODE + ", " + PTContract.Ind.COLUMN_IND_NAME + ", " +
                 PTContract.Ind.COLUMN_DOB + ", " + PTContract.Ind.COLUMN_PHONE + ", " +
@@ -170,6 +170,85 @@ class PTDbHelper extends SQLiteOpenHelper {
                 PTContract.Ind.COLUMN_EMAIL2 + ", " + PTContract.Ind.COLUMN_SP + ", " +
                 PTContract.Ind.COLUMN_ALK + ") " +
                 "VALUES ('TR', '01W1049', 1, 'TEST 1', '29.02.1980', '05359348602', NULL, 'ALI@VELI.COM', NULL, 0, 1);";
+        sqLiteDatabase.execSQL(query);
+
+        query = "INSERT INTO " + PTContract.Panel.TABLE_NAME + " (" +
+                PTContract.Panel.COLUMN_COUNTRY_CODE + ", " + PTContract.Panel.COLUMN_PANEL_TYPE + ", " +
+                PTContract.Panel.COLUMN_FLD_CODE + ", " + PTContract.Panel.COLUMN_FAM_CODE + ", " +
+                PTContract.Panel.COLUMN_IND_CODE + ", " + PTContract.Panel.COLUMN_WEEK_CODE + ", " +
+                PTContract.Panel.COLUMN_WEEK_CHECK + ", " + PTContract.Panel.COLUMN_SYNC + ") " +
+                "VALUES ('TR', 'AVP', 'G5', '01W1049', 0, 7155, 0, 0);";
+        sqLiteDatabase.execSQL(query);
+        query = "INSERT INTO " + PTContract.Panel.TABLE_NAME + " (" +
+                PTContract.Panel.COLUMN_COUNTRY_CODE + ", " + PTContract.Panel.COLUMN_PANEL_TYPE + ", " +
+                PTContract.Panel.COLUMN_FLD_CODE + ", " + PTContract.Panel.COLUMN_FAM_CODE + ", " +
+                PTContract.Panel.COLUMN_IND_CODE + ", " + PTContract.Panel.COLUMN_WEEK_CODE + ", " +
+                PTContract.Panel.COLUMN_WEEK_CHECK + ", " + PTContract.Panel.COLUMN_SYNC + ") " +
+                "VALUES ('TR', 'SP', 'G5', '01W1049', 1, 7162, 0, 0);";
+        sqLiteDatabase.execSQL(query);
+        query = "INSERT INTO " + PTContract.Panel.TABLE_NAME + " (" +
+                PTContract.Panel.COLUMN_COUNTRY_CODE + ", " + PTContract.Panel.COLUMN_PANEL_TYPE + ", " +
+                PTContract.Panel.COLUMN_FLD_CODE + ", " + PTContract.Panel.COLUMN_FAM_CODE + ", " +
+                PTContract.Panel.COLUMN_IND_CODE + ", " + PTContract.Panel.COLUMN_WEEK_CODE + ", " +
+                PTContract.Panel.COLUMN_WEEK_CHECK + ", " + PTContract.Panel.COLUMN_SYNC + ") " +
+                "VALUES ('TR', 'SP', 'G5', '01W1049', 1, 7169, 0, 0);";
+        sqLiteDatabase.execSQL(query);
+        query = "INSERT INTO " + PTContract.Panel.TABLE_NAME + " (" +
+                PTContract.Panel.COLUMN_COUNTRY_CODE + ", " + PTContract.Panel.COLUMN_PANEL_TYPE + ", " +
+                PTContract.Panel.COLUMN_FLD_CODE + ", " + PTContract.Panel.COLUMN_FAM_CODE + ", " +
+                PTContract.Panel.COLUMN_IND_CODE + ", " + PTContract.Panel.COLUMN_WEEK_CODE + ", " +
+                PTContract.Panel.COLUMN_WEEK_CHECK + ", " + PTContract.Panel.COLUMN_SYNC + ") " +
+                "VALUES ('TR', 'AVP', 'G5', '01W1050', 0, 7155, 0, 0);";
+        sqLiteDatabase.execSQL(query);
+        query = "INSERT INTO " + PTContract.Panel.TABLE_NAME + " (" +
+                PTContract.Panel.COLUMN_COUNTRY_CODE + ", " + PTContract.Panel.COLUMN_PANEL_TYPE + ", " +
+                PTContract.Panel.COLUMN_FLD_CODE + ", " + PTContract.Panel.COLUMN_FAM_CODE + ", " +
+                PTContract.Panel.COLUMN_IND_CODE + ", " + PTContract.Panel.COLUMN_WEEK_CODE + ", " +
+                PTContract.Panel.COLUMN_WEEK_CHECK + ", " + PTContract.Panel.COLUMN_SYNC + ") " +
+                "VALUES ('TR', 'AVP', 'G5', '01W1050', 0, 7162, 0, 0);";
+        sqLiteDatabase.execSQL(query);
+
+        query = "INSERT INTO " + PTContract.PanelWeek.TABLE_NAME + " (" +
+                PTContract.PanelWeek.COLUMN_COUNTRY_CODE + ", " + PTContract.PanelWeek.COLUMN_PANEL_TYPE + ", " +
+                PTContract.PanelWeek.COLUMN_WEEK_CODE + ", " + PTContract.PanelWeek.COLUMN_WEEK_DESC + ", " +
+                PTContract.PanelWeek.COLUMN_ACTIVE + ", " + PTContract.PanelWeek.COLUMN_START_DATE + ", " +
+                PTContract.PanelWeek.COLUMN_END_DATE + ", " + PTContract.PanelWeek.COLUMN_SYNC + ") " +
+                "VALUES ('TR', 'AVP', 7155, '8 - 14 HAFTASI', 1, '8', '14', 0);";
+        sqLiteDatabase.execSQL(query);
+        query = "INSERT INTO " + PTContract.PanelWeek.TABLE_NAME + " (" +
+                PTContract.PanelWeek.COLUMN_COUNTRY_CODE + ", " + PTContract.PanelWeek.COLUMN_PANEL_TYPE + ", " +
+                PTContract.PanelWeek.COLUMN_WEEK_CODE + ", " + PTContract.PanelWeek.COLUMN_WEEK_DESC + ", " +
+                PTContract.PanelWeek.COLUMN_ACTIVE + ", " + PTContract.PanelWeek.COLUMN_START_DATE + ", " +
+                PTContract.PanelWeek.COLUMN_END_DATE + ", " + PTContract.PanelWeek.COLUMN_SYNC + ") " +
+                "VALUES ('TR', 'AVP', 7162, '15 - 21 HAFTASI', 1, '15', '21', 0);";
+        sqLiteDatabase.execSQL(query);
+        query = "INSERT INTO " + PTContract.PanelWeek.TABLE_NAME + " (" +
+                PTContract.PanelWeek.COLUMN_COUNTRY_CODE + ", " + PTContract.PanelWeek.COLUMN_PANEL_TYPE + ", " +
+                PTContract.PanelWeek.COLUMN_WEEK_CODE + ", " + PTContract.PanelWeek.COLUMN_WEEK_DESC + ", " +
+                PTContract.PanelWeek.COLUMN_ACTIVE + ", " + PTContract.PanelWeek.COLUMN_START_DATE + ", " +
+                PTContract.PanelWeek.COLUMN_END_DATE + ", " + PTContract.PanelWeek.COLUMN_SYNC + ") " +
+                "VALUES ('TR', 'AVP', 7169, '22 - 28 HAFTASI', 1, '22', '28', 0);";
+        sqLiteDatabase.execSQL(query);
+        query = "INSERT INTO " + PTContract.PanelWeek.TABLE_NAME + " (" +
+                PTContract.PanelWeek.COLUMN_COUNTRY_CODE + ", " + PTContract.PanelWeek.COLUMN_PANEL_TYPE + ", " +
+                PTContract.PanelWeek.COLUMN_WEEK_CODE + ", " + PTContract.PanelWeek.COLUMN_WEEK_DESC + ", " +
+                PTContract.PanelWeek.COLUMN_ACTIVE + ", " + PTContract.PanelWeek.COLUMN_START_DATE + ", " +
+                PTContract.PanelWeek.COLUMN_END_DATE + ", " + PTContract.PanelWeek.COLUMN_SYNC + ") " +
+                "VALUES ('TR', 'SP', 7155, '8 - 14 HAFTASI', 1, '8', '14', 0);";
+        sqLiteDatabase.execSQL(query);
+        query = "INSERT INTO " + PTContract.PanelWeek.TABLE_NAME + " (" +
+                PTContract.PanelWeek.COLUMN_COUNTRY_CODE + ", " + PTContract.PanelWeek.COLUMN_PANEL_TYPE + ", " +
+                PTContract.PanelWeek.COLUMN_WEEK_CODE + ", " + PTContract.PanelWeek.COLUMN_WEEK_DESC + ", " +
+                PTContract.PanelWeek.COLUMN_ACTIVE + ", " + PTContract.PanelWeek.COLUMN_START_DATE + ", " +
+                PTContract.PanelWeek.COLUMN_END_DATE + ", " + PTContract.PanelWeek.COLUMN_SYNC + ") " +
+                "VALUES ('TR', 'SP', 7162, '15 - 21 HAFTASI', 1, '15', '21', 0);";
+        sqLiteDatabase.execSQL(query);
+        query = "INSERT INTO " + PTContract.PanelWeek.TABLE_NAME + " (" +
+                PTContract.PanelWeek.COLUMN_COUNTRY_CODE + ", " + PTContract.PanelWeek.COLUMN_PANEL_TYPE + ", " +
+                PTContract.PanelWeek.COLUMN_WEEK_CODE + ", " + PTContract.PanelWeek.COLUMN_WEEK_DESC + ", " +
+                PTContract.PanelWeek.COLUMN_ACTIVE + ", " + PTContract.PanelWeek.COLUMN_START_DATE + ", " +
+                PTContract.PanelWeek.COLUMN_END_DATE + ", " + PTContract.PanelWeek.COLUMN_SYNC + ") " +
+                "VALUES ('TR', 'SP', 7169, '22 - 28 HAFTASI', 1, '22', '28', 0);";
         sqLiteDatabase.execSQL(query);
     }
 

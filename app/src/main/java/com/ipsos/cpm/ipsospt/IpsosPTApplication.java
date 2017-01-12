@@ -2,7 +2,7 @@ package com.ipsos.cpm.ipsospt;
 
 import android.app.Application;
 
-import com.ipsos.cpm.ipsospt.Helper.ConnectivityReceiver;
+import com.ipsos.cpm.ipsospt.helper.ConnectivityReceiver;
 
 public class IpsosPTApplication extends Application {
     private static IpsosPTApplication _instance;

@@ -6,16 +6,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TabHost;
 
-import com.daimajia.swipe.SwipeLayout;
-import com.ipsos.cpm.ipsospt.Data.PTContract;
+import com.ipsos.cpm.ipsospt.data.PTContract;
+import com.ipsos.cpm.ipsospt.helper.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,13 +33,13 @@ public class PanelActivity extends FragmentActivity implements LoaderManager.Loa
 
     private static final String[] PANELTYPES_COLUMNS = {
             PTContract.PanelWeek.TABLE_NAME + "." + PTContract.PanelWeek._ID,
-            PTContract.PanelWeek.COLUMN_PANEL_TYPE
+            PTContract.PanelWeek.TABLE_NAME + "." + PTContract.PanelWeek.COLUMN_PANEL_TYPE
     };
 
     private static final String[] WEEK_COLUMNS = {
             PTContract.PanelWeek.TABLE_NAME + "." + PTContract.PanelWeek._ID,
-            PTContract.PanelWeek.COLUMN_WEEK_CODE,
-            PTContract.PanelWeek.COLUMN_WEEK_DESC
+            PTContract.PanelWeek.TABLE_NAME + "." + PTContract.PanelWeek.COLUMN_WEEK_CODE,
+            PTContract.PanelWeek.TABLE_NAME + "." + PTContract.PanelWeek.COLUMN_WEEK_DESC
     };
 
     static final int COL_ID = 0;
@@ -56,7 +54,7 @@ public class PanelActivity extends FragmentActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_panel);
 
         _weeks = new HashMap<>();
-        _famCode = getIntent().getStringExtra("FAM_CODE");
+        _famCode = getIntent().getStringExtra(Constants.EXTRA_FAMCODE);
         _panelTypesSpinner = (Spinner) findViewById(R.id.panel_types_spinner);
         _weeksSpinner = (Spinner) findViewById(R.id.panel_weeks_spinner);
 

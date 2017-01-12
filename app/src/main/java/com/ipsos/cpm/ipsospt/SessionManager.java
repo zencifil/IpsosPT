@@ -8,41 +8,44 @@ import com.ipsos.cpm.ipsospt.LoginActivity;
 
 import java.util.HashMap;
 
-public class SessionManager {
+import static com.ipsos.cpm.ipsospt.helper.Constants.IS_LOGIN;
+import static com.ipsos.cpm.ipsospt.helper.Constants.KEY_FLD_CODE;
+import static com.ipsos.cpm.ipsospt.helper.Constants.KEY_FLD_EMAIL;
+import static com.ipsos.cpm.ipsospt.helper.Constants.KEY_FLD_NAME;
+import static com.ipsos.cpm.ipsospt.helper.Constants.PREF_NAME;
 
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
-    Context _context;
+class SessionManager {
 
-    int PRIVATE_MODE = 0;
-    private static final String PREF_NAME = "IpsosPref";
-    private static final String IS_LOGIN = "IsLoggedIn";
-    public static final String KEY_NAME = "name";
-    public static final String KEY_EMAIL = "email";
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private Context _context;
 
-    public SessionManager(Context context){
+    private int PRIVATE_MODE = 0;
+
+    SessionManager(Context context){
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-        editor = pref.edit();
     }
 
-    public void createLoginSession(String name, String email){
+    void createLoginSession(String name, String email, String fldCode){
+        editor = pref.edit();
         editor.putBoolean(IS_LOGIN, true);
-        editor.putString(KEY_NAME, name);
-        editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_FLD_NAME, name);
+        editor.putString(KEY_FLD_EMAIL, email);
+        editor.putString(KEY_FLD_CODE, fldCode);
         editor.commit();
     }
 
-    public HashMap<String, String> getUserDetails(){
+    HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
-        user.put(KEY_NAME, pref.getString(KEY_NAME, null));
-        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+        user.put(KEY_FLD_NAME, pref.getString(KEY_FLD_NAME, null));
+        user.put(KEY_FLD_EMAIL, pref.getString(KEY_FLD_EMAIL, null));
+        user.put(KEY_FLD_CODE, pref.getString(KEY_FLD_CODE, null));
 
-        //return user
         return user;
     }
 
-    public void checkLogin() {
+    void checkLogin() {
         if(!this.isLoggedIn()){
             Intent i = new Intent(_context, LoginActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -54,12 +57,12 @@ public class SessionManager {
         }
     }
 
-    public void logoutUser(){
+    void logoutUser(){
         editor.clear();
         editor.commit();
     }
 
-    public boolean isLoggedIn(){
+    boolean isLoggedIn(){
         return pref.getBoolean(IS_LOGIN, false);
     }
 }

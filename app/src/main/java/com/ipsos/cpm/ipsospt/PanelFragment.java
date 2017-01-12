@@ -12,8 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.ipsos.cpm.ipsospt.Data.PTContract;
+import com.ipsos.cpm.ipsospt.data.PTContract;
 
 public class PanelFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String LOG_TAG = PanelFragment.class.getSimpleName();
@@ -26,13 +27,13 @@ public class PanelFragment extends Fragment implements LoaderManager.LoaderCallb
     //specify the columns we need
     private static final String[] PANEL_COLUMNS = {
             PTContract.Panel.TABLE_NAME + "." + PTContract.Fam._ID,
-            PTContract.Panel.COLUMN_PANEL_TYPE,
-            PTContract.Panel.COLUMN_FAM_CODE,
-            PTContract.Panel.COLUMN_IND_CODE,
-            PTContract.Ind.COLUMN_IND_NAME,
-            PTContract.Panel.COLUMN_WEEK_CODE,
-            PTContract.Panel.COLUMN_WEEK_CHECK,
-            PTContract.PanelWeek.COLUMN_WEEK_DESC
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_PANEL_TYPE,
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_FAM_CODE,
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_IND_CODE,
+            PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_IND_NAME,
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_WEEK_CODE,
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_WEEK_CHECK,
+            PTContract.PanelWeek.TABLE_NAME + "." + PTContract.PanelWeek.COLUMN_WEEK_DESC
     };
 
     static final int COL_ID = 0;
@@ -80,7 +81,7 @@ public class PanelFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String sortOrder = PTContract.Panel.COLUMN_IND_CODE + " ASC";
+        String sortOrder = PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_IND_CODE + " ASC";
         Uri panelsUri = PTContract.Panel.buildPanelUriWithPanelTypeFamCodeAndWeekCode(_panelType, _famCode, _weekCode);
         return new CursorLoader(getActivity(), panelsUri, PANEL_COLUMNS, null, null, sortOrder);
     }
@@ -88,6 +89,8 @@ public class PanelFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         _panelAdapter.swapCursor(data);
+        if (data.getCount() == 0)
+            Toast.makeText(getActivity(), R.string.no_data_found, Toast.LENGTH_SHORT).show();
     }
 
     @Override

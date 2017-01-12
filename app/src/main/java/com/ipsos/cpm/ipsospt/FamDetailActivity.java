@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ipsos.cpm.ipsospt.helper.Constants;
+
 public class FamDetailActivity extends AppCompatActivity implements FamDetailFragment.OnFamDetailButtonClickedListener {
 
     private SessionManager _sessionManager;
@@ -71,7 +73,7 @@ public class FamDetailActivity extends AppCompatActivity implements FamDetailFra
         if (indListFragment == null) {
             IndListFragment newIndListFragment = new IndListFragment();
             Bundle args = new Bundle();
-            args.putString("famCode", famCode);
+            args.putString(Constants.EXTRA_FAMCODE, famCode);
             newIndListFragment.setArguments(args);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

@@ -17,7 +17,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.ipsos.cpm.ipsospt.Data.PTContract;
+import com.ipsos.cpm.ipsospt.data.PTContract;
+import com.ipsos.cpm.ipsospt.helper.Constants;
 
 public class FamDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -134,7 +135,7 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), PanelActivity.class);
-                intent.putExtra("FAM_CODE", _famCode);
+                intent.putExtra(Constants.EXTRA_FAMCODE, _famCode);
                 startActivity(intent);
             }
         });

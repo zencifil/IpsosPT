@@ -15,13 +15,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.ipsos.cpm.ipsospt.Data.PTContract;
-import com.ipsos.cpm.ipsospt.Helper.Utils;
-
-import net.hockeyapp.android.utils.Util;
-
-import java.util.Calendar;
-import java.util.Locale;
+import com.ipsos.cpm.ipsospt.data.PTContract;
+import com.ipsos.cpm.ipsospt.helper.Utils;
 
 public class FamListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String LOG_TAG = FamListFragment.class.getSimpleName();
@@ -57,7 +52,7 @@ public class FamListFragment extends Fragment implements LoaderManager.LoaderCal
      */
     public interface Callback {
         //DetailFragmentCallback for when an item has been selected.
-        public void onItemSelected(Uri famUri);
+        void onItemSelected(Uri famUri);
     }
 
     public FamListFragment() {

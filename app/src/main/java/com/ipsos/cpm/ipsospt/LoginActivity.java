@@ -17,7 +17,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.ipsos.cpm.ipsospt.Helper.Constants;
+import com.ipsos.cpm.ipsospt.helper.Constants;
 
 /**
  * A login screen that offers login via email/password.
@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 5;
+        return password.length() > 8;
     }
 
     /**
@@ -167,6 +167,7 @@ public class LoginActivity extends AppCompatActivity {
         private String _email;
         private final String _password;
         private String _fldName;
+        private String _fldCode;
 
         UserLoginTask(String email, String password) {
             _email = email;
@@ -247,9 +248,10 @@ public class LoginActivity extends AppCompatActivity {
 //                JSONObject resultJson = new JSONObject(resultJsonStr);
                 //TODO result icinde adi felan gelmeli...
 
-                _email = "savas.cilve@ipsos.com";
-                _fldName = "SAVAS CILVE";
-                _sessionManager.createLoginSession(_fldName, _email);
+                _email = "test.pt@ipsos.com";
+                _fldName = "TEST PT";
+                _fldCode = "G5";
+                _sessionManager.createLoginSession(_fldName, _email, _fldCode);
 
                 return true;
             }
@@ -262,8 +264,9 @@ public class LoginActivity extends AppCompatActivity {
         private void navigateToHomeActivity() {
             Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
             homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            //homeIntent.putExtra(Constants.EXTRA_FLDNAME, _fldName);
-            //homeIntent.putExtra(Constants.EXTRA_EMAIL, _email);
+//            homeIntent.putExtra(Constants.EXTRA_FLDNAME, _fldName);
+//            homeIntent.putExtra(Constants.EXTRA_EMAIL, _email);
+//            homeIntent.putExtra(Constants.EXTRA_FLDCODE, _fldCode);
             startActivity(homeIntent);
         }
     }

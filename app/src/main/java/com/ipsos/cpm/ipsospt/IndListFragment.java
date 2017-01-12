@@ -13,7 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.ipsos.cpm.ipsospt.Data.PTContract;
+import com.ipsos.cpm.ipsospt.data.PTContract;
+import com.ipsos.cpm.ipsospt.helper.Constants;
 
 public class IndListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -26,9 +27,9 @@ public class IndListFragment extends Fragment implements LoaderManager.LoaderCal
     //specify the columns we need
     private static final String[] IND_LIST_COLUMNS = {
             PTContract.Ind.TABLE_NAME + "." + PTContract.Ind._ID,
-            PTContract.Ind.COLUMN_FAM_CODE,
-            PTContract.Ind.COLUMN_IND_CODE,
-            PTContract.Ind.COLUMN_IND_NAME
+            PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_FAM_CODE,
+            PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_IND_CODE,
+            PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_IND_NAME
     };
 
     static final int COL_ID = 0;
@@ -41,8 +42,7 @@ public class IndListFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_ind_list, container, false);
         _indListAdapter = new IndListAdapter(getActivity(), null, 0);
 
@@ -59,12 +59,12 @@ public class IndListFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String sortOrder = PTContract.Ind.COLUMN_IND_CODE + " ASC";
+        String sortOrder = PTContract.Ind.TABLE_NAME + "." +  PTContract.Ind.COLUMN_IND_CODE + " ASC";
         if (_famUri == null) {
             Bundle a = getArguments();
             String famCode;
             if (a != null) {
-                famCode = a.getString("famCode");
+                famCode = a.getString(Constants.EXTRA_FAMCODE);
                 _famUri = PTContract.Ind.buildIndUriWithFamCode(famCode);
             }
         }
