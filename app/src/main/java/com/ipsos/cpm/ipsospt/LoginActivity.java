@@ -3,6 +3,8 @@ package com.ipsos.cpm.ipsospt;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
@@ -17,7 +19,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.ipsos.cpm.ipsospt.data.PTContract;
+import com.ipsos.cpm.ipsospt.data.PTProvider;
 import com.ipsos.cpm.ipsospt.helper.Constants;
+
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A login screen that offers login via email/password.
@@ -251,6 +259,21 @@ public class LoginActivity extends AppCompatActivity {
                 _email = "test.pt@ipsos.com";
                 _fldName = "TEST PT";
                 _fldCode = "G5";
+
+                String authKey = "testauthkey";
+                Calendar cal = Calendar.getInstance(); // the value to be formatted
+                DateFormat formatter = DateFormat.getDateInstance(DateFormat.SHORT);
+                formatter.setTimeZone(cal.getTimeZone());
+                String akObtain = formatter.format(cal.getTime());
+                cal.add(Calendar.DAY_OF_MONTH, Constants.AUTHKEY_VALID_DAY);
+                String akValidUntil = formatter.format(cal.getTime());
+                ContentValues values = new ContentValues();
+                values.put(PTContract.UserInfo.COLUMN_AUTH_KEY, authKey);
+                values.put(PTContract.UserInfo.COLUMN_AK_OBTAIN_DATE, akObtain);
+                values.put(PTContract.UserInfo.COLUMN_AK_VALID_UNTIL, akValidUntil);
+                getContentResolver().delete(PTContract.UserInfo.CONTENT_URI, null, null);
+                getContentResolver().insert(PTContract.UserInfo.CONTENT_URI, values);
+
                 _sessionManager.createLoginSession(_fldName, _email, _fldCode);
 
                 return true;

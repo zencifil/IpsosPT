@@ -30,6 +30,7 @@ public class PTProvider extends ContentProvider {
     static final int FLD = 600;
     static final int SHIPPING = 700;
     static final int SHIPPING_NOT_SENT = 701;
+    static final int USER_INFO = 800;
 
     private static final SQLiteQueryBuilder _famQueryBuilder;
     private static final SQLiteQueryBuilder _indQueryBuilder;
@@ -37,6 +38,7 @@ public class PTProvider extends ContentProvider {
     private static final SQLiteQueryBuilder _panelQueryBuilder;
     private static final SQLiteQueryBuilder _panelWeekQueryBuilder;
     private static final SQLiteQueryBuilder _logQueryBuilder;
+    private static final SQLiteQueryBuilder _userInfoQueryBuilder;
     static {
         _famQueryBuilder = new SQLiteQueryBuilder();
         _indQueryBuilder = new SQLiteQueryBuilder();
@@ -44,6 +46,7 @@ public class PTProvider extends ContentProvider {
         _panelQueryBuilder = new SQLiteQueryBuilder();
         _panelWeekQueryBuilder = new SQLiteQueryBuilder();
         _logQueryBuilder = new SQLiteQueryBuilder();
+        _userInfoQueryBuilder = new SQLiteQueryBuilder();
 
         _famQueryBuilder.setTables(PTContract.Fam.TABLE_NAME);
         _indQueryBuilder.setTables(PTContract.Ind.TABLE_NAME);
@@ -64,6 +67,7 @@ public class PTProvider extends ContentProvider {
                 PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_IND_CODE );
         _panelWeekQueryBuilder.setTables(PTContract.PanelWeek.TABLE_NAME);
         _logQueryBuilder.setTables(PTContract.Log.TABLE_NAME);
+        _userInfoQueryBuilder.setTables(PTContract.UserInfo.TABLE_NAME);
     }
 
     private static final String _familyByVisitDaySelection =
@@ -163,6 +167,7 @@ public class PTProvider extends ContentProvider {
         matcher.addURI(authority, PTContract.PATH_PANEL_WEEK, PANEL_WEEK);
         matcher.addURI(authority, PTContract.PATH_PANEL_WEEK + "/*", PANEL_WEEK_BY_PANEL_TYPE);
         matcher.addURI(authority, PTContract.PATH_LOG, LOG);
+        matcher.addURI(authority, PTContract.PATH_USER_INFO, USER_INFO);
 
         return matcher;
     }
@@ -193,6 +198,8 @@ public class PTProvider extends ContentProvider {
                 return PTContract.PanelWeek.CONTENT_DIR_TYPE;
             case PANEL_WEEK_BY_PANEL_TYPE:
                 return PTContract.PanelWeek.CONTENT_DIR_TYPE;
+            case USER_INFO:
+                return PTContract.UserInfo.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -229,6 +236,10 @@ public class PTProvider extends ContentProvider {
                 break;
             case SHIPPING_NOT_SENT:
                 retCursor = getShipping(uri, projection, sortOrder);
+                break;
+            case USER_INFO:
+                retCursor = _dbHelper.getReadableDatabase()
+                        .query(PTContract.UserInfo.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
@@ -285,6 +296,13 @@ public class PTProvider extends ContentProvider {
                 id = db.insert(PTContract.Log.TABLE_NAME, null, contentValues);
                 if (id > 0)
                     returnUri = PTContract.Log.buildLogUri(id);
+                else
+                    throw new SQLException("Failed to insert row into " + uri);
+                break;
+            case USER_INFO:
+                id = db.insert(PTContract.UserInfo.TABLE_NAME, null, contentValues);
+                if (id > 0)
+                    returnUri = PTContract.UserInfo.buildUserInfoUri(id);
                 else
                     throw new SQLException("Failed to insert row into " + uri);
                 break;
@@ -372,6 +390,9 @@ public class PTProvider extends ContentProvider {
             switch (match) {
                 case PANEL:
                     rowsDeleted = db.delete(PTContract.Panel.TABLE_NAME, s, strings);
+                    break;
+                case USER_INFO:
+                    rowsDeleted = db.delete(PTContract.UserInfo.TABLE_NAME, s, strings);
                     break;
                 default:
                     rowsDeleted = -1;

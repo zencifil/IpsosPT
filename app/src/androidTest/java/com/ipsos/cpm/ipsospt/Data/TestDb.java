@@ -15,7 +15,7 @@ import java.util.HashSet;
 
 public class TestDb extends AndroidTestCase {
 
-    public static final String LOG_TAG = TestDb.class.getSimpleName();
+    private static final String LOG_TAG = TestDb.class.getSimpleName();
 
     //first method to call.
     @Override
@@ -23,7 +23,7 @@ public class TestDb extends AndroidTestCase {
         deleteDatabase();
     }
 
-    void deleteDatabase() {
+    private void deleteDatabase() {
         mContext.deleteDatabase(PTDbHelper.DATABASE_NAME);
     }
 

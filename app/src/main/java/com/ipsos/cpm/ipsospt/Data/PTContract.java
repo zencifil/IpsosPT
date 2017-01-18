@@ -19,6 +19,7 @@ public class PTContract {
     public static final String PATH_IND = "IND00";
     public static final String PATH_PANEL = "PANEL";
     public static final String PATH_PANEL_WEEK = "PANEL_WEEK";
+    public static final String PATH_USER_INFO = "USER_INFO";
     public static final String PATH_LOG = "LOG";
 
     public static final class Fam implements BaseColumns {
@@ -205,7 +206,6 @@ public class PTContract {
     }
 
     public static final class PanelWeek implements BaseColumns {
-
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_PANEL_WEEK).build();
         public static final String CONTENT_DIR_TYPE =
@@ -242,8 +242,27 @@ public class PTContract {
         }
     }
 
-    public static final class Log implements BaseColumns {
+    public static final class UserInfo implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_USER_INFO).build();
+        public static final String CONTENT_DIR_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USER_INFO;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USER_INFO;
 
+        public static final String TABLE_NAME = "USER_INFO";
+
+        public static final String COLUMN_AUTH_KEY = "AUTH_KEY";
+        public static final String COLUMN_AK_OBTAIN_DATE = "AK_OBTAIN_DATE";
+        public static final String COLUMN_AK_VALID_UNTIL = "AK_VALID_UNTIL";
+        public static final String COLUMN_LAST_SYNC_DATE = "LAST_SYNC_DATE";
+
+        public static Uri buildUserInfoUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class Log implements BaseColumns {
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOG).build();
         public static final String CONTENT_DIR_TYPE =

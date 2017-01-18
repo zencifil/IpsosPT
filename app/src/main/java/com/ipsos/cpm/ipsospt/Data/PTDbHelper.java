@@ -106,6 +106,14 @@ class PTDbHelper extends SQLiteOpenHelper {
                 PTContract.PanelWeek.COLUMN_SYNC_DATE + " TEXT " +
                 ");";
 
+        final String SQL_CREATE_USER_INFO_TABLE = "CREATE TABLE " + PTContract.UserInfo.TABLE_NAME + " (" +
+                PTContract.UserInfo._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                PTContract.UserInfo.COLUMN_AUTH_KEY + " TEXT NOT NULL, " +
+                PTContract.UserInfo.COLUMN_AK_OBTAIN_DATE + " TEXT NOT NULL, " +
+                PTContract.UserInfo.COLUMN_AK_VALID_UNTIL + " TEXT NOT NULL, " +
+                PTContract.UserInfo.COLUMN_LAST_SYNC_DATE + " TEXT " +
+                ");";
+
         final String SQL_CREATE_LOG_TABLE = "CREATE TABLE " + PTContract.Log.TABLE_NAME + " (" +
                 PTContract.Log._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 PTContract.Log.COLUMN_COUNTRY_CODE + " TEXT NOT NULL, " +
@@ -129,6 +137,8 @@ class PTDbHelper extends SQLiteOpenHelper {
         Log.d(LOG_TAG, "Panel table created");
         sqLiteDatabase.execSQL(SQL_CREATE_PANEL_WEEK_TABLE);
         Log.d(LOG_TAG, "Panel Week table created");
+        sqLiteDatabase.execSQL(SQL_CREATE_USER_INFO_TABLE);
+        Log.d(LOG_TAG, "User Info table created");
         sqLiteDatabase.execSQL(SQL_CREATE_LOG_TABLE);
         Log.d(LOG_TAG, "Log table created");
 
@@ -264,6 +274,8 @@ class PTDbHelper extends SQLiteOpenHelper {
         Log.d(LOG_TAG, "Panel table dropped");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PTContract.PanelWeek.TABLE_NAME);
         Log.d(LOG_TAG, "Panel week table dropped");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PTContract.UserInfo.TABLE_NAME);
+        Log.d(LOG_TAG, "User Info table dropped");
         sqLiteDatabase.execSQL("DROP TABLE IS EXISTS " + PTContract.Log.TABLE_NAME);
         Log.d(LOG_TAG, "Log table dropped");
         onCreate(sqLiteDatabase);

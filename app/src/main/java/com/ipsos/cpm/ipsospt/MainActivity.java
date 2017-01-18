@@ -1,6 +1,7 @@
 package com.ipsos.cpm.ipsospt;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,7 +26,18 @@ import com.ipsos.cpm.ipsospt.helper.ConnectivityReceiver;
 import com.ipsos.cpm.ipsospt.helper.Constants;
 import com.ipsos.cpm.ipsospt.helper.Utils;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.security.cert.Certificate;
 import java.util.HashMap;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -54,7 +66,7 @@ public class MainActivity extends AppCompatActivity
         _fldEmail = user.get(Constants.KEY_FLD_EMAIL);
         _fldCode = user.get(Constants.KEY_FLD_CODE);
         Toast.makeText(getApplicationContext(),
-                "User Login Status: " + _sessionManager.isLoggedIn() + "\r\n" +
+                "Token: " + IpsosPTApplication.getInstance().getAuthKey() + "\r\n" +
                         "Name: " + _fldName + "\r\n" + "Email: " + _fldEmail, Toast.LENGTH_LONG).show();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,6 +100,8 @@ public class MainActivity extends AppCompatActivity
                 //do nothing
             }
         });
+
+        testConnection();
     }
 
     @Override
@@ -220,5 +234,47 @@ public class MainActivity extends AppCompatActivity
         TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(color);
         snackbar.show();
+    }
+
+    private void testConnection() {
+        HttpsURLConnection connection;
+        BufferedReader reader;
+        String resultJsonStr;
+
+        try {
+            URL url = new URL(Constants.BASE_URL + Constants.API_GET_FAM);
+            connection = (HttpsURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+
+            // Read the input stream into a String
+            InputStream inputStream = connection.getInputStream();
+            StringBuilder buffer = new StringBuilder();
+            if (inputStream == null) {
+                // Nothing to do.
+                return;
+            }
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                // But it does make debugging a *lot* easier if you print out the completed
+                // buffer for debugging.
+                buffer.append(line + "\n");
+            }
+
+            if (buffer.length() == 0) {
+                // Stream was empty.  No point in parsing.
+                return;
+            }
+            resultJsonStr = buffer.toString();
+
+            JSONObject resultJson = new JSONObject(resultJsonStr);
+            Utils.parseJson(resultJson);
+        }
+        catch (Exception ex) {
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 }

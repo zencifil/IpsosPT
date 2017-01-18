@@ -3,6 +3,8 @@ package com.ipsos.cpm.ipsospt.helper;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -56,4 +58,7 @@ public class Utils {
             return false;
     }
 
+    public static void parseJson(JSONObject jsonObject) {
+
+    }
 }

@@ -2,6 +2,7 @@ package com.ipsos.cpm.ipsospt.helper;
 
 public class Constants {
 
+    public static final int NETWORK_TIMEOUT = 30000; //in milliseconds
     public static final String BASE_URL = "https://gpc.ipsos.com.tr/api/";
     public static final String EXTRA_FLDNAME = "com.ipsos.cpm.ipsospt.FLDNAME";
     public static final String EXTRA_FLDCODE = "com.ipsos.cpm.ipsospt.FLDCODE";
@@ -18,5 +19,7 @@ public class Constants {
     public static final String[] EMAIL_TO_LIST = new String[] { "savas.cilve@ipsos.com" };
     public static final String EMAIL_SUBJECT = "PT: {0}";
     public static final String LINK_TO_NEW_FORM = "http://www.google.com";
-
+    public static final int AUTHKEY_VALID_DAY = 60;
+    public static final String API_GET_PANEL = "PANEL";
+    public static final String API_GET_FAM = "FAM00";
 }
