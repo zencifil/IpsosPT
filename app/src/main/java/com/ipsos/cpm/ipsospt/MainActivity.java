@@ -1,6 +1,7 @@
 package com.ipsos.cpm.ipsospt;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import com.ipsos.cpm.ipsospt.data.PTContract;
 import com.ipsos.cpm.ipsospt.helper.ConnectivityReceiver;
 import com.ipsos.cpm.ipsospt.helper.Constants;
 import com.ipsos.cpm.ipsospt.helper.Utils;
+import com.ipsos.cpm.ipsospt.sync.SyncAdapter;
 
 import org.json.JSONObject;
 
@@ -47,7 +49,6 @@ public class MainActivity extends AppCompatActivity
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
-    private SessionManager _sessionManager;
     private Spinner _daysSpinner;
     private String _fldCode;
     private String _fldName;
@@ -58,16 +59,19 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        _sessionManager = new SessionManager(getApplicationContext());
         checkConnection();
-        _sessionManager.checkLogin();
-        HashMap<String, String> user = _sessionManager.getUserDetails();
+        String authKey = IpsosPTApplication.getInstance().getAuthKey();
+        if (authKey == null || authKey.isEmpty()) {
+            IpsosPTApplication.getInstance().logout();
+        }
+
+        HashMap<String, String> user = IpsosPTApplication.getInstance().getUserDetails();
         _fldName = user.get(Constants.KEY_FLD_NAME);
         _fldEmail = user.get(Constants.KEY_FLD_EMAIL);
         _fldCode = user.get(Constants.KEY_FLD_CODE);
-        Toast.makeText(getApplicationContext(),
-                "Token: " + IpsosPTApplication.getInstance().getAuthKey() + "\r\n" +
-                        "Name: " + _fldName + "\r\n" + "Email: " + _fldEmail, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(),
+//                "Token: " + authKey + "\r\n" +
+//                        "Name: " + _fldName + "\r\n" + "Email: " + _fldEmail, Toast.LENGTH_LONG).show();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -101,7 +105,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        testConnection();
+        SyncAdapter.initializeSyncAdapter(this);
     }
 
     @Override
@@ -131,7 +135,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            _sessionManager.logoutUser();
+            ((IpsosPTApplication)getApplication()).logout();
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra("finish", true); // if you are checking for this in your other Activities
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -140,6 +144,9 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
             finish();
             return true;
+        }
+        else if (id == R.id.action_sync) {
+            SyncAdapter.syncImmediately(this);
         }
 
         return super.onOptionsItemSelected(item);
@@ -189,6 +196,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        if (!IpsosPTApplication.getInstance().isLoggedIn())
+            IpsosPTApplication.getInstance().logout();
         IpsosPTApplication.getInstance().setConnectivityListener(this);
     }
 
@@ -207,9 +216,10 @@ public class MainActivity extends AppCompatActivity
         famListFragment.restartCursorLoader();
     }
 
-    private void checkConnection() {
+    private boolean checkConnection() {
         boolean isConnected = ConnectivityReceiver.isConnected();
         showSnack(isConnected);
+        return isConnected;
     }
 
     @Override
@@ -236,45 +246,4 @@ public class MainActivity extends AppCompatActivity
         snackbar.show();
     }
 
-    private void testConnection() {
-        HttpsURLConnection connection;
-        BufferedReader reader;
-        String resultJsonStr;
-
-        try {
-            URL url = new URL(Constants.BASE_URL + Constants.API_GET_FAM);
-            connection = (HttpsURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
-
-            // Read the input stream into a String
-            InputStream inputStream = connection.getInputStream();
-            StringBuilder buffer = new StringBuilder();
-            if (inputStream == null) {
-                // Nothing to do.
-                return;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                // But it does make debugging a *lot* easier if you print out the completed
-                // buffer for debugging.
-                buffer.append(line + "\n");
-            }
-
-            if (buffer.length() == 0) {
-                // Stream was empty.  No point in parsing.
-                return;
-            }
-            resultJsonStr = buffer.toString();
-
-            JSONObject resultJson = new JSONObject(resultJsonStr);
-            Utils.parseJson(resultJson);
-        }
-        catch (Exception ex) {
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
 }

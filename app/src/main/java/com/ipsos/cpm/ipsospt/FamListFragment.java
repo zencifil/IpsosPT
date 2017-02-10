@@ -1,8 +1,10 @@
 package com.ipsos.cpm.ipsospt;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -14,11 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.ipsos.cpm.ipsospt.data.PTContract;
 import com.ipsos.cpm.ipsospt.helper.Utils;
+import com.ipsos.cpm.ipsospt.sync.SyncAdapter;
 
-public class FamListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+import static com.ipsos.cpm.ipsospt.helper.Constants.KEY_SYNC_STATUS;
+
+public class FamListFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor>,
+                   SharedPreferences.OnSharedPreferenceChangeListener {
+
     public static final String LOG_TAG = FamListFragment.class.getSimpleName();
     private FamListAdapter _famListAdapter;
     private ListView _listView;
@@ -44,6 +53,14 @@ public class FamListFragment extends Fragment implements LoaderManager.LoaderCal
     static final int COL_DISTRICT = 3;
     static final int COL_NEIGHBORHOOD = 4;
     static final int COL_ADDRESS = 5;
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        if (s.equals(KEY_SYNC_STATUS)) {
+            String message = Utils.getLastSyncStatus(getContext());
+            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -129,6 +146,20 @@ public class FamListFragment extends Fragment implements LoaderManager.LoaderCal
             outState.putInt(SELECTED_KEY, _position);
         }
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sp.registerOnSharedPreferenceChangeListener(this);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sp.unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
     }
 
     public void restartCursorLoader() {

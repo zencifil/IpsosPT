@@ -65,7 +65,7 @@ public class PanelActivity extends FragmentActivity implements LoaderManager.Loa
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i > -1) {
                     _panelType = adapterView.getItemAtPosition(i).toString();
-                    getSupportLoaderManager().initLoader(WEEK_LOADER, null, _self);
+                    getSupportLoaderManager().restartLoader(WEEK_LOADER, null, _self);
                 }
             }
 

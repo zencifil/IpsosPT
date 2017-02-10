@@ -7,9 +7,12 @@
     <string name="title_activity_shipping" translatable="false">Kargo</string>
 
     <string name="internet_no_connection" translatable="false">İnternete bağlı değilsiniz! Uygulama çevrim dışı çalışacak.</string>
+    <string name="internet_no_connection_login" translatable="false">İnternete bağlı değilsiniz! İnternete bağlanmadıkça uygulamayı kullanamazsınız.</string>
     <string name="internet_connection" translatable="false">İnternet bağlantısı aktif.</string>
     <string name="invalid_operation" translatable="false">Geçersiz işlem!</string>
     <string name="no_data_found" translatable="false">Gösterilecek veri bulunamadı.</string>
+    <string name="no_user_data_found" translatable="false">Kullanıcı bilgisi bulunamadı. Yeniden giriş yapıp tekrar deneyin.</string>
+
 
     <!-- Strings related to login -->
     <string name="prompt_email" translatable="false">Email</string>
@@ -32,6 +35,7 @@
     <string name="navigation_new_form" translatable="false">Yeni Form</string>
 
     <string name="action_logout" translatable="false">Çıkış</string>
+    <string name="action_sync" translatable="false">Veriyi Güncelle</string>
 
     <string name="day" translatable="false">Gün</string>
     <string-array name="days_array">
@@ -106,5 +110,18 @@
     <string name="form_shipping_confirmation_title" translatable="false">Form kargo</string>
     <string name="form_shipping_send_all_confirmation" translatable="false">BÜTÜN formları kargoya verildi olarak işaretlemek istediğinizden emin misiniz?</string>
     <string name="form_shipping_send_confirmation" translatable="false">Seçilen formları kargoya verildi olarak işaretlemek istediğinizden emin misiniz?</string>
+
+    <!-- SyncAdapter related -->
+    <!--<string name="sync_account_type">ipsospt.cpm.ipsos.com</string>-->
+    <!--<string name="content_authority">com.ipsos.cpm.ipsospt</string>-->
+    <string name="sync_account_name">Account</string>
+    <string name="sync_account_type">com.ipsos.cpm.ipsospt.account</string>
+    <string name="content_authority">com.ipsos.cpm.ipsospt</string>
+    <string name="sync_status_start">Senkronizasyon başladı.</string>
+    <string name="sync_status_end">Senkronizasyon tamamlandı.</string>
+    <string name="sync_status_ok">Senkronizasyon başarıyla tamamlandı.</string>
+    <string name="sync_status_unknown">Senkronizasyon sırasında bilinmeyen bir hata oluştu.</string>
+    <string name="sync_status_unauthorized">Sunucuya login olunamadı.</string>
+    <string name="sync_status_server_down">Sunucuya ulaşılamadı.</string>
 
 </resources>

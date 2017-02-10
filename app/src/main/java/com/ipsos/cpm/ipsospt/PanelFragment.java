@@ -62,6 +62,9 @@ public class PanelFragment extends Fragment implements LoaderManager.LoaderCallb
         ListView listView = (ListView) rootView.findViewById(R.id.panel_list_fragment_panel);
         listView.setAdapter(_panelAdapter);
 
+        View emptyView = rootView.findViewById(R.id.panel_list_fragment_empty);
+        listView.setEmptyView(emptyView);
+
         return rootView;
     }
 

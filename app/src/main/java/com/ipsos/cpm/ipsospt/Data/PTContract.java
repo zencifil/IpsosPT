@@ -18,8 +18,8 @@ public class PTContract {
     public static final String PATH_FLD = "FLD00";
     public static final String PATH_IND = "IND00";
     public static final String PATH_PANEL = "PANEL";
-    public static final String PATH_PANEL_WEEK = "PANEL_WEEK";
-    public static final String PATH_USER_INFO = "USER_INFO";
+    public static final String PATH_PANEL_WEEK = "PANELWEEK";
+    public static final String PATH_USER_INFO = "USERINFO";
     public static final String PATH_LOG = "LOG";
 
     public static final class Fam implements BaseColumns {
@@ -213,7 +213,7 @@ public class PTContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PANEL_WEEK;
 
-        public static final String TABLE_NAME = "PANEL_WEEK";
+        public static final String TABLE_NAME = "PANELWEEK";
 
         public static final String COLUMN_COUNTRY_CODE = "COUNTRY_CODE";
         public static final String COLUMN_PANEL_TYPE = "PANEL_TYPE";
@@ -250,7 +250,7 @@ public class PTContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USER_INFO;
 
-        public static final String TABLE_NAME = "USER_INFO";
+        public static final String TABLE_NAME = "USERINFO";
 
         public static final String COLUMN_AUTH_KEY = "AUTH_KEY";
         public static final String COLUMN_AK_OBTAIN_DATE = "AK_OBTAIN_DATE";

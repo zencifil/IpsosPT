@@ -388,8 +388,17 @@ public class PTProvider extends ContentProvider {
 
         try {
             switch (match) {
+                case FAMILY:
+                    rowsDeleted = db.delete(PTContract.Fam.TABLE_NAME, s, strings);
+                    break;
+                case INDIVIDUAL:
+                    rowsDeleted = db.delete(PTContract.Ind.TABLE_NAME, s, strings);
+                    break;
                 case PANEL:
                     rowsDeleted = db.delete(PTContract.Panel.TABLE_NAME, s, strings);
+                    break;
+                case PANEL_WEEK:
+                    rowsDeleted = db.delete(PTContract.PanelWeek.TABLE_NAME, s, strings);
                     break;
                 case USER_INFO:
                     rowsDeleted = db.delete(PTContract.UserInfo.TABLE_NAME, s, strings);

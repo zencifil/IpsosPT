@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ipsos.cpm.ipsospt.helper.Constants;
+import com.ipsos.cpm.ipsospt.sync.SyncAdapter;
 
 public class FamDetailActivity extends AppCompatActivity implements FamDetailFragment.OnFamDetailButtonClickedListener {
 
@@ -17,9 +18,6 @@ public class FamDetailActivity extends AppCompatActivity implements FamDetailFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fam_detail);
-
-        _sessionManager = new SessionManager(getApplicationContext());
-        _sessionManager.checkLogin();
 
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
@@ -53,7 +51,7 @@ public class FamDetailActivity extends AppCompatActivity implements FamDetailFra
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            _sessionManager.logoutUser();
+            IpsosPTApplication.getInstance().logout();
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra("finish", true); // if you are checking for this in your other Activities
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -62,6 +60,9 @@ public class FamDetailActivity extends AppCompatActivity implements FamDetailFra
             startActivity(intent);
             finish();
             return true;
+        }
+        else if (id == R.id.action_sync) {
+            SyncAdapter.syncImmediately(this);
         }
 
         return super.onOptionsItemSelected(item);

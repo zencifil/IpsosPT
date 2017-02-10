@@ -24,64 +24,51 @@ class SessionManager {
 
     private int PRIVATE_MODE = 0;
 
-    SessionManager(Context context){
-        this._context = context;
-        _pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-    }
-
-    void createLoginSession(String name, String email, String fldCode){
-        _editor = _pref.edit();
-        _editor.putBoolean(IS_LOGIN, true);
-        _editor.putString(KEY_FLD_NAME, name);
-        _editor.putString(KEY_FLD_EMAIL, email);
-        _editor.putString(KEY_FLD_CODE, fldCode);
-        _editor.commit();
-    }
-
-    HashMap<String, String> getUserDetails(){
-        HashMap<String, String> user = new HashMap<>();
-        user.put(KEY_FLD_NAME, _pref.getString(KEY_FLD_NAME, null));
-        user.put(KEY_FLD_EMAIL, _pref.getString(KEY_FLD_EMAIL, null));
-        user.put(KEY_FLD_CODE, _pref.getString(KEY_FLD_CODE, null));
-
-        return user;
-    }
-
-    void checkLogin() {
-        if(!this.isLoggedIn()){
-            Intent i = new Intent(_context, LoginActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            _context.startActivity(i);
-        }
-        else {
-            //TODO check for valid token
-        }
-    }
-
-    void logoutUser(){
-        if (_editor != null) {
-            _editor.clear();
-            _editor.commit();
-        }
-    }
-
-    boolean isLoggedIn(){
-        return _pref.getBoolean(IS_LOGIN, false);
-    }
-
-//    String getAuthKey() {
-//        Cursor c = _context
-//                .getContentResolver()
-//                .query(PTContract.UserInfo.CONTENT_URI, new String[] { PTContract.UserInfo.COLUMN_AUTH_KEY },
-//                        null, null, null);
-//
-//        String authKey = "";
-//        if (c != null && c.getCount() > 0 && c.moveToFirst()) {
-//            do {
-//                authKey = c.getString(0);
-//            } while (c.moveToNext());
-//        }
-//        return authKey;
+//    SessionManager(Context context){
+//        this._context = context;
+//        _pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
 //    }
+//
+//    void createLoginSession(String name, String email, String fldCode){
+//        _editor = _pref.edit();
+//        _editor.putBoolean(IS_LOGIN, true);
+//        _editor.putString(KEY_FLD_NAME, name);
+//        _editor.putString(KEY_FLD_EMAIL, email);
+//        _editor.putString(KEY_FLD_CODE, fldCode);
+//        _editor.commit();
+//    }
+//
+//    HashMap<String, String> getUserDetails(){
+//        HashMap<String, String> user = new HashMap<>();
+//        user.put(KEY_FLD_NAME, _pref.getString(KEY_FLD_NAME, null));
+//        user.put(KEY_FLD_EMAIL, _pref.getString(KEY_FLD_EMAIL, null));
+//        user.put(KEY_FLD_CODE, _pref.getString(KEY_FLD_CODE, null));
+//
+//        return user;
+//    }
+//
+//    void checkLogin() {
+//        if(!this.isLoggedIn()){
+//            Intent i = new Intent(_context, LoginActivity.class);
+//            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            _context.startActivity(i);
+//        }
+//        else {
+//            //TODO check for valid token (date)
+//        }
+//    }
+//
+//    void logoutUser() {
+//        if (_editor == null)
+//            _editor = _pref.edit();
+//        _editor.clear();
+//        _editor.apply();
+//        _editor.commit();
+//    }
+//
+//    boolean isLoggedIn(){
+//        return _pref.getBoolean(IS_LOGIN, false);
+//    }
+
 }

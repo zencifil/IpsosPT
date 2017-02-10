@@ -7,7 +7,25 @@ import android.net.Uri;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
+import com.ipsos.cpm.ipsospt.IpsosPTApplication;
+import com.ipsos.cpm.ipsospt.helper.Constants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.HashSet;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by zencifil on 29/11/2016.
@@ -373,5 +391,91 @@ public class TestDb extends AndroidTestCase {
 
         Uri returnUri = getContext().getContentResolver().insert(uri, values);
         assertTrue("LOG insert failed!", returnUri == null);
+    }
+
+    public void testSyncData() throws Throwable {
+        //FAM00
+        JSONObject famJson = getJson(Constants.BASE_URL + Constants.API_GET_FAM);
+    }
+
+    private JSONObject getJson(String urlStr) {
+        HttpsURLConnection urlConnection = null;
+        HashMap<String, String> userDetails = IpsosPTApplication.getInstance().getUserDetails();
+        if (userDetails == null) {
+            //setSyncStatus(getContext(), SYNC_STATUS_NO_USER_DATA);
+            return null;
+        }
+
+        String token = IpsosPTApplication.getInstance().getAuthKey();
+        if (token == null || token.equals("")) {
+            //setSyncStatus(getContext(), SYNC_STATUS_NO_USER_DATA);
+            return null;
+        }
+
+        BufferedReader reader;
+
+        try {
+            URL url = new URL(urlStr);
+            urlConnection = (HttpsURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            urlConnection.setDoInput(true);
+            urlConnection.setChunkedStreamingMode(0);
+
+            String params = Constants.QUERY_PARAM_TOKEN + "=" + token;
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+            writer.write(params);
+
+            writer.flush();
+            writer.close();
+            os.close();
+
+            int response = urlConnection.getResponseCode();
+            if (response == HttpURLConnection.HTTP_OK) {
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuilder buffer = new StringBuilder();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                    // But it does make debugging a *lot* easier if you print out the completed
+                    // buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return null;
+                }
+
+                return new JSONObject(buffer.toString());
+            }
+            else if (response == HttpURLConnection.HTTP_NOT_FOUND) {
+                //setSyncStatus(getContext(), SYNC_STATUS_SERVER_INVALID);
+                return null;
+            }
+            else {
+                //setSyncStatus(getContext(), SYNC_STATUS_UNKNOWN);
+                return null;
+            }
+        }
+        catch (IOException ex) {
+            //setSyncStatus(getContext(), SYNC_STATUS_SERVER_DOWN);
+            return null;
+        }
+        catch (JSONException ex) {
+            //setSyncStatus(getContext(), SYNC_STATUS_SERVER_INVALID);
+            return null;
+        }
+        finally {
+            if (urlConnection != null)
+                urlConnection.disconnect();
+        }
     }
 }

@@ -38,10 +38,13 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void getFam() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        //Context appContext = InstrumentationRegistry.getTargetContext();
         HttpsURLConnection connection;
         BufferedReader reader;
         String resultJsonStr;
+
+        String exMessage = "";
+        Object exc = null;
 
         try {
             URL url = new URL(Constants.BASE_URL + Constants.API_GET_FAM);
@@ -49,6 +52,9 @@ public class ExampleInstrumentedTest {
             connection.setConnectTimeout(Constants.NETWORK_TIMEOUT);
             connection.setRequestMethod("GET");
             connection.connect();
+
+            int response = connection.getResponseCode();
+            assertEquals("Result is NOT 200", 200, response);
 
             // Read the input stream into a String
             InputStream inputStream = connection.getInputStream();
@@ -71,10 +77,13 @@ public class ExampleInstrumentedTest {
             resultJsonStr = buffer.toString();
 
             JSONObject resultJson = new JSONObject(resultJsonStr);
-            Utils.parseJson(resultJson);
+            //Utils.parseJson(resultJson);
         }
         catch (Exception ex) {
-            assertTrue(ex.getMessage(), false);
+            exMessage = ex.getMessage();
+            exc = ex;
         }
+
+        assertEquals(exMessage, null, exc);
     }
 }

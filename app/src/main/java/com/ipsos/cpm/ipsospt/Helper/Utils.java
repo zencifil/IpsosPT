@@ -1,12 +1,21 @@
 package com.ipsos.cpm.ipsospt.helper;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.preference.PreferenceManager;
+
+import com.ipsos.cpm.ipsospt.R;
+import com.ipsos.cpm.ipsospt.sync.SyncAdapter;
 
 import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Locale;
+
+import static com.ipsos.cpm.ipsospt.helper.Constants.KEY_SYNC_STATUS;
+import static com.ipsos.cpm.ipsospt.sync.SyncAdapter.SYNC_STATUS_UNKNOWN;
 
 /**
  * Created by zencifil on 14/12/2016.
@@ -58,7 +67,36 @@ public class Utils {
             return false;
     }
 
-    public static void parseJson(JSONObject jsonObject) {
+    @SuppressWarnings("ResourceType")
+    public static @SyncAdapter.SyncStatus
+    int getSyncStatus(Context c) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
+        return sp.getInt(KEY_SYNC_STATUS, SYNC_STATUS_UNKNOWN);
+    }
 
+    public static String getLastSyncStatus(Context c) {
+        String message = "";
+        @SyncAdapter.SyncStatus int syncStatus = Utils.getSyncStatus(c);
+        switch (syncStatus) {
+            case SyncAdapter.SYNC_STATUS_START:
+                message = c.getString(R.string.sync_status_start);
+                break;
+            case SyncAdapter.SYNC_STATUS_END:
+                message = c.getString(R.string.sync_status_end);
+                break;
+            case SyncAdapter.SYNC_STATUS_OK:
+                message = c.getString(R.string.sync_status_ok);
+                break;
+            case SyncAdapter.SYNC_STATUS_UNAUTHORIZED:
+                message = c.getString(R.string.sync_status_unauthorized);
+                break;
+            case SyncAdapter.SYNC_STATUS_SERVER_DOWN:
+                message = c.getString(R.string.sync_status_server_down);
+                break;
+            case SyncAdapter.SYNC_STATUS_UNKNOWN:
+            default:
+                message = c.getString(R.string.sync_status_unknown);
+        }
+        return message;
     }
 }

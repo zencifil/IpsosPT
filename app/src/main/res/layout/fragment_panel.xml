@@ -16,5 +16,12 @@
             android:id="@+id/panel_list_fragment_panel">
 
         </ListView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/panel_list_fragment_empty"
+            android:text="@string/no_data_found"
+            android:gravity="center_horizontal"
+            android:padding="16dp" />
     </FrameLayout>
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -18,14 +19,32 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ipsos.cpm.ipsospt.data.PTContract;
 import com.ipsos.cpm.ipsospt.data.PTProvider;
+import com.ipsos.cpm.ipsospt.helper.ConnectivityReceiver;
 import com.ipsos.cpm.ipsospt.helper.Constants;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * A login screen that offers login via email/password.
@@ -42,15 +61,12 @@ public class LoginActivity extends AppCompatActivity {
     private EditText _passwordTextBox;
     private View _progressView;
     private View _loginFormView;
-
-    SessionManager _sessionManager;
+    private static final String LOG_TAG = LoginActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        _sessionManager = new SessionManager(getApplicationContext());
 
         // Set up the login form.
         _emailTextBox = (EditText) findViewById(R.id.email);
@@ -116,6 +132,10 @@ public class LoginActivity extends AppCompatActivity {
         else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+            if (!ConnectivityReceiver.isConnected()) {
+                Toast.makeText(LoginActivity.this, getString(R.string.internet_no_connection_login), Toast.LENGTH_LONG).show();
+                return;
+            }
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
@@ -126,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 8;
+        return password.length() >= 7;
     }
 
     /**
@@ -176,6 +196,7 @@ public class LoginActivity extends AppCompatActivity {
         private final String _password;
         private String _fldName;
         private String _fldCode;
+        private String _errorMessage;
 
         UserLoginTask(String email, String password) {
             _email = email;
@@ -185,17 +206,13 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-
-                //TODO don't forget to open
-                login();
+                return login();
             }
-            catch (InterruptedException e) {
+            catch (Exception e) {
                 return false;
             }
 
-            return true;
+            //return true;
         }
 
         @Override
@@ -208,7 +225,8 @@ public class LoginActivity extends AppCompatActivity {
                 navigateToHomeActivity();
             }
             else {
-                _passwordTextBox.setError(getString(R.string.error_incorrect_password));
+                //_passwordTextBox.setError(getString(R.string.error_incorrect_password));
+                _passwordTextBox.setError(_errorMessage);
                 _passwordTextBox.requestFocus();
             }
         }
@@ -220,68 +238,104 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         private boolean login() {
-            //HttpsURLConnection urlConnection;
-            //BufferedReader reader;
-            //String resultJsonStr = null;
+            HttpsURLConnection urlConnection;
+            BufferedReader reader;
+            String resultJsonStr = null;
+            boolean result = false;
 
             try {
-//                URL url = new URL(Constants.BASE_URL);
-//                urlConnection = (HttpsURLConnection) url.openConnection();
-//                urlConnection.setRequestMethod("GET");
-//                urlConnection.connect();
-//
-//                // Read the input stream into a String
-//                InputStream inputStream = urlConnection.getInputStream();
-//                StringBuffer buffer = new StringBuffer();
-//                if (inputStream == null) {
-//                    // Nothing to do.
-//                    return false;
-//                }
-//                reader = new BufferedReader(new InputStreamReader(inputStream));
-//
-//                String line;
-//                while ((line = reader.readLine()) != null) {
-//                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-//                    // But it does make debugging a *lot* easier if you print out the completed
-//                    // buffer for debugging.
-//                    buffer.append(line + "\n");
-//                }
-//
-//                if (buffer.length() == 0) {
-//                    // Stream was empty.  No point in parsing.
-//                    return false;
-//                }
-//                resultJsonStr = buffer.toString();
-//
-//                JSONObject resultJson = new JSONObject(resultJsonStr);
-                //TODO result icinde adi felan gelmeli...
+                URL url = new URL(Constants.BASE_URL + Constants.API_LOGIN);
+                urlConnection = (HttpsURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                urlConnection.setDoOutput(true);
+                urlConnection.setChunkedStreamingMode(0);
 
-                _email = "test.pt@ipsos.com";
-                _fldName = "TEST PT";
-                _fldCode = "G5";
+                String params = Constants.QUERY_PARAM_USERNAME + "=" + _email +
+                        "&" +
+                        Constants.QUERY_PARAM_PASSWORD + "=" + _password +
+                        "&" +
+                        Constants.QUERY_PARAM_GRANT_TYPE + "=password";
 
-                String authKey = "testauthkey";
-                Calendar cal = Calendar.getInstance(); // the value to be formatted
-                DateFormat formatter = DateFormat.getDateInstance(DateFormat.SHORT);
-                formatter.setTimeZone(cal.getTimeZone());
-                String akObtain = formatter.format(cal.getTime());
-                cal.add(Calendar.DAY_OF_MONTH, Constants.AUTHKEY_VALID_DAY);
-                String akValidUntil = formatter.format(cal.getTime());
-                ContentValues values = new ContentValues();
-                values.put(PTContract.UserInfo.COLUMN_AUTH_KEY, authKey);
-                values.put(PTContract.UserInfo.COLUMN_AK_OBTAIN_DATE, akObtain);
-                values.put(PTContract.UserInfo.COLUMN_AK_VALID_UNTIL, akValidUntil);
-                getContentResolver().delete(PTContract.UserInfo.CONTENT_URI, null, null);
-                getContentResolver().insert(PTContract.UserInfo.CONTENT_URI, values);
+                OutputStream os = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                writer.write(params);
 
-                _sessionManager.createLoginSession(_fldName, _email, _fldCode);
+                writer.flush();
+                writer.close();
+                os.close();
 
-                return true;
+                if (urlConnection.getResponseCode() != HttpsURLConnection.HTTP_OK) {
+                    InputStream errorStream = urlConnection.getErrorStream();
+                    StringBuilder errorBuffer = new StringBuilder();
+                    if (errorStream != null) {
+                        reader = new BufferedReader(new InputStreamReader(errorStream));
+                        String l;
+                        while ((l = reader.readLine()) != null) {
+                            errorBuffer.append(l + "\n");
+                        }
+                    }
+                    JSONObject errorJson = new JSONObject(errorBuffer.toString());
+                    String errorDesc = errorJson.getString(Constants.JSON_ERROR_DESCRIPTION);
+                    if (errorDesc.contains("password is incorrect"))
+                        _errorMessage = getString(R.string.error_incorrect_password);
+                    result = false;
+                }
+                else {
+                    // Read the input stream into a String
+                    InputStream inputStream = urlConnection.getInputStream();
+                    StringBuilder buffer = new StringBuilder();
+                    if (inputStream == null) {
+                        // Nothing to do.
+                        return false;
+                    }
+                    reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                        // But it does make debugging a *lot* easier if you print out the completed
+                        // buffer for debugging.
+                        buffer.append(line + "\n");
+                    }
+
+                    if (buffer.length() == 0) {
+                        // Stream was empty.  No point in parsing.
+                        return false;
+                    }
+                    resultJsonStr = buffer.toString();
+
+                    JSONObject resultJson = new JSONObject(resultJsonStr);
+                    String authKey = resultJson.getString(Constants.JSON_AUTH_KEY_TOKEN);
+
+                    //TODO take these from json
+                    _fldName = "TEST PT";
+                    _fldCode = "G5";
+
+                    Calendar cal = Calendar.getInstance(); // the value to be formatted
+                    DateFormat formatter = DateFormat.getDateInstance(DateFormat.SHORT);
+                    formatter.setTimeZone(cal.getTimeZone());
+                    String akObtain = formatter.format(cal.getTime());
+                    cal.add(Calendar.DAY_OF_MONTH, Constants.AUTHKEY_VALID_DAY);
+                    String akValidUntil = formatter.format(cal.getTime());
+                    ContentValues values = new ContentValues();
+                    values.put(PTContract.UserInfo.COLUMN_AUTH_KEY, authKey);
+                    values.put(PTContract.UserInfo.COLUMN_AK_OBTAIN_DATE, akObtain);
+                    values.put(PTContract.UserInfo.COLUMN_AK_VALID_UNTIL, akValidUntil);
+                    getContentResolver().delete(PTContract.UserInfo.CONTENT_URI, null, null);
+                    getContentResolver().insert(PTContract.UserInfo.CONTENT_URI, values);
+
+                    IpsosPTApplication.getInstance().createLoginSession(_fldName, _email, _fldCode);
+
+                    result = true;
+                }
             }
             catch (Exception e) {
-                Log.e("Login", e.getMessage());
-                return false;
+                Log.e(LOG_TAG, e.getMessage());
+                result = false;
             }
+
+            return result;
         }
 
         private void navigateToHomeActivity() {
