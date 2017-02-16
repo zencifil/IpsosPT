@@ -134,7 +134,7 @@ public class FamDetailFragment extends Fragment implements LoaderManager.LoaderC
         panels.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Panel2Activity.class);
+                Intent intent = new Intent(getActivity(), PanelActivity.class);
                 intent.putExtra(Constants.EXTRA_FAMCODE, _famCode);
                 startActivity(intent);
             }

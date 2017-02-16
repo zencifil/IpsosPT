@@ -7,6 +7,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,7 +20,8 @@ import com.ipsos.cpm.ipsospt.helper.Constants;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PanelActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class PanelActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private Spinner _panelTypesSpinner;
     private Spinner _weeksSpinner;
@@ -53,6 +55,9 @@ public class PanelActivity extends FragmentActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_panel);
+
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         _weeks = new HashMap<>();
         _famCode = getIntent().getStringExtra(Constants.EXTRA_FAMCODE);
