@@ -121,7 +121,7 @@ class PanelAdapter extends CursorSwipeAdapter {
         if (indCode == 0 || indName == null)
             viewHolder.famCodeView.setText(_famCode);
         else
-            viewHolder.famCodeView.setText(Integer.toString(indCode) + " - " + indName);
+            viewHolder.famCodeView.setText(_famCode + " - " + Integer.toString(indCode) + " - " + indName);
 
         ImageView check1 = (ImageView) view.findViewById(R.id.pt2house_image_view);
         check1.setOnClickListener(new View.OnClickListener() {
