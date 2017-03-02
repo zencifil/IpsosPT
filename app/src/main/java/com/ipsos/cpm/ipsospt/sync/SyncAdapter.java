@@ -102,6 +102,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle bundle, String s,
                               ContentProviderClient contentProviderClient,
                               SyncResult syncResult) {
+        if (bundle != null && bundle.getBoolean(ContentResolver.SYNC_EXTRAS_MANUAL))
+            sync(syncResult);
+        else
+            uploadPanel(syncResult);
+    }
+
+    private void sync(final SyncResult syncResult) {
         Log.d(LOG_TAG, "Sync started");
         long famInsertCount, indInsertCount, panelInsertCount, panelWeekInsertCount;
         long famDeleteCount, indDeleteCount, panelDeleteCount, panelWeekDeleteCount;
