@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
     private Spinner _daysSpinner;
+    private int _selectedDay;
+    private String _sortOrder;
     private String _fldCode;
     private String _fldName;
     private String _fldEmail;
@@ -93,7 +97,8 @@ public class MainActivity extends AppCompatActivity
         _daysSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                loadFamListForDay(i);
+                _selectedDay = i;
+                loadFamListForDay(_selectedDay, _sortOrder);
             }
 
             @Override
@@ -102,7 +107,87 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        LinearLayout orderByFamCodeLayout = (LinearLayout) findViewById(R.id.order_by_fam_code_layout);
+        orderByFamCodeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImageView orderByFamCodeImage = (ImageView) findViewById(R.id.order_by_fam_code_image);
+                String tag;
+                int imageResource;
+                if (orderByFamCodeImage.getTag().toString().equals(getString(R.string.order_asc))) {
+                    _sortOrder = PTContract.Fam.COLUMN_FAM_CODE + " DESC";
+                    tag = getString(R.string.order_desc);
+                    imageResource = R.drawable.ic_order_desc;
+                }
+                else {
+                    _sortOrder = PTContract.Fam.COLUMN_FAM_CODE + " ASC";
+                    tag = getString(R.string.order_asc);
+                    imageResource = R.drawable.ic_order_asc;
+                }
+
+                sortFamList(orderByFamCodeImage, tag, imageResource);
+            }
+        });
+
+        LinearLayout orderByFamNameLayout = (LinearLayout) findViewById(R.id.order_by_fam_name_layout);
+        orderByFamNameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImageView orderByFamNameImage = (ImageView) findViewById(R.id.order_by_fam_name_image);
+                String tag;
+                int imageResource;
+                if (orderByFamNameImage.getTag().toString().equals(getString(R.string.order_asc))) {
+                    _sortOrder = PTContract.Fam.COLUMN_FAM_NAME + " DESC";
+                    tag = getString(R.string.order_desc);
+                    imageResource = R.drawable.ic_order_desc;
+                }
+                else {
+                    _sortOrder = PTContract.Fam.COLUMN_FAM_NAME + " ASC";
+                    tag = getString(R.string.order_asc);
+                    imageResource = R.drawable.ic_order_asc;
+                }
+
+                sortFamList(orderByFamNameImage, tag, imageResource);
+            }
+        });
+
+        LinearLayout orderByFamAddressLayout = (LinearLayout) findViewById(R.id.order_by_fam_address_layout);
+        orderByFamAddressLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImageView orderByFamAddressImage = (ImageView) findViewById(R.id.order_by_fam_address_image);
+                String tag;
+                int imageResource;
+                if (orderByFamAddressImage.getTag().toString().equals(getString(R.string.order_asc))) {
+                    _sortOrder = PTContract.Fam.COLUMN_NEIGHBORHOOD + " DESC";
+                    tag = getString(R.string.order_desc);
+                    imageResource = R.drawable.ic_order_desc;
+                }
+                else {
+                    _sortOrder = PTContract.Fam.COLUMN_NEIGHBORHOOD + " ASC";
+                    tag = getString(R.string.order_asc);
+                    imageResource = R.drawable.ic_order_asc;
+                }
+
+                sortFamList(orderByFamAddressImage, tag, imageResource);
+            }
+        });
+
         SyncAdapter.initializeSyncAdapter(this);
+    }
+
+    private void sortFamList(ImageView imageView, String tag, int imageResource) {
+        ImageView orderByFamCodeImage = (ImageView) findViewById(R.id.order_by_fam_code_image);
+        ImageView orderByFamNameImage = (ImageView) findViewById(R.id.order_by_fam_name_image);
+        ImageView orderByFamAddressImage = (ImageView) findViewById(R.id.order_by_fam_address_image);
+        orderByFamCodeImage.setVisibility(View.INVISIBLE);
+        orderByFamNameImage.setVisibility(View.INVISIBLE);
+        orderByFamAddressImage.setVisibility(View.INVISIBLE);
+
+        imageView.setVisibility(View.VISIBLE);
+        imageView.setTag(tag);
+        imageView.setImageResource(imageResource);
+        loadFamListForDay(_selectedDay, _sortOrder);
     }
 
     @Override
@@ -203,12 +288,13 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    private void loadFamListForDay(int day) {
+    private void loadFamListForDay(int day, String sortOrder) {
         // if day == 0 load all families
         FamListFragment famListFragment = (FamListFragment) getSupportFragmentManager().findFragmentById(R.id.content_main_fragment);
         if (famListFragment == null)
             return;
         famListFragment.setVisitDay(day);
+        famListFragment.setOrder(sortOrder);
         famListFragment.restartCursorLoader();
     }
 

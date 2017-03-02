@@ -13,6 +13,8 @@
     <string name="no_data_found" translatable="false">Gösterilecek veri bulunamadı.</string>
     <string name="no_user_data_found" translatable="false">Kullanıcı bilgisi bulunamadı. Yeniden giriş yapıp tekrar deneyin.</string>
 
+    <string name="order_asc" translatable="false">ASC</string>
+    <string name="order_desc" translatable="false">DESC</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email" translatable="false">Email</string>

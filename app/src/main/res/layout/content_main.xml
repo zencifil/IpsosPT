@@ -41,7 +41,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/order_by_fam_code_image"
-                android:src="@drawable/ic_order_asc"/>
+                android:src="@drawable/ic_order_asc"
+                android:tag="@string/order_asc"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -61,7 +62,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/order_by_fam_name_image"
                 android:src="@drawable/ic_order_asc"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                android:tag="@string/order_desc"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -81,7 +83,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/order_by_fam_address_image"
                 android:src="@drawable/ic_order_asc"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                android:tag="@string/order_desc"/>
         </LinearLayout>
     </LinearLayout>
 

@@ -33,6 +33,7 @@ public class FamListFragment extends Fragment
     private ListView _listView;
     private int _position = ListView.INVALID_POSITION;
     private int _visitDay;
+    private String _sortOrder;
 
     private static final String SELECTED_KEY = "selected_position";
 
@@ -115,6 +116,10 @@ public class FamListFragment extends Fragment
         _visitDay = visitDay;
     }
 
+    public void setOrder(String order) {
+        _sortOrder = order;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         _famListAdapter = new FamListAdapter(getActivity(), null, 0);
@@ -122,6 +127,7 @@ public class FamListFragment extends Fragment
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         _visitDay = Utils.getTodayIndex();
+        _sortOrder = PTContract.Fam.COLUMN_FAM_NAME + " ASC";
 
         _listView = (ListView) rootView.findViewById(R.id.fam_list_fragment_main);
         _listView.setAdapter(_famListAdapter);
@@ -178,9 +184,8 @@ public class FamListFragment extends Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String sortOrder = PTContract.Fam.COLUMN_FAM_NAME + " ASC";
         Uri famListForTodayUri = PTContract.Fam.buildFamilyUriForDay(_visitDay);
-        return new CursorLoader(getActivity(), famListForTodayUri, FAM_LIST_COLUMNS, null, null, sortOrder);
+        return new CursorLoader(getActivity(), famListForTodayUri, FAM_LIST_COLUMNS, null, null, _sortOrder);
     }
 
     @Override
