@@ -395,7 +395,7 @@ public class TestDb extends AndroidTestCase {
 
     public void testSyncData() throws Throwable {
         //FAM00
-        JSONObject famJson = getJson(Constants.BASE_URL + Constants.API_GET_FAM);
+        JSONObject famJson = getJson(Constants.BASE_URL + Constants.API_FAM);
     }
 
     private JSONObject getJson(String urlStr) {

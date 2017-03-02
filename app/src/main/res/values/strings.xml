@@ -48,6 +48,9 @@
         <item>Cumartesi</item>
         <item>Pazar</item>
     </string-array>
+    <string name="order_by_fam_code" translatable="false">Hane Kodu</string>
+    <string name="order_by_fam_name" translatable="false">Hane Adı</string>
+    <string name="order_by_fam_address" translatable="false">Mahalle</string>
 
     <!-- Detail form -->
     <string name="form_fam_code" translatable="false">Hane: </string>
@@ -58,7 +61,7 @@
     <string name="form_address" translatable="false">Adres: </string>
     <string name="form_landline" translatable="false">Ev Tel: </string>
     <string name="form_workline" translatable="false">İş Tel: </string>
-    <string name="form_cellular" translatable="false">Cel Tel: </string>
+    <string name="form_cellular" translatable="false">Cep Tel: </string>
     <string name="form_avp" translatable="false">AVP: </string>
     <string name="form_alk" translatable="false">Alkol: </string>
     <string name="form_sp" translatable="false">SP: </string>

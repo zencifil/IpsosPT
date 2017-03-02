@@ -69,9 +69,6 @@ public class MainActivity extends AppCompatActivity
         _fldName = user.get(Constants.KEY_FLD_NAME);
         _fldEmail = user.get(Constants.KEY_FLD_EMAIL);
         _fldCode = user.get(Constants.KEY_FLD_CODE);
-//        Toast.makeText(getApplicationContext(),
-//                "Token: " + authKey + "\r\n" +
-//                        "Name: " + _fldName + "\r\n" + "Email: " + _fldEmail, Toast.LENGTH_LONG).show();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -152,7 +149,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.

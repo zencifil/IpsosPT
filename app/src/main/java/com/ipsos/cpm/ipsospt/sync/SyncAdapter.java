@@ -4,18 +4,22 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.TargetApi;
 import android.content.AbstractThreadedSyncAdapter;
+import android.content.ContentProvider;
 import android.content.ContentProviderClient;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntDef;
+import android.support.v4.content.CursorLoader;
 import android.util.Log;
 
 import com.ipsos.cpm.ipsospt.IpsosPTApplication;
@@ -36,6 +40,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.net.URL;
@@ -45,12 +50,26 @@ import java.util.HashMap;
 import javax.net.ssl.HttpsURLConnection;
 
 import static com.ipsos.cpm.ipsospt.helper.Constants.KEY_SYNC_STATUS;
+import static com.ipsos.cpm.ipsospt.helper.Constants.QUERY_PARAM_PANEL_TYPE;
 import static com.ipsos.cpm.ipsospt.helper.Constants.SYNC_INTERVAL;
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private final String LOG_TAG = SyncAdapter.class.getSimpleName();
     private ContentResolver _contentResolver;
+
+    private static final String[] PANEL_COLUMNS = {
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel._ID,
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_COUNTRY_CODE,
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_FLD_CODE,
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_PANEL_TYPE,
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_FAM_CODE,
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_IND_CODE,
+            PTContract.Ind.TABLE_NAME + "." + PTContract.Ind.COLUMN_IND_NAME,
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_WEEK_CODE,
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_WEEK_CHECK,
+            PTContract.PanelWeek.TABLE_NAME + "." + PTContract.PanelWeek.COLUMN_WEEK_DESC
+    };
 
     public static final int SYNC_STATUS_START = -1;
     public static final int SYNC_STATUS_END = 10;
@@ -122,12 +141,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void syncPanel(final SyncResult syncResult) {
-        downloadPanel(syncResult);
+        if (uploadPanel(syncResult))
+            downloadPanel(syncResult);
     }
 
     private void syncPanelWeek(final SyncResult syncResult) {
-        if (uploadPanelWeek())
-            downloadPanelWeek(syncResult);
+        downloadPanelWeek(syncResult);
     }
 
     private boolean uploadFam() {
@@ -138,13 +157,103 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         return true;
     }
 
-    private boolean uploadPanelWeek() {
-        //TODO fill
-        return true;
+    private boolean uploadPanel(final SyncResult syncResult) {
+        String urlStr = Constants.BASE_URL + Constants.API_PANEL;
+        HttpsURLConnection urlConnection = null;
+        try {
+            HashMap<String, String> userDetails = IpsosPTApplication.getInstance().getUserDetails();
+            if (userDetails == null) {
+                setSyncStatus(getContext(), SYNC_STATUS_NO_USER_DATA);
+                return false;
+            }
+
+            String token = IpsosPTApplication.getInstance().getAuthKey();
+            if (token == null || token.equals("")) {
+                setSyncStatus(getContext(), SYNC_STATUS_NO_USER_DATA);
+                return false;
+            }
+
+            BufferedReader reader;
+            URL url = null;
+
+            JSONArray panelArray = getPanelJsonArray();
+            if (panelArray == null || panelArray.length() == 0)
+                return false;
+            for (int i = 0; i < panelArray.length(); i++) {
+                JSONObject panelJson = panelArray.getJSONObject(i);
+                Panel p = JsonParser.parsePanel(panelJson);
+                String panelJsonString = panelJson.toString();
+                String params = Constants.QUERY_PARAM_COUNTRY_CODE + "=" + p.CountryCode +
+                        "&" +
+                        Constants.QUERY_PARAM_FLD_CODE + "=" + p.FldCode +
+                        "&" +
+                        Constants.QUERY_PARAM_PANEL_TYPE + "=" + p.PanelType +
+                        "&" +
+                        Constants.QUERY_PARAM_FAM_CODE + "=" + p.FamCode +
+                        "&" +
+                        Constants.QUERY_PARAM_IND_CODE + "=" + p.IndCode +
+                        "&" +
+                        Constants.QUERY_PARAM_WEEK_CODE + "=" + p.WeekCode;
+
+                url = new URL(urlStr + "?" + params);
+                urlConnection = (HttpsURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("PUT");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setRequestProperty("Authorization", "bearer " + token);
+                urlConnection.setRequestProperty("Body", panelJsonString);
+                urlConnection.setDoOutput(true);
+
+                OutputStream outputStream = urlConnection.getOutputStream();
+                if (outputStream == null)
+                    continue;
+                outputStream.write(panelJson.toString().getBytes());
+                outputStream.close();
+                outputStream.flush();
+
+                InputStream inputStream = urlConnection.getInputStream();
+                if (inputStream == null)
+                    continue;
+
+                StringBuilder buffer = new StringBuilder();
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0)
+                    continue;
+
+                updatePanelStatus(p, syncResult);
+            }
+
+
+
+            return true;
+        }
+        catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            if (urlConnection != null) {
+                InputStream error = urlConnection.getErrorStream();
+                StringBuilder errorBuffer = new StringBuilder();
+                BufferedReader errorReader = new BufferedReader(new InputStreamReader(error));
+                String line;
+                try {
+                    while ((line = errorReader.readLine()) != null) {
+                        errorBuffer.append(line + "\n");
+                    }
+                }
+                catch (Exception e) {
+                    Log.e(LOG_TAG, e.getMessage());
+                }
+            }
+
+            return false;
+        }
     }
 
     private void downloadFam(final SyncResult syncResult) {
-        String urlStr = Constants.BASE_URL + Constants.API_GET_FAM;
+        String urlStr = Constants.BASE_URL + Constants.API_FAM;
 
         try {
             JSONArray famArray = getJsonArrayFromAPI(urlStr);
@@ -158,7 +267,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void downloadInd(final SyncResult syncResult) {
-        String urlStr = Constants.BASE_URL + Constants.API_GET_IND;
+        String urlStr = Constants.BASE_URL + Constants.API_IND;
         try {
             JSONArray indArray = getJsonArrayFromAPI(urlStr);
             if (indArray == null)
@@ -171,7 +280,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void downloadPanel(final SyncResult syncResult) {
-        String urlStr = Constants.BASE_URL + Constants.API_GET_PANEL;
+        String urlStr = Constants.BASE_URL + Constants.API_PANEL;
         try {
             JSONArray panelArray = getJsonArrayFromAPI(urlStr);
             if (panelArray == null)
@@ -184,7 +293,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void downloadPanelWeek(final SyncResult syncResult) {
-        String urlStr = Constants.BASE_URL + Constants.API_GET_PANEL_WEEK;
+        String urlStr = Constants.BASE_URL + Constants.API_PANEL_WEEK;
         try {
             JSONArray pwArray = getJsonArrayFromAPI(urlStr);
             if (pwArray == null)
@@ -196,9 +305,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
-    private JSONArray getJsonArrayFromAPI(String urlStr) {
-        //TODO LOG exception detail
+    private JSONArray getPanelJsonArray() {
+        Uri uri = PTContract.Panel.CONTENT_URI;
+        JSONArray panelArray = null;
+        Cursor c = _contentResolver.query(uri, PANEL_COLUMNS, null, null, null);
+        if (c != null && c.moveToFirst()) {
+            panelArray = JsonParser.cursorToJson(c);
+            c.close();
+        }
+        return panelArray;
+    }
 
+    private JSONArray getJsonArrayFromAPI(String urlStr) {
         HttpsURLConnection urlConnection = null;
         HashMap<String, String> userDetails = IpsosPTApplication.getInstance().getUserDetails();
         if (userDetails == null) {
@@ -376,6 +494,20 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
         }
+    }
+
+    private void updatePanelStatus(Panel p, final SyncResult syncResult) {
+        Uri uri = PTContract.Panel.CONTENT_URI;
+        ContentValues values = new ContentValues();
+        values.put(PTContract.Panel.COLUMN_WEEK_CHECK, p.WeekCheck);
+        values.put(PTContract.Panel.COLUMN_SYNC, 1);
+        String where = PTContract.Panel.COLUMN_PANEL_TYPE + " = ? AND " +
+                PTContract.Panel.COLUMN_WEEK_CODE + " = ? AND " +
+                PTContract.Panel.COLUMN_FAM_CODE + " = ? AND " +
+                PTContract.Panel.COLUMN_IND_CODE + " = ? ";
+        String[] args = new String[] { p.PanelType, Integer.toString(p.WeekCode), p.FamCode, Integer.toString(p.IndCode) };
+        _contentResolver.update(uri, values, where, args);
+        syncResult.stats.numUpdates++;
     }
 
     private void updatePanelWeek(JSONArray pwArray, final SyncResult syncResult) {

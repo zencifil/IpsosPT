@@ -50,7 +50,7 @@ class ShippingAdapter extends CursorAdapter {
         if (indCode == 0)
             listItemText = famCode;
         else
-            listItemText = Integer.toString(indCode) + " - " + indName;
+            listItemText = famCode + " - " + Integer.toString(indCode) + " - " + indName;
         listItemText += " - " + cursor.getString(ShippingActivity.COL_PANEL_TYPE);
         listItemText += " - " + cursor.getString(ShippingActivity.COL_WEEK_DESC);
 

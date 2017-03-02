@@ -36,4 +36,12 @@
         android:maxLines="1"
         android:layout_marginStart="15dp"
         android:text="TEST MAH. TEST CAD. TEST SOK. D 2 KADIKOY ISTANBUL"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fam_active_panels_list_item"
+        android:layout_below="@id/fam_address_list_item"
+        android:maxLines="1"
+        android:layout_marginStart="15dp"/>
 </RelativeLayout>

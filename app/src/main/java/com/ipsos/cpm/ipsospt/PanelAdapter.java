@@ -236,6 +236,7 @@ class PanelAdapter extends CursorSwipeAdapter {
         Uri uri = PTContract.Panel.CONTENT_URI;
         ContentValues values = new ContentValues();
         values.put(PTContract.Panel.COLUMN_WEEK_CHECK, _weekStatus);
+        values.put(PTContract.Panel.COLUMN_SYNC, 1);
         String where = PTContract.Panel.COLUMN_PANEL_TYPE + " = ? AND " +
                 PTContract.Panel.COLUMN_WEEK_CODE + " = ? AND " +
                 PTContract.Panel.COLUMN_FAM_CODE + " = ? AND " +

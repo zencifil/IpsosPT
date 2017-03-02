@@ -94,6 +94,9 @@ public class PTProvider extends ContentProvider {
     private static final String _shippingSelection =
             PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_WEEK_CHECK + " = 2 ";
 
+    private static final String _shippingForSyncSelection =
+            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_SYNC + " = 1 ";
+
     private Cursor getFamilyListByVisitDay(Uri uri, String[] projection, String sortOrder) {
         String selection = _familyByVisitDaySelection;
         int visitDay = PTContract.Fam.getVisitDayFromUri(uri);
@@ -104,6 +107,8 @@ public class PTProvider extends ContentProvider {
     private Cursor getFamilyByFamCode(Uri uri, String[] projection, String sortOrder) {
         String selection = _familyByFamCodeSelection;
         String famCode = PTContract.Fam.getFamCodeFromUri(uri);
+        if (famCode.contains("_"))
+            famCode = famCode.replace("_", "");
         return _famQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection,
                 new String[]{famCode}, null, null, sortOrder);
     }
@@ -150,6 +155,11 @@ public class PTProvider extends ContentProvider {
         return _panelQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, null, null, null, sortOrder);
     }
 
+    private Cursor getShippingForSync(Uri uri, String[] projection, String sortOrder) {
+        String selection = _shippingForSyncSelection;
+        return _panelQueryBuilder.query(_dbHelper.getReadableDatabase(), projection, selection, null, null, null, sortOrder);
+    }
+
     static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = PTContract.CONTENT_AUTHORITY;
@@ -192,6 +202,8 @@ public class PTProvider extends ContentProvider {
                 return PTContract.Ind.CONTENT_DIR_TYPE;
             case INDIVIDUAL_BY_FAM_AND_IND_CODE:
                 return PTContract.Ind.CONTENT_ITEM_TYPE;
+            case PANEL:
+                return PTContract.Panel.CONTENT_DIR_TYPE;
             case PANEL_BY_PANELTYPE_FAMCODE_AND_WEEKCODE:
                 return PTContract.Panel.CONTENT_DIR_TYPE;
             case PANEL_WEEK:
@@ -224,6 +236,9 @@ public class PTProvider extends ContentProvider {
                 break;
             case INDIVIDUAL_BY_FAM_AND_IND_CODE:
                 retCursor = getIndividualByFamAndIndCode(uri, projection, sortOrder);
+                break;
+            case PANEL:
+                retCursor = getShippingForSync(uri, projection, sortOrder);
                 break;
             case PANEL_BY_PANELTYPE_FAMCODE_AND_WEEKCODE:
                 retCursor = getPanelByPanelTypeFamCodeAndWeekCode(uri, projection, sortOrder);

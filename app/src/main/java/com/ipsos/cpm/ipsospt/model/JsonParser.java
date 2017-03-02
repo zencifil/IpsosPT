@@ -1,7 +1,9 @@
 package com.ipsos.cpm.ipsospt.model;
 
+import android.database.Cursor;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class JsonParser {
@@ -132,6 +134,25 @@ public class JsonParser {
         }
     }
 
+    public static JSONObject panel2Json(Panel panel) {
+        try {
+            JSONObject panelJson = new JSONObject();
+            panelJson.put(PANEL_JSON_COUNTRY_CODE, panel.CountryCode);
+            panelJson.put(PANEL_JSON_FLD_CODE, panel.FldCode);
+            panelJson.put(PANEL_JSON_PANEL_TYPE, panel.PanelType);
+            panelJson.put(PANEL_JSON_FAM_CODE, panel.FamCode);
+            panelJson.put(PANEL_JSON_IND_CODE, panel.IndCode);
+            panelJson.put(PANEL_JSON_WEEK_CODE, panel.WeekCode);
+            panelJson.put(PANEL_JSON_WEEK_CHECK, panel.WeekCheck);
+
+            return panelJson;
+        }
+        catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return null;
+        }
+    }
+
     public static PanelWeek parsePanelWeek(JSONObject pw) {
         try {
             String countryCode = pw.getString(PW_JSON_COUNTRY_CODE);
@@ -149,5 +170,31 @@ public class JsonParser {
             Log.e(LOG_TAG, ex.getMessage());
             return null;
         }
+    }
+
+    public static JSONArray cursorToJson(Cursor cursor) {
+
+        JSONArray resultSet = new JSONArray();
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            int totalColumn = cursor.getColumnCount();
+            JSONObject rowObject = new JSONObject();
+            for (int i = 0; i < totalColumn; i++) {
+                if (cursor.getColumnName(i) != null) {
+                    try {
+                        rowObject.put(cursor.getColumnName(i),
+                                cursor.getString(i));
+                    }
+                    catch (Exception e) {
+                        Log.d(LOG_TAG, e.getMessage());
+                    }
+                }
+            }
+            resultSet.put(rowObject);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return resultSet;
     }
 }

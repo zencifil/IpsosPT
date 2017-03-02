@@ -3,10 +3,8 @@ package com.ipsos.cpm.ipsospt;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.widget.Toast;
 
 import com.ipsos.cpm.ipsospt.helper.Constants;
-import com.ipsos.cpm.ipsospt.helper.Utils;
 
 import org.json.JSONObject;
 import org.junit.Test;
@@ -47,7 +45,7 @@ public class ExampleInstrumentedTest {
         Object exc = null;
 
         try {
-            URL url = new URL(Constants.BASE_URL + Constants.API_GET_FAM);
+            URL url = new URL(Constants.BASE_URL + Constants.API_FAM);
             connection = (HttpsURLConnection) url.openConnection();
             connection.setConnectTimeout(Constants.NETWORK_TIMEOUT);
             connection.setRequestMethod("GET");

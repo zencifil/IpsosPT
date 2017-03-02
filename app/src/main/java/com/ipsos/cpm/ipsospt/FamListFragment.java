@@ -44,7 +44,12 @@ public class FamListFragment extends Fragment
             PTContract.Fam.COLUMN_FAM_NAME,
             PTContract.Fam.COLUMN_DISTRICT,
             PTContract.Fam.COLUMN_NEIGHBORHOOD,
-            PTContract.Fam.COLUMN_ADDRESS
+            PTContract.Fam.COLUMN_ADDRESS,
+            PTContract.Fam.COLUMN_AVP,
+            PTContract.Fam.COLUMN_SP,
+            PTContract.Fam.COLUMN_ALK,
+            PTContract.Fam.COLUMN_BABY,
+            PTContract.Fam.COLUMN_EK_ALK
     };
 
     static final int COL_ID = 0;
@@ -53,6 +58,11 @@ public class FamListFragment extends Fragment
     static final int COL_DISTRICT = 3;
     static final int COL_NEIGHBORHOOD = 4;
     static final int COL_ADDRESS = 5;
+    static final int COL_AVP = 6;
+    static final int COL_SP = 7;
+    static final int COL_ALK = 8;
+    static final int COL_BABY = 9;
+    static final int COL_EK_ALK = 10;
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
@@ -120,7 +130,7 @@ public class FamListFragment extends Fragment
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (cursor != null)
-                    ((Callback) getActivity()).onItemSelected(PTContract.Fam.buildFamilyUriWithFamCode(cursor.getString(COL_FAM_CODE)));
+                    ((Callback) getActivity()).onItemSelected(PTContract.Fam.buildFamilyUriWithFamCode("_" + cursor.getString(COL_FAM_CODE)));
 
                 _position = position;
             }
