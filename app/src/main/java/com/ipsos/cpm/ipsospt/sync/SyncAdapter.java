@@ -59,7 +59,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private ContentResolver _contentResolver;
 
     private static final String[] PANEL_COLUMNS = {
-            PTContract.Panel.TABLE_NAME + "." + PTContract.Panel._ID,
             PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_COUNTRY_CODE,
             PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_FLD_CODE,
             PTContract.Panel.TABLE_NAME + "." + PTContract.Panel.COLUMN_PANEL_TYPE,
@@ -148,8 +147,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void syncPanel(final SyncResult syncResult) {
-        if (uploadPanel(syncResult))
-            downloadPanel(syncResult);
+        uploadPanel(syncResult);
+        downloadPanel(syncResult);
     }
 
     private void syncPanelWeek(final SyncResult syncResult) {
@@ -558,16 +557,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         spe.commit();
     }
 
-    public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
-        Account account = getSyncAccount(context);
-        String authority = context.getString(R.string.content_authority);
-        // we can enable inexact timers in our periodic sync
-        SyncRequest request = new SyncRequest.Builder().
-                syncPeriodic(syncInterval, flexTime).
-                setSyncAdapter(account, authority).
-                setExtras(new Bundle()).build();
-        ContentResolver.requestSync(request);
-    }
+//    public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
+//        Account account = getSyncAccount(context);
+//        String authority = context.getString(R.string.content_authority);
+//        // we can enable inexact timers in our periodic sync
+//        SyncRequest request = new SyncRequest.Builder().
+//                syncPeriodic(syncInterval, flexTime).
+//                setSyncAdapter(account, authority).
+//                setExtras(new Bundle()).build();
+//        ContentResolver.requestSync(request);
+//    }
 
     public static void syncImmediately(Context context) {
         Bundle bundle = new Bundle();
@@ -577,7 +576,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 context.getString(R.string.content_authority), bundle);
     }
 
-    public static Account getSyncAccount(Context context) {
+    private static Account getSyncAccount(Context context) {
         // Get an instance of the Android account manager
         AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
 
@@ -590,7 +589,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         if (accountManager.addAccountExplicitly(newAccount, null, null)) {
             ContentResolver.setIsSyncable(newAccount, authority, 1);
             ContentResolver.setSyncAutomatically(newAccount, authority, true);
-            ContentResolver.addPeriodicSync(newAccount, authority, new Bundle(), SYNC_INTERVAL);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, false);
+            ContentResolver.addPeriodicSync(newAccount, authority, bundle, SYNC_INTERVAL);
         }
 
         return newAccount;

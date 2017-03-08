@@ -43,7 +43,7 @@ public class Constants {
     public static final String JSON_AUTH_KEY_TOKEN = "access_token";
     public static final String JSON_ERROR_DESCRIPTION = "error_description";
     // 60 seconds * 60 minutes * 24 hours = one day
-    public static final int SYNC_INTERVAL = 60 * 60 * 24;
+    public static final int SYNC_INTERVAL = 10 * 60; // 60 * 60 * 24;
     //public static final int SYNC_INTERVAL = 6;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 }

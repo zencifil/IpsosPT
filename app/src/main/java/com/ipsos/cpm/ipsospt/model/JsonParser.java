@@ -134,25 +134,6 @@ public class JsonParser {
         }
     }
 
-    public static JSONObject panel2Json(Panel panel) {
-        try {
-            JSONObject panelJson = new JSONObject();
-            panelJson.put(PANEL_JSON_COUNTRY_CODE, panel.CountryCode);
-            panelJson.put(PANEL_JSON_FLD_CODE, panel.FldCode);
-            panelJson.put(PANEL_JSON_PANEL_TYPE, panel.PanelType);
-            panelJson.put(PANEL_JSON_FAM_CODE, panel.FamCode);
-            panelJson.put(PANEL_JSON_IND_CODE, panel.IndCode);
-            panelJson.put(PANEL_JSON_WEEK_CODE, panel.WeekCode);
-            panelJson.put(PANEL_JSON_WEEK_CHECK, panel.WeekCheck);
-
-            return panelJson;
-        }
-        catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage());
-            return null;
-        }
-    }
-
     public static PanelWeek parsePanelWeek(JSONObject pw) {
         try {
             String countryCode = pw.getString(PW_JSON_COUNTRY_CODE);
