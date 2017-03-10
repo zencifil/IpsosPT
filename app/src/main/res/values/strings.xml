@@ -12,6 +12,8 @@
     <string name="invalid_operation" translatable="false">Geçersiz işlem!</string>
     <string name="no_data_found" translatable="false">Gösterilecek veri bulunamadı.</string>
     <string name="no_user_data_found" translatable="false">Kullanıcı bilgisi bulunamadı. Yeniden giriş yapıp tekrar deneyin.</string>
+    <string name="logout_title" translatable="false">Çıkış</string>
+    <string name="logout_are_you_sure" translatable="false">Çıkış yapmak istediğinizden emin misiniz?</string>
 
     <string name="order_asc" translatable="false">ASC</string>
     <string name="order_desc" translatable="false">DESC</string>

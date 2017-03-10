@@ -12,8 +12,6 @@ import com.ipsos.cpm.ipsospt.sync.SyncAdapter;
 
 public class FamDetailActivity extends AppCompatActivity implements FamDetailFragment.OnFamDetailButtonClickedListener {
 
-    private SessionManager _sessionManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

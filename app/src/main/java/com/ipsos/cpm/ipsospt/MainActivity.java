@@ -1,5 +1,6 @@
 package com.ipsos.cpm.ipsospt;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -12,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -217,21 +219,33 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            ((IpsosPTApplication)getApplication()).logout();
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra("finish", true); // if you are checking for this in your other Activities
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                    Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-            return true;
+            new AlertDialog.Builder(this).setTitle(R.string.logout_title)
+                    .setMessage(R.string.logout_are_you_sure)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            logout();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null).show();
         }
         else if (id == R.id.action_sync) {
             SyncAdapter.syncImmediately(this);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        ((IpsosPTApplication)getApplication()).logout();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("finish", true); // if you are checking for this in your other Activities
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     @Override

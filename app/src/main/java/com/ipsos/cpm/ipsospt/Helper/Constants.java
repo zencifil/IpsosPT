@@ -16,8 +16,8 @@ public class Constants {
     public static final String KEY_FLD_CODE = "fld_code";
     public static final String KEY_SYNC_STATUS = "sync_status";
     public static final int SHIPPED_FLAG = 3;
-    public static final String PHONE_NUMBER = "05359348602";
-    public static final String[] EMAIL_TO_LIST = new String[] { "savas.cilve@ipsos.com" };
+    public static final String PHONE_NUMBER = "02165871111";
+    public static final String[] EMAIL_TO_LIST = new String[] { "sinem.ozbakan@ipsos.com" };
     public static final String EMAIL_SUBJECT = "PT: {0}";
     public static final String LINK_TO_NEW_FORM = "http://www.google.com";
     public static final int AUTHKEY_VALID_DAY = 60;
@@ -44,6 +44,5 @@ public class Constants {
     public static final String JSON_ERROR_DESCRIPTION = "error_description";
     // 60 seconds * 60 minutes * 24 hours = one day
     public static final int SYNC_INTERVAL = 10 * 60; // 60 * 60 * 24;
-    //public static final int SYNC_INTERVAL = 6;
-    public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
+
 }
